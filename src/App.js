@@ -13,7 +13,6 @@ class App extends Component {
     });
   };
   render() {
-    console.log(this.state.collapsed);
     return (
       <Layout>
         <Sider
@@ -25,7 +24,7 @@ class App extends Component {
           onCollapse={(collapsed, type) => {
             console.log(collapsed, type);
             this.setState({ collapsed: collapsed });
-          }} // collapsible={true}
+          }}
           collapsed={this.state.collapsed}
         >
           <div
@@ -36,12 +35,22 @@ class App extends Component {
               alignItems: "center"
             }}
           >
-            <span style={{ fontSize: "0.8rem" }}>Cornell University</span>
+            <a
+              href="https://www.cornell.edu/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontSize: "0.8rem",
+                color: "#ee2309",
+                textDecoration: "inherit"
+              }}
+            >
+              Cornell University
+            </a>
           </div>
+
           <Menu
-            style={{
-              height: "100vh"
-            }}
+            style={{ height: "100vh" }}
             theme="light"
             mode="inline"
             defaultSelectedKeys={["4"]}
@@ -64,6 +73,7 @@ class App extends Component {
             </Menu.Item>
           </Menu>
         </Sider>
+
         <Layout>
           <Header style={{ background: "#fff", padding: 0 }}>
             <Icon
@@ -72,6 +82,7 @@ class App extends Component {
               onClick={this.toggle}
             />
           </Header>
+
           <Content style={{ margin: "24px 16px 0" }}>
             <div
               style={{
@@ -84,6 +95,7 @@ class App extends Component {
               content
             </div>
           </Content>
+
           <Footer style={{ textAlign: "center" }} />
         </Layout>
       </Layout>
