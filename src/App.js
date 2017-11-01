@@ -1,22 +1,26 @@
 import React, { Component } from "react";
 import "./index.css";
-import { Layout, Menu, Icon } from "antd";
 
-import { Flex, Box, Heading, BlockLink } from "rebass";
+import { Flex, Box, BlockLink } from "rebass";
 
 import { MenuFold } from "./styles";
 
+import Subject from "components/Subject";
+
+import { Layout, Menu, Icon } from "antd";
 const { Content, Footer, Sider } = Layout;
 
 class App extends Component {
   state = {
     collapsed: false
   };
+
   toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed
     });
   };
+
   render() {
     return (
       <Layout>
@@ -32,8 +36,8 @@ class App extends Component {
           }}
           collapsed={this.state.collapsed}
         >
-          <Flex>
-            <Box m="auto" p={1}>
+          <Flex py={12} px={16}>
+            <Box m="auto">
               <BlockLink
                 f={[1, 2, 2]}
                 style={{ color: "#A42D25" }}
@@ -44,11 +48,16 @@ class App extends Component {
           </Flex>
 
           <Menu
-            style={{ height: "100vh" }}
+            style={{
+              height: "100vh",
+              // textAlign: "center",
+              background: "pink"
+            }}
             theme="light"
             mode="inline"
             defaultSelectedKeys={["4"]}
           >
+            <Subject />
             <Menu.Item key="1">
               <Icon type="user" />
               <span className="nav-text">nav 1</span>

@@ -5,10 +5,36 @@ export default class appStore {
   constructor(fetch) {
     this.fetch = fetch;
   }
-  @observable
-  @observable
-  protocol = window.location.protocol;
+
+  @observable protocol = window.location.protocol;
   @observable isLoading = false;
+
+  // Subject ------------------------------------------------------------------
+  @observable subjects = [];
+
+  @action
+  loadSubjects() {
+    this.isLoading = true;
+    this.fetch("species.json")
+      .then(json => {
+        this.updateSubjects(json);
+        this.isLoading = false;
+      })
+      .catch(err => {
+        console.log("Failed to load subjects", err);
+      });
+  }
+
+  @action updateSubjects = d => (this.subjects = d);
+
+  @observable subject = JSON.parse(localStorage.getItem("subject")) || {};
+
+  @action
+  setSubject = d => {
+    this.subject = this.subject.find(subject => subject.name === d);
+    localStorage.setItem(`subject`, JSON.stringify(this.subject));
+  };
+  // -------------------------------------------------------------------------------
 
   @observable gridData = [];
   @action
