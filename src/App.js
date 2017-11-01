@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import "./index.css";
 import { Layout, Menu, Icon } from "antd";
-const { Header, Content, Footer, Sider } = Layout;
+
+import { Flex, Box, Heading, BlockLink } from "rebass";
+
+import { MenuFold } from "./styles";
+
+const { Content, Footer, Sider } = Layout;
 
 class App extends Component {
   state = {
@@ -27,27 +32,16 @@ class App extends Component {
           }}
           collapsed={this.state.collapsed}
         >
-          <div
-            className="logo"
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <a
-              href="https://www.cornell.edu/"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                fontSize: "0.8rem",
-                color: "#ee2309",
-                textDecoration: "inherit"
-              }}
-            >
-              Cornell University
-            </a>
-          </div>
+          <Flex>
+            <Box m="auto" p={1}>
+              <BlockLink
+                f={[1, 2, 2]}
+                style={{ color: "#A42D25" }}
+                href="https://www.cornell.edu/"
+                children="Cornell University"
+              />
+            </Box>
+          </Flex>
 
           <Menu
             style={{ height: "100vh" }}
@@ -75,20 +69,32 @@ class App extends Component {
         </Sider>
 
         <Layout>
-          <Header style={{ background: "#fff", padding: 0 }}>
-            <Icon
-              className="trigger"
-              type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
-              onClick={this.toggle}
-            />
-          </Header>
+          <Flex
+            bg="white"
+            py={12}
+            px={16}
+            align="center"
+            justify="space-between"
+          >
+            <Flex align="center">
+              <MenuFold
+                type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
+                onClick={this.toggle}
+              />
+              <Heading f={[1, 2, 3]}>Pollen Tube Growth Model</Heading>
+            </Flex>
 
-          <Content style={{ margin: "24px 16px 0" }}>
+            <Flex>
+              <Heading f={[1, 2, 3]}>NEWA</Heading>
+            </Flex>
+          </Flex>
+
+          <Content style={{ margin: "24px 16px" }}>
             <div
               style={{
                 padding: 24,
                 background: "#fff",
-                minHeight: 360,
+                minHeight: "20rem",
                 borderRadius: "5px"
               }}
             >
