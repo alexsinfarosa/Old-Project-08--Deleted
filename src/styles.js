@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Box } from "rebass";
 import { Icon } from "antd";
 
 export const MenuFold = styled(Icon)`

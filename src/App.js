@@ -27,7 +27,7 @@ class App extends Component {
           width={250}
           collapsedWidth="0"
           onCollapse={(collapsed, type) => {
-            console.log(collapsed, type);
+            // console.log(collapsed, type);
             this.setState({ collapsed: collapsed });
           }}
           collapsed={this.state.collapsed}
@@ -81,11 +81,11 @@ class App extends Component {
                 type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
                 onClick={this.toggle}
               />
-              <Heading f={[1, 2, 3]}>Pollen Tube Growth Model</Heading>
+              <Box f={[1, 2, 2]}>Pollen Tube Growth Model</Box>
             </Flex>
 
             <Flex>
-              <Heading f={[1, 2, 3]}>NEWA</Heading>
+              <Box f={[1, 2, 2]}>NEWA</Box>
             </Flex>
           </Flex>
 
