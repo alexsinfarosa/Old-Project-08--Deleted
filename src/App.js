@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { inject, observer } from "mobx-react";
+
 import "./index.css";
 
 import { Flex, Box, BlockLink } from "rebass";
@@ -7,113 +9,90 @@ import { MenuFold } from "./styles";
 
 import Subject from "components/Subject";
 
-import { Layout, Menu, Icon } from "antd";
+import { MatchMediaProvider } from "mobx-react-matchmedia";
+
+import { Layout } from "antd";
 const { Content, Footer, Sider } = Layout;
 
+@inject("store")
+@observer
 class App extends Component {
-  state = {
-    collapsed: false
-  };
-
-  toggle = () => {
-    this.setState({
-      collapsed: !this.state.collapsed
-    });
-  };
-
   render() {
+    const {
+      isSidebarCollapsed,
+      toggleSidebar,
+      setSidebar,
+      breakpoints
+    } = this.props.store.app;
+
     return (
-      <Layout>
-        <Sider
-          style={{ background: "#fff" }}
-          trigger={null}
-          breakpoint="sm"
-          width={250}
-          collapsedWidth="0"
-          onCollapse={(collapsed, type) => {
-            // console.log(collapsed, type);
-            this.setState({ collapsed: collapsed });
-          }}
-          collapsed={this.state.collapsed}
-        >
-          <Flex py={12} px={16}>
-            <Box m="auto">
-              <BlockLink
-                f={[1, 2, 2]}
-                style={{ color: "#A42D25" }}
-                href="https://www.cornell.edu/"
-                children="Cornell University"
-              />
-            </Box>
-          </Flex>
-
-          <Menu
-            style={{
-              height: "100vh",
-              // textAlign: "center",
-              background: "pink"
-            }}
-            theme="light"
-            mode="inline"
-            defaultSelectedKeys={["4"]}
-          >
-            <Subject />
-            <Menu.Item key="1">
-              <Icon type="user" />
-              <span className="nav-text">nav 1</span>
-            </Menu.Item>
-            <Menu.Item key="2">
-              <Icon type="video-camera" />
-              <span className="nav-text">nav 2</span>
-            </Menu.Item>
-            <Menu.Item key="3">
-              <Icon type="upload" />
-              <span className="nav-text">nav 3</span>
-            </Menu.Item>
-            <Menu.Item key="4">
-              <Icon type="user" />
-              <span className="nav-text">nav 4</span>
-            </Menu.Item>
-          </Menu>
-        </Sider>
-
+      <MatchMediaProvider breakpoints={breakpoints}>
         <Layout>
-          <Flex
-            bg="white"
-            py={12}
-            px={16}
-            align="center"
-            justify="space-between"
+          <Sider
+            style={{ background: "white", height: "100vh" }}
+            trigger={null}
+            breakpoint="sm"
+            width={250}
+            collapsedWidth="0"
+            onCollapse={collapsed => {
+              setSidebar(collapsed);
+            }}
+            collapsed={isSidebarCollapsed}
           >
-            <Flex align="center">
-              <MenuFold
-                type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
-                onClick={this.toggle}
-              />
-              <Box f={[1, 2, 2]}>Pollen Tube Growth Model</Box>
+            <Flex py={12} px={16}>
+              <Box m="auto">
+                <BlockLink
+                  f={[1, 2, 2]}
+                  style={{ color: "#A42D25" }}
+                  href="https://www.cornell.edu/"
+                  children="Cornell University"
+                />
+              </Box>
             </Flex>
 
-            <Flex>
-              <Box f={[1, 2, 2]}>NEWA</Box>
+            <Flex py={12} px={16}>
+              <Subject breakpoints={breakpoints} />
             </Flex>
-          </Flex>
+          </Sider>
 
-          <Content style={{ margin: "24px 16px" }}>
-            <div
-              style={{
-                padding: 24,
-                background: "#fff",
-                minHeight: "20rem",
-                borderRadius: "5px"
-              }}
+          <Layout>
+            <Flex
+              bg="white"
+              py={12}
+              px={16}
+              align="center"
+              justify="space-between"
             >
-              content
-            </div>
-          </Content>
+              <Flex align="center">
+                <MenuFold
+                  type={isSidebarCollapsed ? "menu-unfold" : "menu-fold"}
+                  onClick={toggleSidebar}
+                />
+                <Box f={[1, 2, 2]}>Pollen Tube Growth Model</Box>
+              </Flex>
 
-          <Footer style={{ textAlign: "center" }} />
+              <Flex>
+                <Box f={[1, 2, 2]}>NEWA</Box>
+              </Flex>
+            </Flex>
+
+            <Content style={{ margin: "24px 16px" }}>
+              <div
+                style={{
+                  padding: 24,
+                  background: "#fff",
+                  minHeight: "20rem",
+                  borderRadius: "5px"
+                }}
+              >
+                content
+              </div>
+            </Content>
+
+            <Footer style={{ textAlign: "center" }} />
+          </Layout>
         </Layout>
-      </Layout>
+      </MatchMediaProvider>
     );
   }
 }

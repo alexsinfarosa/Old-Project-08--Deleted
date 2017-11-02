@@ -1,13 +1,30 @@
 import { observable, action } from "mobx";
 import axios from "axios";
+import { when } from "mobx";
 
 export default class appStore {
   constructor(fetch) {
     this.fetch = fetch;
+    when(() => this.subjects.length === 0, () => this.loadSubjects());
   }
+
+  @observable
+  breakpoints = {
+    xs: "(max-width: 767px)",
+    su: "(min-width: 768px)",
+    sm: "(min-width: 768px) and (max-width: 991px)",
+    md: "(min-width: 992px) and (max-width: 1199px)",
+    mu: "(min-width: 992px)",
+    lg: "(min-width: 1200px)"
+  };
 
   @observable protocol = window.location.protocol;
   @observable isLoading = false;
+
+  @observable isSidebarCollapsed = false;
+  @action setSidebar = d => (this.isSidebarCollapsed = d);
+  @action
+  toggleSidebar = () => (this.isSidebarCollapsed = !this.isSidebarCollapsed);
 
   // Subject ------------------------------------------------------------------
   @observable subjects = [];
@@ -31,7 +48,7 @@ export default class appStore {
 
   @action
   setSubject = d => {
-    this.subject = this.subject.find(subject => subject.name === d);
+    this.subject = this.subjects.find(subject => subject.name === d);
     localStorage.setItem(`subject`, JSON.stringify(this.subject));
   };
   // -------------------------------------------------------------------------------
