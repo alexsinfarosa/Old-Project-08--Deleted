@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-
 import { Box } from "rebass";
-
 import { Select } from "antd";
-const Option = Select.Option;
 
 @inject("store")
 @observer
@@ -12,7 +9,6 @@ class Subject extends Component {
   handleChange = value => {
     const { setSubject, toggleSidebar } = this.props.store.app;
     setSubject(value);
-
     if (this.props.breakpoints.xs) {
       toggleSidebar();
     }
@@ -34,9 +30,9 @@ class Subject extends Component {
         >
           {subjects.map((subject, i) => {
             return (
-              <Option key={subject.name.toString()} value={subject.name}>
+              <Select.Option key={subject.name.toString()} value={subject.name}>
                 {subject.name}
-              </Option>
+              </Select.Option>
             );
           })}
         </Select>

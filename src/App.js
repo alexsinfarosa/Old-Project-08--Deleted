@@ -1,16 +1,10 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-
 import "./index.css";
-
 import { Flex, Box, BlockLink } from "rebass";
-
 import { MenuFold } from "./styles";
-
 import Subject from "components/Subject";
-
 import { MatchMediaProvider } from "mobx-react-matchmedia";
-
 import { Layout } from "antd";
 const { Content, Footer, Sider } = Layout;
 
