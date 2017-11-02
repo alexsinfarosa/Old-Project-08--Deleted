@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
+// import { toJS } from "mobx";
 import "./index.css";
 import { Flex, Box, BlockLink } from "rebass";
 import { MenuFold } from "./styles";
-import Subject from "components/Subject";
 import { MatchMediaProvider } from "mobx-react-matchmedia";
 import { Layout } from "antd";
+import Subject from "components/Subject";
+import State from "components/State";
+import Station from "components/Station";
+import DatePicker from "components/DatePicker";
 const { Content, Footer, Sider } = Layout;
 
 @inject("store")
@@ -18,7 +22,6 @@ class App extends Component {
       setSidebar,
       breakpoints
     } = this.props.store.app;
-
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
         <Layout>
@@ -44,8 +47,11 @@ class App extends Component {
               </Box>
             </Flex>
 
-            <Flex py={12} px={16}>
+            <Flex column py={12} px={16}>
               <Subject breakpoints={breakpoints} />
+              <State breakpoints={breakpoints} />
+              <Station breakpoints={breakpoints} />
+              <DatePicker breakpoints={breakpoints} />
             </Flex>
           </Sider>
 

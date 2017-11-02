@@ -5,47 +5,44 @@ import { Select } from "antd";
 
 @inject("store")
 @observer
-class Subject extends Component {
+export default class State extends Component {
   handleChange = value => {
     const {
-      setSubject,
+      setState,
+      setIsMap,
       toggleSidebar,
       areRequiredFieldsSet
     } = this.props.store.app;
-    setSubject(value);
+    setState(value);
+    setIsMap(true);
+    console.log(areRequiredFieldsSet, this.props.breakpoints.xs);
     if (areRequiredFieldsSet && this.props.breakpoints.xs) {
       toggleSidebar();
     }
   };
-
   render() {
-    const { subject, subjects } = this.props.store.app;
+    const { state, states } = this.props.store.app;
 
-    const subjectList = subjects.map((subject, i) => {
-      return (
-        <Select.Option key={subject.name.toString()} value={subject.name}>
-          {subject.name}
-        </Select.Option>
-      );
-    });
+    const stateList = states.map(state => (
+      <Select.Option key={state.postalCode} value={state.name}>
+        {state.name}
+      </Select.Option>
+    ));
 
     return (
       <Box mb={3}>
-        <label>Select a disease or insect:</label>
+        <label>State:</label>
         <Select
-          name="subject"
+          name="state"
           size="large"
-          autoFocus
-          value={subject.name}
-          placeholder="Select Disease"
+          value={state.name}
+          placeholder="Select State"
           style={{ width: 200 }}
           onChange={this.handleChange}
         >
-          {subjectList}
+          {stateList}
         </Select>
       </Box>
     );
   }
 }
-
-export default Subject;
