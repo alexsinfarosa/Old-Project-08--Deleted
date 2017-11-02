@@ -1,6 +1,5 @@
-import { observable, action } from "mobx";
+import { observable, action, when } from "mobx";
 import axios from "axios";
-import { when } from "mobx";
 
 export default class appStore {
   constructor(fetch) {
@@ -8,6 +7,7 @@ export default class appStore {
     when(() => this.subjects.length === 0, () => this.loadSubjects());
   }
 
+  // Logic ------------------------------------------------------------------
   @observable
   breakpoints = {
     xs: "(max-width: 767px)",
@@ -51,8 +51,8 @@ export default class appStore {
     this.subject = this.subjects.find(subject => subject.name === d);
     localStorage.setItem(`subject`, JSON.stringify(this.subject));
   };
-  // -------------------------------------------------------------------------------
 
+  // Data -------------------------------------------------------------------------------
   @observable gridData = [];
   @action
   updateGridData = d => {
