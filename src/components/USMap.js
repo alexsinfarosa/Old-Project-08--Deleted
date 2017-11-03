@@ -24,15 +24,20 @@ export default class USMap extends Component {
       states,
       setStation,
       setIsMap,
-      loadGridData
+      loadGridData,
+      setState
     } = this.props.store.app;
 
     const selectedStation = stations.find(
       station => station.lat === lat && station.lon === lng
     );
 
+    const selectedState = states.find(
+      state => state.postalCode === selectedStation.state
+    );
+
     if (state.name === "All States") {
-      //   this.props.store.app.setStateFromMap(selectedStation.state);
+      setState(selectedState.name);
       setStation(selectedStation.name);
       loadGridData();
       setIsMap(false);
@@ -44,13 +49,9 @@ export default class USMap extends Component {
       loadGridData();
       setIsMap(false);
     } else {
-      const selectedStation = stations.find(
-        station => station.lat === lat && station.lon === lng
+      alert(
+        `Select ${selectedStation.state} from the State menu to access this station.`
       );
-      const state = states.find(
-        state => state.postalCode === selectedStation.state
-      );
-      alert(`Select ${state.name} from the State menu to access this station.`);
     }
   };
 
