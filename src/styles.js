@@ -7,6 +7,6 @@ export const MenuFold = styled(Icon)`
   cursor: pointer;
   transition: color 0.3s;
   &:hover {
-    color: #e2c044;
+    color: #17b890;
   }
 `;

@@ -50,7 +50,7 @@ export default class USMap extends Component {
       setIsMap(false);
     } else {
       alert(
-        `Select ${selectedStation.state} from the State menu to access this station.`
+        `Select ${selectedState.name} from the State menu to access this station.`
       );
     }
   };
