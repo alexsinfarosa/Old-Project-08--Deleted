@@ -11,19 +11,15 @@ import moment from "moment";
 export default class Datepicker extends Component {
   onChange = (date, dateString) => {
     const {
-      areRequiredFieldsSet,
       setEndDate,
       setIsMap,
-      toggleSidebar
+      closeSidebar,
+      loadGridData
     } = this.props.store.app;
-
     setEndDate(dateString);
-    // loadGridData();
+    loadGridData();
     setIsMap(false);
-    if (areRequiredFieldsSet && this.props.breakpoints.xs) {
-      toggleSidebar();
-    }
-    // this.props.store.logic.setIsRowSelected(false);
+    closeSidebar();
   };
 
   disabledStartDate = startValue => {

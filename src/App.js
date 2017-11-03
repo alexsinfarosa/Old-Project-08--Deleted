@@ -10,6 +10,8 @@ import Subject from "components/Subject";
 import State from "components/State";
 import Station from "components/Station";
 import DatePicker from "components/DatePicker";
+import ClickMapMessage from "components/ClickMapMessage";
+import USMap from "components/USMap";
 const { Content, Footer, Sider } = Layout;
 
 @inject("store")
@@ -20,8 +22,12 @@ class App extends Component {
       isSidebarCollapsed,
       toggleSidebar,
       setSidebar,
-      breakpoints
+      breakpoints,
+      areRequiredFieldsSet,
+      isMap,
+      state
     } = this.props.store.app;
+
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
         <Layout>
@@ -48,16 +54,17 @@ class App extends Component {
             </Flex>
 
             <Flex column py={12} px={16}>
-              <Subject breakpoints={breakpoints} />
-              <State breakpoints={breakpoints} />
-              <Station breakpoints={breakpoints} />
-              <DatePicker breakpoints={breakpoints} />
+              <Subject />
+              <State />
+              <Station />
+              <DatePicker />
             </Flex>
           </Sider>
 
-          <Layout>
+          <Layout style={{ background: "white" }}>
             <Flex
-              bg="white"
+              bg="#4F5D75"
+              color="white"
               py={12}
               px={16}
               align="center"
@@ -77,19 +84,14 @@ class App extends Component {
             </Flex>
 
             <Content style={{ margin: "24px 16px" }}>
-              <div
-                style={{
-                  padding: 24,
-                  background: "#fff",
-                  minHeight: "20rem",
-                  borderRadius: "5px"
-                }}
-              >
-                content
-              </div>
+              <Flex column>
+                <ClickMapMessage state={state} />
+                {isMap && <USMap />}
+                <div>{areRequiredFieldsSet && "GET DATA!!"}</div>
+              </Flex>
             </Content>
 
-            <Footer style={{ textAlign: "center" }} />
+            <Footer style={{ textAlign: "center", background: "white" }} />
           </Layout>
         </Layout>
       </MatchMediaProvider>

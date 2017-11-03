@@ -7,15 +7,9 @@ import { Select } from "antd";
 @observer
 class Subject extends Component {
   handleChange = value => {
-    const {
-      setSubject,
-      toggleSidebar,
-      areRequiredFieldsSet
-    } = this.props.store.app;
+    const { setSubject, closeSidebar } = this.props.store.app;
     setSubject(value);
-    if (areRequiredFieldsSet && this.props.breakpoints.xs) {
-      toggleSidebar();
-    }
+    closeSidebar();
   };
 
   render() {

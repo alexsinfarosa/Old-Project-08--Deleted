@@ -1,6 +1,5 @@
 import { observable, action, when, computed } from "mobx";
 import axios from "axios";
-import { matchIconsToStations } from "utils";
 import format from "date-fns/format";
 import isAfter from "date-fns/is_after";
 import isBefore from "date-fns/is_before";
@@ -37,6 +36,14 @@ export default class appStore {
       Object.keys(this.station).length !== 0
     );
   }
+
+  @observable isMobile = window.matchMedia("(max-width: 480px)").matches; // FIX IT
+  @action
+  closeSidebar = () => {
+    if (this.areRequiredFieldsSet && this.isMobile) {
+      this.toggleSidebar();
+    }
+  };
 
   @observable isSidebarCollapsed = false;
   @action setSidebar = d => (this.isSidebarCollapsed = d);
@@ -114,14 +121,7 @@ export default class appStore {
 
   // Stations -----------------------------------------------------------------
   @observable stations = [];
-  @action
-  updateStations = d => {
-    this.stations.clear();
-    d.forEach(station => {
-      station.icon = matchIconsToStations(this.protocol, station, this.state);
-      this.stations.push(station);
-    });
-  };
+  @action updateStations = d => (this.stations = d);
 
   @action
   loadStations() {
@@ -178,33 +178,36 @@ export default class appStore {
   @action updateGridData = d => (this.gridData = d);
 
   @action
-  loadGridData() {
-    this.isLoading = true;
+  loadGridData = () => {
+    if (this.areRequiredFieldsSet) {
+      this.isLoading = true;
 
-    let loc = "-75.7,42.5";
-    if (this.state.name !== "All States") {
-      loc = `${this.station.lon},${this.station.lat}`;
+      let loc = "-75.7,42.5";
+      if (this.state.name !== "All States") {
+        loc = `${this.station.lon},${this.station.lat}`;
+      }
+
+      const params = {
+        loc: loc,
+        sdate: this.startDate,
+        edate: this.endDate,
+        grid: 3,
+        elems: [{ name: "avgt" }]
+      };
+
+      // console.log(params);
+
+      return axios
+        .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
+        .then(res => {
+          // console.log(res.data.data);
+          this.updateGridData(res.data.data);
+          this.isLoading = false;
+        })
+        .catch(err => {
+          console.log("Failed to load grid data", err);
+        });
     }
-
-    const params = {
-      loc: loc,
-      sdate: this.startDate,
-      edate: this.endDate,
-      grid: 3,
-      elems: [{ name: "avgt" }]
-    };
-
-    // console.log(params);
-
-    return axios
-      .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
-      .then(res => {
-        // console.log(res.data.data);
-        this.updateGridData(res.data.data);
-        this.isLoading = false;
-      })
-      .catch(err => {
-        console.log("Failed to load grid data", err);
-      });
-  }
+    return [];
+  };
 }

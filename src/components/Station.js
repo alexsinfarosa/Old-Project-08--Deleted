@@ -10,16 +10,13 @@ export default class Station extends Component {
     const {
       setStation,
       setIsMap,
-      toggleSidebar,
-      areRequiredFieldsSet
+      closeSidebar,
+      loadGridData
     } = this.props.store.app;
     setStation(value);
-    // loadGridData();
+    loadGridData();
     setIsMap(false);
-
-    if (areRequiredFieldsSet && this.props.breakpoints.xs) {
-      toggleSidebar();
-    }
+    closeSidebar();
   };
   render() {
     const { currentStateStations, station } = this.props.store.app;

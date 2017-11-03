@@ -7,19 +7,12 @@ import { Select } from "antd";
 @observer
 export default class State extends Component {
   handleChange = value => {
-    const {
-      setState,
-      setIsMap,
-      toggleSidebar,
-      areRequiredFieldsSet
-    } = this.props.store.app;
+    const { setState, setIsMap, closeSidebar } = this.props.store.app;
     setState(value);
     setIsMap(true);
-    console.log(areRequiredFieldsSet, this.props.breakpoints.xs);
-    if (areRequiredFieldsSet && this.props.breakpoints.xs) {
-      toggleSidebar();
-    }
+    closeSidebar();
   };
+
   render() {
     const { state, states } = this.props.store.app;
 
