@@ -52,7 +52,14 @@ export default class appStore {
 
   @observable
   isMap = JSON.parse(localStorage.getItem("state")) !== null ? false : true;
-  @action setIsMap = d => (this.isMap = d);
+  @action
+  setIsMap = d => {
+    if (this.areRequiredFieldsSet) {
+      this.isMap = d;
+    } else {
+      this.isMap = true;
+    }
+  };
   @action toggleMap = d => (this.isMap = !this.isMap);
 
   // Subject ------------------------------------------------------------------
