@@ -7,8 +7,9 @@ import { Select } from "antd";
 @observer
 class Subject extends Component {
   handleChange = value => {
-    const { setSubject, closeSidebar } = this.props.store.app;
+    const { setSubject, closeSidebar, setIsMap } = this.props.store.app;
     setSubject(value);
+    setIsMap();
     closeSidebar();
   };
 

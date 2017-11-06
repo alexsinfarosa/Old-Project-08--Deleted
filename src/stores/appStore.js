@@ -149,9 +149,13 @@ export default class appStore {
 
   @computed
   get currentStateStations() {
-    return this.stations.filter(
-      station => station.state === this.state.postalCode
-    );
+    if (this.state.name === "All States") {
+      return this.stations;
+    } else {
+      return this.stations.filter(
+        station => station.state === this.state.postalCode
+      );
+    }
   }
 
   @observable station = JSON.parse(localStorage.getItem("station")) || {};

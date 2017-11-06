@@ -4,6 +4,8 @@ import { Map as LMap, TileLayer, Marker } from "react-leaflet";
 import L from "leaflet";
 import { matchIconsToStations } from "utils";
 
+import { Modal } from "antd";
+
 // rebass
 import { Box } from "rebass";
 
@@ -15,6 +17,15 @@ const myIcon = e =>
 @inject("store")
 @observer
 export default class USMap extends Component {
+  state = {
+    visible: false,
+    selectedState: ""
+  };
+
+  handleOkCancel = d => {
+    this.setState({ visible: false, selectedState: "" });
+  };
+
   onClickSetStation = e => {
     const { lat, lng } = e.latlng;
 
@@ -49,9 +60,7 @@ export default class USMap extends Component {
       loadGridData();
       setIsMap(false);
     } else {
-      alert(
-        `Select ${selectedState.name} from the State menu to access this station.`
-      );
+      this.setState({ visible: true, selectedState: selectedState.name });
     }
   };
 
@@ -93,6 +102,16 @@ export default class USMap extends Component {
           />
           {MarkerList}
         </LMap>
+
+        <Modal
+          // title="Basic Modal"
+          visible={this.state.visible}
+          onOk={this.handleOkCancel}
+          onCancel={this.handleOkCancel}
+        >
+          <p>{`Select ${this.state
+            .selectedState} from the State menu to access this station.`}</p>
+        </Modal>
       </Box>
     );
   }
