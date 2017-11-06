@@ -6,5 +6,3 @@ const store = {
 };
 
 export default store;
-
-// store.app.loadGridData();

@@ -5,13 +5,16 @@ import "./index.css";
 import { Flex, Box, BlockLink } from "rebass";
 import { MenuFold } from "./styles";
 import { MatchMediaProvider } from "mobx-react-matchmedia";
-import { Layout } from "antd";
+import { Layout, Button } from "antd";
+
 import Subject from "components/Subject";
 import State from "components/State";
 import Station from "components/Station";
 import DatePicker from "components/DatePicker";
 import ClickMapMessage from "components/ClickMapMessage";
 import USMap from "components/USMap";
+import PCEtable from "components/PCEtable";
+
 const { Content, Footer, Sider } = Layout;
 
 @inject("store")
@@ -23,8 +26,8 @@ class App extends Component {
       toggleSidebar,
       setSidebar,
       breakpoints,
-      areRequiredFieldsSet,
       isMap,
+      isTable,
       state
     } = this.props.store.app;
 
@@ -58,6 +61,18 @@ class App extends Component {
               <State />
               <Station />
               <DatePicker />
+              <Box mb={3}>
+                <Button
+                  size="large"
+                  icon="environment-o"
+                  onClick={this.toggleMap}
+                >
+                  Map
+                </Button>
+                <Button size="large" icon="layout" onClick={this.toggleTable}>
+                  Table
+                </Button>
+              </Box>
             </Flex>
           </Sider>
 
@@ -87,7 +102,7 @@ class App extends Component {
               <Flex column>
                 <ClickMapMessage state={state} />
                 {isMap && <USMap />}
-                <div>{areRequiredFieldsSet && "GET DATA!!"}</div>
+                {isTable && <PCEtable />}
               </Flex>
             </Content>
 

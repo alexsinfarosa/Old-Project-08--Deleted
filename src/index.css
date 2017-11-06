@@ -9,3 +9,7 @@ body {
 *:before {
   box-sizing: border-box;
 }
+
+.stripe {
+  background: #f7f7f7;
+}

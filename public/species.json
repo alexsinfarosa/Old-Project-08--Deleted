@@ -1,34 +1,42 @@
 [
   {
     "name": "Large crabgrass",
-    "formula": false
+    "base": 48.2,
+    "cdd": 0
   },
   {
     "name": "Giant foxtail",
-    "formula": false
+    "base": 48.2,
+    "cdd": 0
   },
   {
     "name": "Yellow foxtail",
-    "formula": false
+    "base": 48.2,
+    "cdd": 0
   },
   {
     "name": "Common lambsquarters",
-    "formula": false
+    "base": 48.2,
+    "cdd": 0
   },
   {
     "name": "Eastern black nightshade",
-    "formula": false
+    "base": 48.2,
+    "cdd": 0
   },
   {
     "name": "Smooth pigweed",
-    "formula": false
+    "base": 48.2,
+    "cdd": 0
   },
   {
     "name": "Common ragweed",
-    "formula": false
+    "base": 48.2,
+    "cdd": 0
   },
   {
     "name": "Velvetleaf",
-    "formula": false
+    "base": 48.2,
+    "cdd": 0
   }
 ]

@@ -16,9 +16,9 @@ class Subject extends Component {
   render() {
     const { subject, subjects } = this.props.store.app;
 
-    const subjectList = subjects.map((subject, i) => {
+    const subjectList = subjects.map(subject => {
       return (
-        <Select.Option key={subject.name.toString()} value={subject.name}>
+        <Select.Option key={subject.name} value={subject.name}>
           {subject.name}
         </Select.Option>
       );
