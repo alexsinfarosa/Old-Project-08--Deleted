@@ -26,7 +26,7 @@ class ToggleButtons extends Component {
     const { isMap, isTable, isGraph } = this.props.store.app;
     return (
       <div>
-        <Flex mt={3} w={200} justify="space-between">
+        <Flex my={3} w={200} justify="space-between">
           <Box>
             <Button
               type={isMap ? "primary" : ""}
@@ -48,7 +48,7 @@ class ToggleButtons extends Component {
             </Button>
           </Box>
         </Flex>
-        <Flex mt={3} w={200} justify="space-between">
+        <Flex my={3} w={200} justify="space-between">
           <Box>
             <Button
               type={isGraph ? "primary" : ""}

@@ -11,6 +11,8 @@ import Subject from "components/Subject";
 import State from "components/State";
 import Station from "components/Station";
 import DatePicker from "components/DatePicker";
+import Acknowledgements from "components/Acknowledgements";
+
 import ClickMapMessage from "components/ClickMapMessage";
 import USMap from "components/USMap";
 import PCEtable from "components/PCEtable";
@@ -38,7 +40,7 @@ class App extends Component {
       <MatchMediaProvider breakpoints={breakpoints}>
         <Layout>
           <Sider
-            style={{ background: "white", height: "100vh" }}
+            style={{ background: "white", minHeight: "100vh" }}
             trigger={null}
             breakpoint="sm"
             width={250}
@@ -65,6 +67,7 @@ class App extends Component {
               <Station />
               <DatePicker />
               <ToggleButtons />
+              <Acknowledgements />
             </Flex>
           </Sider>
 
@@ -91,7 +94,7 @@ class App extends Component {
             </Flex>
 
             <Content style={{ margin: "24px 16px" }}>
-              <Flex column>
+              <Flex column style={{ maxWidth: "1024px", margin: "0 auto" }}>
                 <ClickMapMessage state={state} />
                 {isMap && <USMap />}
                 {isGraph && <PCEgraph bpxs={breakpoints.xs} />}

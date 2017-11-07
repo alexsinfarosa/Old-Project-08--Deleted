@@ -109,7 +109,7 @@ export default class PCEtable extends Component {
             <Table
               key={i}
               showHeader={i === 0 ? true : false}
-              size="middle"
+              size={bpxs ? "middle" : "large"}
               columns={bpxs ? columnsMobile : columns}
               rowKey={record => record}
               loading={this.props.store.app.isLoading}
