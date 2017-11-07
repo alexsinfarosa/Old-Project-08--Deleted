@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { observable, action } from "mobx";
-import { Flex, Box } from "rebass";
+import { Flex } from "rebass";
 
 import { Modal, Button } from "antd";
 
@@ -37,6 +37,7 @@ class Acknowledgements extends Component {
                 onClick={() => this.setIsVisible(false)}
                 href="https://nysipm.cornell.edu/"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 NYSIPM
               </a>
@@ -48,6 +49,7 @@ class Acknowledgements extends Component {
                 onClick={() => this.setIsVisible(false)}
                 href="http://www.nrcc.cornell.edu/"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 NRCC
               </a>

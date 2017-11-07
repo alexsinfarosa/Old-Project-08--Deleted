@@ -1,112 +1,67 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
+
 import { Flex, Box } from "rebass";
 import {
-  VictoryChart,
-  VictoryLine,
-  VictoryZoomContainer,
-  VictoryTheme
-} from "victory";
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Brush
+} from "recharts";
 
 @inject("store")
 @observer
-class PCEgraph extends Component {
-  state = {};
-  handleZoom = domain => {
-    this.setState({ selectedDomain: domain });
-  };
+export default class PCEgraph extends Component {
   render() {
     const { station, state, graphData } = this.props.store.app;
     return (
-      <Flex column>
+      <Flex column flex="1 1 auto">
         <Box f={[1, 2, 3]}>
           Percent Cumulative Emergence (PCE) for {station.name}, {state.name}
         </Box>
-        <Box mb={3}>
-          <VictoryChart
-            padding={{ top: 30, left: 32, right: 16, bottom: 30 }}
-            theme={VictoryTheme.material}
-            width={650}
-            height={350}
-            responsive={true}
-            scale={{ x: "time" }}
-            containerComponent={
-              <VictoryZoomContainer
-                zoomDimension="x"
-                zoomDomain={this.state.zoomDomain}
-                onZoomDomainChange={this.handleZoom}
+
+        <Box mb={3} style={{ width: "100%", height: "35vh" }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={graphData}
+              margin={{ top: 30, right: 0, left: -23, bottom: 30 }}
+            >
+              <XAxis
+                dataKey="date"
+                domain={["dataMin", "dataMax"]}
+                minTickGap={30}
+                tickSize={10}
               />
-            }
-          >
-            <VictoryLine
-              style={{
-                data: { stroke: "#e41a1c", strokeWidth: "1px" }
-              }}
-              data={graphData}
-              x="date"
-              y="Large crabgrass"
-            />
-            <VictoryLine
-              style={{
-                data: { stroke: "#377eb8", strokeWidth: "1px" }
-              }}
-              data={graphData}
-              x="date"
-              y="Giant foxtail"
-            />
-            <VictoryLine
-              style={{
-                data: { stroke: "#4daf4a", strokeWidth: "1px" }
-              }}
-              data={graphData}
-              x="date"
-              y="Yellow foxtail"
-            />
-            <VictoryLine
-              style={{
-                data: { stroke: "#984ea3", strokeWidth: "1px" }
-              }}
-              data={graphData}
-              x="date"
-              y="Common lambsquarters"
-            />
-            <VictoryLine
-              style={{
-                data: { stroke: "#ff7f00", strokeWidth: "1px" }
-              }}
-              data={graphData}
-              x="date"
-              y="Eastern black nightshade"
-            />
-            <VictoryLine
-              style={{
-                data: { stroke: "#ffff33", strokeWidth: "1px" }
-              }}
-              data={graphData}
-              x="date"
-              y="Smooth pigweed"
-            />
-            <VictoryLine
-              style={{
-                data: { stroke: "#a65628", strokeWidth: "1px" }
-              }}
-              data={graphData}
-              x="date"
-              y="Common ragweed"
-            />
-            <VictoryLine
-              style={{
-                data: { stroke: "#f781bf", strokeWidth: "1px" }
-              }}
-              data={graphData}
-              x="date"
-              y="Velvetleaf"
-            />
-          </VictoryChart>
+              <YAxis unit="%" type="number" domain={["dataMin", "dataMax"]} />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+
+              <Brush tickFormatter={x => graphData[x].date} height={30} />
+
+              <Tooltip />
+              <Line dataKey="Large crabgrass" stroke="#ff7f00" dot={false} />
+              <Line dataKey="Giant foxtail" stroke="#fdbf6f" dot={false} />
+              <Line dataKey="Yellow foxtail" stroke="#e31a1c" dot={false} />
+              <Line
+                dataKey="Common lambsquarters"
+                stroke="#fb9a99"
+                dot={false}
+              />
+              <Line
+                dataKey="Eastern black nightshade"
+                stroke="#33a02c"
+                dot={false}
+              />
+              <Line dataKey="Smooth pigweed" stroke="#b2df8a" dot={false} />
+              <Line dataKey="Common ragweed" stroke="#1f78b4" dot={false} />
+              <Line dataKey="Velvetleaf" stroke="#a6cee3" dot={false} />
+            </LineChart>
+          </ResponsiveContainer>
         </Box>
       </Flex>
     );
   }
 }
-
-export default PCEgraph;

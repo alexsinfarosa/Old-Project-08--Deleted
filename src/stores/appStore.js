@@ -62,7 +62,7 @@ export default class appStore {
   };
   @action toggleMap = d => (this.isMap = !this.isMap);
 
-  @observable isTable = true;
+  @observable isTable = false;
   @action toggleTable = d => (this.isTable = !this.isTable);
 
   @observable isGraph = true;
@@ -396,7 +396,7 @@ export default class appStore {
   get graphData() {
     return this.gridData.map((day, i) => {
       return {
-        date: new Date(day[0]),
+        date: format(day[0], "MMM D"),
         "Large crabgrass": this.crabgrass[i].index,
         "Giant foxtail": this.gFoxtail[i].index,
         "Yellow foxtail": this.yFoxtail[i].index,
