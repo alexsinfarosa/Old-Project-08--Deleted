@@ -394,18 +394,21 @@ export default class appStore {
   // Graph ----------------------------------------------------------------------
   @computed
   get graphData() {
-    return this.gridData.map((day, i) => {
-      return {
-        date: format(day[0], "MMM D"),
-        "Large crabgrass": this.crabgrass[i].index,
-        "Giant foxtail": this.gFoxtail[i].index,
-        "Yellow foxtail": this.yFoxtail[i].index,
-        "Common lambsquarters": this.lambsquarters[i].index,
-        "Eastern black nightshade": this.nightshade[i].index,
-        "Smooth pigweed": this.pigweed[i].index,
-        "Common ragweed": this.ragweed[i].index,
-        Velvetleaf: this.velvetleaf[i].index
-      };
-    });
+    if (this.gridData) {
+      return this.gridData.map((day, i) => {
+        return {
+          date: format(day[0], "MMM D"),
+          "Large crabgrass": this.crabgrass[i].index,
+          "Giant foxtail": this.gFoxtail[i].index,
+          "Yellow foxtail": this.yFoxtail[i].index,
+          "Common lambsquarters": this.lambsquarters[i].index,
+          "Eastern black nightshade": this.nightshade[i].index,
+          "Smooth pigweed": this.pigweed[i].index,
+          "Common ragweed": this.ragweed[i].index,
+          Velvetleaf: this.velvetleaf[i].index
+        };
+      });
+    }
+    return [];
   }
 }

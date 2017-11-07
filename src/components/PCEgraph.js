@@ -39,7 +39,13 @@ export default class PCEgraph extends Component {
               <YAxis unit="%" type="number" domain={["dataMin", "dataMax"]} />
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
 
-              <Brush tickFormatter={x => graphData[x].date} height={30} />
+              {graphData.length !== 0 && (
+                <Brush
+                  tickFormatter={x => graphData[x].date}
+                  height={30}
+                  startIndex={20}
+                />
+              )}
 
               <Tooltip />
               <Line dataKey="Large crabgrass" stroke="#ff7f00" dot={false} />
