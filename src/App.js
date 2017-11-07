@@ -14,7 +14,8 @@ import DatePicker from "components/DatePicker";
 import ClickMapMessage from "components/ClickMapMessage";
 import USMap from "components/USMap";
 import PCEtable from "components/PCEtable";
-import MapTableButtons from "components/MapTableButtons";
+import ToggleButtons from "components/ToggleButtons";
+import PCEgraph from "components/PCEgraph";
 
 const { Content, Footer, Sider } = Layout;
 
@@ -29,6 +30,7 @@ class App extends Component {
       breakpoints,
       isMap,
       isTable,
+      isGraph,
       state
     } = this.props.store.app;
 
@@ -62,7 +64,7 @@ class App extends Component {
               <State />
               <Station />
               <DatePicker />
-              <MapTableButtons />
+              <ToggleButtons />
             </Flex>
           </Sider>
 
@@ -92,6 +94,7 @@ class App extends Component {
               <Flex column>
                 <ClickMapMessage state={state} />
                 {isMap && <USMap />}
+                {isGraph && <PCEgraph bpxs={breakpoints.xs} />}
                 {isTable && <PCEtable bpxs={breakpoints.xs} />}
               </Flex>
             </Content>

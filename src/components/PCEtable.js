@@ -36,27 +36,22 @@ export default class PCEtable extends Component {
         width: 250
       },
       {
-        title: "Percent Cumulative Emergence (PCE) from January 1",
-        children: [
-          {
-            title: `${format(subDays(endDate, 2), "MMMM Do")}`,
-            dataIndex: `indexMinus2`,
-            key: "indexMinus2",
-            width: 250
-          },
-          {
-            title: `${format(endDate, "MMMM Do")}`,
-            dataIndex: "index",
-            key: "index",
-            width: 250
-          },
-          {
-            title: "Forecast (currently not available)",
-            dataIndex: "tomorrow",
-            key: "tomorrow",
-            width: 250
-          }
-        ]
+        title: `${format(subDays(endDate, 2), "MMMM Do")}`,
+        dataIndex: `indexMinus2`,
+        key: "indexMinus2",
+        width: 250
+      },
+      {
+        title: `${format(endDate, "MMMM Do")}`,
+        dataIndex: "index",
+        key: "index",
+        width: 250
+      },
+      {
+        title: "Forecast (currently not available)",
+        dataIndex: "tomorrow",
+        key: "tomorrow",
+        width: 250
       }
     ];
 
@@ -69,27 +64,22 @@ export default class PCEtable extends Component {
         width: "50%"
       },
       {
-        title: "PCE from January 1",
-        children: [
-          {
-            title: `${format(subDays(endDate, 2), "MMM D")}`,
-            dataIndex: `indexMinus2`,
-            key: "indexMinus2",
-            width: "17%"
-          },
-          {
-            title: `${format(endDate, "MMM D")}`,
-            dataIndex: "index",
-            key: "index",
-            width: "17%"
-          },
-          {
-            title: `${format(addDays(endDate, 1), "MMM D")}`,
-            dataIndex: "tomorrow",
-            key: "tomorrow",
-            width: "17%"
-          }
-        ]
+        title: `${format(subDays(endDate, 2), "MMM D")}`,
+        dataIndex: `indexMinus2`,
+        key: "indexMinus2",
+        width: "17%"
+      },
+      {
+        title: `${format(endDate, "MMM D")}`,
+        dataIndex: "index",
+        key: "index",
+        width: "17%"
+      },
+      {
+        title: `${format(addDays(endDate, 1), "MMM D")}`,
+        dataIndex: "tomorrow",
+        key: "tomorrow",
+        width: "17%"
       }
     ];
 
@@ -109,7 +99,6 @@ export default class PCEtable extends Component {
     };
 
     const { bpxs } = this.props;
-    console.log(bpxs);
     return (
       <Flex column>
         <Box mb={3} f={[1, 2, 3]}>
