@@ -24,8 +24,7 @@ export default class PCEtable extends Component {
       ragweed,
       nightshade,
       velvetleaf,
-      endDate,
-      isMobile
+      endDate
     } = this.props.store.app;
 
     //columns for the model
@@ -108,6 +107,9 @@ export default class PCEtable extends Component {
     const stripeTable = i => {
       if (i % 2 === 1) return "stripe";
     };
+
+    const { bpxs } = this.props;
+    console.log(bpxs);
     return (
       <Flex column>
         <Box mb={3} f={[1, 2, 3]}>
@@ -119,7 +121,7 @@ export default class PCEtable extends Component {
               key={i}
               showHeader={i === 0 ? true : false}
               size="middle"
-              columns={isMobile ? columnsMobile : columns}
+              columns={bpxs ? columnsMobile : columns}
               rowKey={record => record}
               loading={this.props.store.app.isLoading}
               pagination={false}

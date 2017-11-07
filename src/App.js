@@ -5,7 +5,7 @@ import "./index.css";
 import { Flex, Box, BlockLink } from "rebass";
 import { MenuFold } from "./styles";
 import { MatchMediaProvider } from "mobx-react-matchmedia";
-import { Layout, Button } from "antd";
+import { Layout } from "antd";
 
 import Subject from "components/Subject";
 import State from "components/State";
@@ -14,6 +14,7 @@ import DatePicker from "components/DatePicker";
 import ClickMapMessage from "components/ClickMapMessage";
 import USMap from "components/USMap";
 import PCEtable from "components/PCEtable";
+import MapTableButtons from "components/MapTableButtons";
 
 const { Content, Footer, Sider } = Layout;
 
@@ -61,18 +62,7 @@ class App extends Component {
               <State />
               <Station />
               <DatePicker />
-              <Box mb={3}>
-                <Button
-                  size="large"
-                  icon="environment-o"
-                  onClick={this.toggleMap}
-                >
-                  Map
-                </Button>
-                <Button size="large" icon="layout" onClick={this.toggleTable}>
-                  Table
-                </Button>
-              </Box>
+              <MapTableButtons />
             </Flex>
           </Sider>
 
@@ -102,7 +92,7 @@ class App extends Component {
               <Flex column>
                 <ClickMapMessage state={state} />
                 {isMap && <USMap />}
-                {isTable && <PCEtable />}
+                {isTable && <PCEtable bpxs={breakpoints.xs} />}
               </Flex>
             </Content>
 

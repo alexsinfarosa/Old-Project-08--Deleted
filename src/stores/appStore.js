@@ -63,7 +63,7 @@ export default class appStore {
   @action toggleMap = d => (this.isMap = !this.isMap);
 
   @observable isTable = true;
-  @action setIsTable = d => (this.isTable = !this.isTable);
+  @action toggleTable = d => (this.isTable = !this.isTable);
 
   // Subject ------------------------------------------------------------------
   @observable subjects = [];
