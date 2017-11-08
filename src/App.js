@@ -105,7 +105,7 @@ class App extends Component {
               </Flex>
             </Content>
 
-            <Footer style={{ textAlign: "center", background: "white" }} />
+            <Footer />
           </Layout>
         </Layout>
       </MatchMediaProvider>

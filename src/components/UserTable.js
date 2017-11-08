@@ -65,12 +65,10 @@ class UserTable extends Component {
     const { fields } = this.state;
     return (
       <Flex column bg="white" p={1} mb={2} style={{ borderRadius: "5px" }}>
-        <Flex justify="space-between">
-          <Box mb={3} f={[1, 2, 3]}>
-            User Data
-          </Box>
-          <Box mb={3}>
-            <Button size="large" icon="plus" onClick={this.addField}>
+        <Flex mb={1} justify="space-between" align="center">
+          <Box f={[1, 2, 3]}>Field User Data</Box>
+          <Box>
+            <Button icon="plus" onClick={this.addField}>
               Field
             </Button>
           </Box>

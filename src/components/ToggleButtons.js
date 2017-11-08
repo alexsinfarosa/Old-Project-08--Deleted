@@ -68,7 +68,7 @@ class ToggleButtons extends Component {
             <Button
               type={isUserTable ? "primary" : ""}
               size="large"
-              icon="line-chart"
+              icon="user"
               onClick={this.toggleUserTable}
             >
               User

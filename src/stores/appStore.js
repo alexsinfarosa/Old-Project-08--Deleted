@@ -63,6 +63,7 @@ export default class appStore {
   @action toggleMap = d => (this.isMap = !this.isMap);
 
   @observable isTable = false;
+  @action setTable = d => (this.isTable = d);
   @action toggleTable = d => (this.isTable = !this.isTable);
 
   @observable isGraph = false;
