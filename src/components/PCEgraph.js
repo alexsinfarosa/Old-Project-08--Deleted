@@ -19,16 +19,17 @@ export default class PCEgraph extends Component {
   render() {
     const { station, state, graphData } = this.props.store.app;
     return (
-      <Flex column flex="1 1 auto">
+      <Flex column bg="white" p={1} mb={2} style={{ borderRadius: "5px" }}>
         <Box f={[1, 2, 3]}>
           Percent Cumulative Emergence (PCE) for {station.name}, {state.name}
         </Box>
 
-        <Box mb={3} style={{ width: "100%", height: "35vh" }}>
+        <Box style={{ width: "100%", height: "35vh" }}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={graphData}
               margin={{ top: 30, right: 0, left: -23, bottom: 30 }}
+              style={{ background: "#fafafa" }}
             >
               <XAxis
                 dataKey="date"

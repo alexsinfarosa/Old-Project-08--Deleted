@@ -73,7 +73,7 @@ class App extends Component {
             </Flex>
           </Sider>
 
-          <Layout style={{ background: "white" }}>
+          <Layout>
             <Flex
               bg="#4F5D75"
               color="white"

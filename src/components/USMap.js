@@ -7,7 +7,7 @@ import { matchIconsToStations } from "utils";
 import { Modal } from "antd";
 
 // rebass
-import { Box } from "rebass";
+import { Flex, Box } from "rebass";
 
 const myIcon = e =>
   L.icon({
@@ -84,35 +84,37 @@ export default class USMap extends Component {
     ));
 
     return (
-      <Box mb={3}>
-        <LMap
-          style={{ width: "100%", height: "35vh" }}
-          zoomControl={true}
-          scrollWheelZoom={false}
-          ref="map"
-          center={
-            Object.keys(state).length === 0
-              ? [42.9543, -75.5262]
-              : [state.lat, state.lon]
-          }
-          zoom={Object.keys(state).length === 0 ? 6 : state.zoom}
-        >
-          <TileLayer
-            url={`${protocol}//server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}`}
-          />
-          {MarkerList}
-        </LMap>
+      <Flex bg="white" p={1} mb={2} style={{ borderRadius: "5px" }}>
+        <Box style={{ width: "100%", height: "35vh" }}>
+          <LMap
+            style={{ width: "100%", height: "35vh" }}
+            zoomControl={true}
+            scrollWheelZoom={false}
+            ref="map"
+            center={
+              Object.keys(state).length === 0
+                ? [42.9543, -75.5262]
+                : [state.lat, state.lon]
+            }
+            zoom={Object.keys(state).length === 0 ? 6 : state.zoom}
+          >
+            <TileLayer
+              url={`${protocol}//server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}`}
+            />
+            {MarkerList}
+          </LMap>
 
-        <Modal
-          // title="Basic Modal"
-          visible={this.state.visible}
-          onOk={this.handleOkCancel}
-          onCancel={this.handleOkCancel}
-        >
-          <p>{`Select ${this.state
-            .selectedState} from the State menu to access this station.`}</p>
-        </Modal>
-      </Box>
+          <Modal
+            // title="Basic Modal"
+            visible={this.state.visible}
+            onOk={this.handleOkCancel}
+            onCancel={this.handleOkCancel}
+          >
+            <p>{`Select ${this.state
+              .selectedState} from the State menu to access this station.`}</p>
+          </Modal>
+        </Box>
+      </Flex>
     );
   }
 }

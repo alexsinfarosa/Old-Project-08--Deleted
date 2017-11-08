@@ -37,7 +37,7 @@ class UserTable extends Component {
     localStorage.setItem(`weedModelUserTable`, JSON.stringify(fields));
   };
 
-  renderEditable = cellInfo => {
+  editField = cellInfo => {
     return (
       <div
         style={{ backgroundColor: "#fafafa", outline: "none" }}
@@ -46,7 +46,8 @@ class UserTable extends Component {
         onBlur={e => {
           const fields = [...this.state.fields];
           fields[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-          // this.fields.push({ fields });
+          this.setState({ fields });
+          localStorage.setItem(`weedModelUserTable`, JSON.stringify(fields));
         }}
         dangerouslySetInnerHTML={{
           __html: this.state.fields[cellInfo.index][cellInfo.column.id]
@@ -63,7 +64,7 @@ class UserTable extends Component {
   render() {
     const { fields } = this.state;
     return (
-      <Flex column>
+      <Flex column bg="white" p={1} mb={2} style={{ borderRadius: "5px" }}>
         <Flex justify="space-between">
           <Box mb={3} f={[1, 2, 3]}>
             User Data
@@ -75,7 +76,7 @@ class UserTable extends Component {
           </Box>
         </Flex>
 
-        <Box mb={3}>
+        <Box>
           <ReactTable
             noDataText="No User Data"
             data={fields}
@@ -101,17 +102,17 @@ class UserTable extends Component {
               {
                 Header: "Field Name",
                 accessor: "name",
-                Cell: this.renderEditable
+                Cell: this.editField
               },
               {
                 Header: "Action",
                 accessor: "action",
-                Cell: this.renderEditable
+                Cell: this.editField
               },
               {
                 Header: "Accumulation Start Date",
                 accessor: "date",
-                Cell: this.renderEditable
+                Cell: this.editField
                 // Cell: props => <span className="number">{props.value}</span> // Custom cell components!
               },
               {
@@ -120,7 +121,7 @@ class UserTable extends Component {
                 Cell: props => (
                   <Tooltip title="Delete Field">
                     <TableIcons
-                      style={{ color: "#DE5040" }}
+                      style={{ color: "#A42D25" }}
                       type="delete"
                       onClick={() => this.deleteField(props)}
                     />
