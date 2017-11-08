@@ -4,7 +4,6 @@ import { Box } from "rebass";
 
 import { DatePicker as AntdDatePicker } from "antd";
 import moment from "moment";
-// import format from "date-fns/format";
 
 @inject("store")
 @observer

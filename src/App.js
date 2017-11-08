@@ -35,7 +35,9 @@ class App extends Component {
       isTable,
       isGraph,
       isUserTable,
-      state
+      state,
+      station,
+      graphData
     } = this.props.store.app;
 
     return (
@@ -100,7 +102,14 @@ class App extends Component {
                 <ClickMapMessage state={state} />
                 {isMap && <USMap />}
                 {isUserTable && <UserTable />}
-                {isGraph && <PCEgraph bpxs={breakpoints.xs} />}
+                {isGraph && (
+                  <PCEgraph
+                    graphData={graphData}
+                    state={state}
+                    station={station}
+                    bpxs={breakpoints.xs}
+                  />
+                )}
                 {isTable && <PCEtable bpxs={breakpoints.xs} />}
               </Flex>
             </Content>

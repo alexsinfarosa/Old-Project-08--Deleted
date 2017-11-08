@@ -19,12 +19,18 @@ class UserTable extends Component {
 
   addField = () => {
     const fields = [...this.state.fields];
+    const { graphData, endDate, state, station } = this.props.store.app;
+
     const field = {
       action: "edit action...",
-      date: format(this.props.store.app.endDate, "MMM Do YYYY"),
+      date: format(endDate, "MMM Do YYYY"),
       id: Math.random(),
-      name: "edit field name..."
+      name: "edit field name...",
+      graphData: graphData,
+      state: state,
+      station: station
     };
+
     fields.push(field);
     this.setState({ fields });
     localStorage.setItem(`weedModelUserTable`, JSON.stringify(fields));
@@ -56,13 +62,9 @@ class UserTable extends Component {
     );
   };
 
-  graphData = d => {
-    const { graphData } = this.props.store.app;
-    console.log(graphData);
-  };
-
   render() {
     const { fields } = this.state;
+    // console.log(fields);
     return (
       <Flex column bg="white" p={1} mb={2} style={{ borderRadius: "5px" }}>
         <Flex mb={1} justify="space-between" align="center">
@@ -111,7 +113,7 @@ class UserTable extends Component {
                 Header: "Accumulation Start Date",
                 accessor: "date",
                 Cell: this.editField
-                // Cell: props => <span className="number">{props.value}</span> // Custom cell components!
+                // Cell: props => <span className="number">{props.value}</span>
               },
               {
                 Header: "",
@@ -128,10 +130,15 @@ class UserTable extends Component {
               }
             ]}
             SubComponent={row => {
+              console.log(row.original);
               return (
                 <div style={{ padding: "20px" }}>
                   <em>You can write notes here...</em>
-                  <PCEgraph />
+                  <PCEgraph
+                    graphData={row.original.graphData}
+                    station={row.original.station}
+                    state={row.original.state}
+                  />
                 </div>
               );
             }}

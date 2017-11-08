@@ -17,7 +17,7 @@ import {
 @observer
 export default class PCEgraph extends Component {
   render() {
-    const { station, state, graphData } = this.props.store.app;
+    const { graphData, station, state } = this.props;
     return (
       <Flex column bg="white" p={1} mb={2} style={{ borderRadius: "5px" }}>
         <Box mb={1} f={[1, 2, 3]}>
