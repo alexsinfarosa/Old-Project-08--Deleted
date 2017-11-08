@@ -10,3 +10,10 @@ export const MenuFold = styled(Icon)`
     color: #17b890;
   }
 `;
+
+export const TableIcons = styled(Icon)`
+  width: 100%;
+  margin: 0 auto;
+  font-size: 1.2em;
+  color: #08c;
+`;

@@ -22,8 +22,13 @@ class ToggleButtons extends Component {
     this.props.store.app.toggleGraph();
   };
 
+  // toggles PCETable component
+  toggleUserTable = () => {
+    this.props.store.app.toggleUserTable();
+  };
+
   render() {
-    const { isMap, isTable, isGraph } = this.props.store.app;
+    const { isMap, isTable, isGraph, isUserTable } = this.props.store.app;
     return (
       <div>
         <Flex my={3} w={200} justify="space-between">
@@ -57,6 +62,16 @@ class ToggleButtons extends Component {
               onClick={this.toggleGraph}
             >
               Graph
+            </Button>
+          </Box>
+          <Box>
+            <Button
+              type={isUserTable ? "primary" : ""}
+              size="large"
+              icon="line-chart"
+              onClick={this.toggleUserTable}
+            >
+              User
             </Button>
           </Box>
         </Flex>

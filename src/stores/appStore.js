@@ -65,8 +65,11 @@ export default class appStore {
   @observable isTable = false;
   @action toggleTable = d => (this.isTable = !this.isTable);
 
-  @observable isGraph = true;
+  @observable isGraph = false;
   @action toggleGraph = d => (this.isGraph = !this.isGraph);
+
+  @observable isUserTable = true;
+  @action toggleUserTable = d => (this.isUserTable = !this.isUserTable);
 
   // Subject ------------------------------------------------------------------
   @observable subjects = [];

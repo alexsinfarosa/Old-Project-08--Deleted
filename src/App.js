@@ -15,6 +15,7 @@ import Acknowledgements from "components/Acknowledgements";
 
 import ClickMapMessage from "components/ClickMapMessage";
 import USMap from "components/USMap";
+import UserTable from "components/UserTable";
 import PCEtable from "components/PCEtable";
 import ToggleButtons from "components/ToggleButtons";
 import PCEgraph from "components/PCEgraph";
@@ -33,6 +34,7 @@ class App extends Component {
       isMap,
       isTable,
       isGraph,
+      isUserTable,
       state
     } = this.props.store.app;
 
@@ -97,6 +99,7 @@ class App extends Component {
               <Flex column style={{ maxWidth: "1024px", margin: "0 auto" }}>
                 <ClickMapMessage state={state} />
                 {isMap && <USMap />}
+                {isUserTable && <UserTable />}
                 {isGraph && <PCEgraph bpxs={breakpoints.xs} />}
                 {isTable && <PCEtable bpxs={breakpoints.xs} />}
               </Flex>
