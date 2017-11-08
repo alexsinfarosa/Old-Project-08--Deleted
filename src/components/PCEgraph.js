@@ -28,8 +28,8 @@ export default class PCEgraph extends Component {
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={graphData}
-              margin={{ top: 30, right: 0, left: -23, bottom: 30 }}
-              style={{ background: "#fafafa" }}
+              margin={{ top: 15, right: 0, left: -23, bottom: 15 }}
+              style={{ background: "#fafafa", borderRadius: "5px" }}
             >
               <XAxis
                 dataKey="date"
