@@ -100,7 +100,13 @@ export default class PCEtable extends Component {
 
     const { bpxs } = this.props;
     return (
-      <Flex column bg="white" p={1} mb={2} style={{ borderRadius: "5px" }}>
+      <Flex
+        column
+        bg="white"
+        p={1}
+        mb={[1, 2, 3]}
+        style={{ borderRadius: "5px" }}
+      >
         <Box mb={1} f={[1, 2, 3]}>
           Percent Cumulative Emergence (PCE) for {station.name}, {state.name}
         </Box>

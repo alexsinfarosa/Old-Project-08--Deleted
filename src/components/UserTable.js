@@ -7,7 +7,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { Button, Tooltip } from "antd";
 
-import { TableIcons } from "styles";
+import { TableIcons, CellWrapper, CellHeader } from "styles";
 import PCEgraph from "components/PCEgraph";
 
 @inject("store")
@@ -48,6 +48,7 @@ class UserTable extends Component {
     fields.push(field);
     this.setState({ fields });
     localStorage.setItem(`weedModelUserTable`, JSON.stringify(fields));
+    loadGridData();
   };
 
   deleteField = field => {
@@ -60,7 +61,14 @@ class UserTable extends Component {
   editField = cellInfo => {
     return (
       <div
-        style={{ backgroundColor: "#fafafa", outline: "none" }}
+        style={{
+          backgroundColor: "#fafafa",
+          borderRadius: "3px",
+          outline: "none",
+          height: "25px",
+          display: "flex",
+          alignItems: "center"
+        }}
         contentEditable
         suppressContentEditableWarning
         onBlur={e => {
@@ -80,7 +88,13 @@ class UserTable extends Component {
     const { fields } = this.state;
 
     return (
-      <Flex column bg="white" p={1} mb={2} style={{ borderRadius: "5px" }}>
+      <Flex
+        column
+        bg="white"
+        p={1}
+        mb={[1, 2, 3]}
+        style={{ borderRadius: "5px" }}
+      >
         <Flex mb={1} justify="space-between" align="center">
           <Box f={[1, 2, 3]}>Field User Data</Box>
           <Box>
@@ -102,30 +116,34 @@ class UserTable extends Component {
             columns={[
               {
                 expander: true,
-                Header: () => <span>Graph</span>,
+                Header: () => <CellHeader>Graph</CellHeader>,
                 width: 45,
                 Expander: ({ isExpanded, ...rest }) => (
                   <div>
                     {isExpanded ? (
-                      <TableIcons type="rollback" />
+                      <CellWrapper>
+                        <TableIcons type="rollback" />
+                      </CellWrapper>
                     ) : (
-                      <TableIcons type="line-chart" />
+                      <CellWrapper>
+                        <TableIcons type="line-chart" />
+                      </CellWrapper>
                     )}
                   </div>
                 )
               },
               {
-                Header: "Field Name",
+                Header: () => <CellHeader>Field Name</CellHeader>,
                 accessor: "name",
                 Cell: this.editField
               },
               {
-                Header: "Action",
+                Header: () => <CellHeader>Action</CellHeader>,
                 accessor: "action",
                 Cell: this.editField
               },
               {
-                Header: "Accumulation Start Date",
+                Header: () => <CellHeader>Start Date</CellHeader>,
                 accessor: "date",
                 Cell: this.editField
                 // Cell: props => <span className="number">{props.value}</span>
@@ -135,11 +153,13 @@ class UserTable extends Component {
                 width: 45,
                 Cell: props => (
                   <Tooltip title="Delete Field">
-                    <TableIcons
-                      style={{ color: "#A42D25" }}
-                      type="delete"
-                      onClick={() => this.deleteField(props)}
-                    />
+                    <CellWrapper>
+                      <TableIcons
+                        style={{ color: "#A42D25" }}
+                        type="delete"
+                        onClick={() => this.deleteField(props)}
+                      />
+                    </CellWrapper>
                   </Tooltip>
                 )
               }

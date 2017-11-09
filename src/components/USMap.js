@@ -36,8 +36,6 @@ export default class USMap extends Component {
       setStation,
       loadGridData,
       setState,
-      setTable,
-      areRequiredFieldsSet,
       setIsMap
     } = this.props.store.app;
 
@@ -83,7 +81,7 @@ export default class USMap extends Component {
     ));
 
     return (
-      <Flex bg="white" p={1} mb={2} style={{ borderRadius: "5px" }}>
+      <Flex bg="white" p={1} mb={[1, 2, 3]} style={{ borderRadius: "5px" }}>
         <Box style={{ width: "100%", height: "35vh" }}>
           <LMap
             style={{ width: "100%", height: "35vh" }}

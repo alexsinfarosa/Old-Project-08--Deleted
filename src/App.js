@@ -37,7 +37,8 @@ class App extends Component {
       isUserTable,
       state,
       station,
-      graphData
+      graphData,
+      isLoading
     } = this.props.store.app;
 
     return (
@@ -110,7 +111,7 @@ class App extends Component {
                     bpxs={breakpoints.xs}
                   />
                 )}
-                {viewTable && <PCEtable bpxs={breakpoints.xs} />}
+                {viewTable && !isLoading && <PCEtable bpxs={breakpoints.xs} />}
               </Flex>
             </Content>
 

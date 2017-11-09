@@ -10,40 +10,42 @@ class ToggleButtons extends Component {
   // toggles USMap component
   toggleMap = () => {
     this.props.store.app.toggleMap();
+    this.props.store.app.closeSidebar();
   };
 
   // toggles PCETable component
   toggleTable = () => {
     this.props.store.app.toggleTable();
+    this.props.store.app.closeSidebar();
   };
 
   // toggles PCETable component
   toggleGraph = () => {
     this.props.store.app.toggleGraph();
+    this.props.store.app.closeSidebar();
   };
 
   // toggles PCETable component
   toggleUserTable = () => {
     this.props.store.app.toggleUserTable();
+    this.props.store.app.closeSidebar();
   };
 
   render() {
     const {
-      isMap,
-      isTable,
       isGraph,
       isUserTable,
       viewMap,
       viewTable,
       areRequiredFieldsSet
     } = this.props.store.app;
-    console.log(isMap);
+
     return (
       <div>
         <Flex my={3} w={200} justify="space-between">
           <Box>
             <Button
-              type={isMap ? "primary" : ""}
+              type={viewMap ? "primary" : ""}
               size="large"
               icon="environment-o"
               onClick={this.toggleMap}
@@ -54,7 +56,7 @@ class ToggleButtons extends Component {
           </Box>
           <Box>
             <Button
-              type={isTable ? "primary" : ""}
+              type={viewTable ? "primary" : ""}
               size="large"
               icon="layout"
               onClick={this.toggleTable}

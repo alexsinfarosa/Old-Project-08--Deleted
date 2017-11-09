@@ -17,3 +17,15 @@ export const TableIcons = styled(Icon)`
   font-size: 1.2em;
   color: #08c;
 `;
+
+export const CellWrapper = styled.div`
+  display: flex;
+  height: 25px;
+  align-items: center;
+`;
+
+export const CellHeader = styled.div`
+  display: flex;
+  height: 25px;
+  align-items: center;
+`;
