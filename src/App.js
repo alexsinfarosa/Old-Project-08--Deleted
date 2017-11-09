@@ -8,6 +8,7 @@ import { MatchMediaProvider } from "mobx-react-matchmedia";
 import { Layout } from "antd";
 
 import Subject from "components/Subject";
+import AvgStyleLength from "components/AvgStyleLength";
 import State from "components/State";
 import Station from "components/Station";
 import DatePicker from "components/DatePicker";
@@ -68,6 +69,7 @@ class App extends Component {
 
             <Flex column py={12} px={16}>
               <Subject />
+              <AvgStyleLength />
               <State />
               <Station />
               <DatePicker />

@@ -26,13 +26,13 @@ class Subject extends Component {
 
     return (
       <Box mb={3}>
-        <label>Select a disease or insect:</label>
+        <label>Select Variety:</label>
         <Select
           name="subject"
           size="large"
           autoFocus
           value={subject.name}
-          placeholder="Select Disease"
+          placeholder="Select Variety"
           style={{ width: 200 }}
           onChange={this.handleChange}
         >

@@ -105,6 +105,10 @@ export default class appStore {
     localStorage.setItem(`subject`, JSON.stringify(this.subject));
   };
 
+  // Average Style Length -----------------------------------------------------
+  @observable avgStyleLength = null;
+  @action setAvgStyleLength = d => (this.avgStyleLength = d);
+
   // States -------------------------------------------------------------------
   @observable states = [];
   @action updateStates = d => (this.states = d);
