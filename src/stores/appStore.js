@@ -30,11 +30,14 @@ export default class appStore {
 
   @computed
   get areRequiredFieldsSet() {
-    return (
-      Object.keys(this.subject).length !== 0 &&
-      Object.keys(this.state).length !== 0 &&
-      Object.keys(this.station).length !== 0
-    );
+    if (this.subject && this.state && this.station) {
+      return (
+        Object.keys(this.subject).length !== 0 &&
+        Object.keys(this.state).length !== 0 &&
+        Object.keys(this.station).length !== 0
+      );
+    }
+    return false;
   }
 
   @observable isMobile = window.matchMedia("(max-width: 480px)").matches; // FIX IT
@@ -51,25 +54,30 @@ export default class appStore {
   toggleSidebar = () => (this.isSidebarCollapsed = !this.isSidebarCollapsed);
 
   @observable
-  isMap = JSON.parse(localStorage.getItem("state")) !== null ? false : true;
-  @action
-  setIsMap = d => {
-    if (this.areRequiredFieldsSet) {
-      this.isMap = d;
-    } else {
-      this.isMap = true;
-    }
-  };
-  @action toggleMap = d => (this.isMap = !this.isMap);
+  isMap = JSON.parse(localStorage.getItem("state")) === null ? true : false;
+  @action setIsMap = d => (this.isMap = d);
+  @computed
+  get viewMap() {
+    return this.isMap ? true : this.areRequiredFieldsSet ? false : true;
+  }
+  @action toggleMap = () => (this.isMap = !this.isMap);
 
-  @observable isTable = false;
-  @action setTable = d => (this.isTable = d);
+  @observable isTable = true;
+  @computed
+  get viewTable() {
+    return this.isTable && this.areRequiredFieldsSet;
+  }
+  @action setIsTable = d => (this.isTable = d);
   @action toggleTable = d => (this.isTable = !this.isTable);
 
   @observable isGraph = false;
   @action toggleGraph = d => (this.isGraph = !this.isGraph);
 
-  @observable isUserTable = true;
+  @observable
+  isUserTable = JSON.parse(localStorage.getItem("weedModelUserTable")) ===
+    null || JSON.parse(localStorage.getItem("weedModelUserTable")).length === 0
+    ? false
+    : true;
   @action toggleUserTable = d => (this.isUserTable = !this.isUserTable);
 
   // Subject ------------------------------------------------------------------
@@ -196,7 +204,7 @@ export default class appStore {
   @action updateGridData = d => (this.gridData = d);
 
   @action
-  loadGridData = () => {
+  loadGridData = (sdate = this.startDate, edate = this.endDate) => {
     if (this.areRequiredFieldsSet) {
       this.isLoading = true;
 
@@ -207,8 +215,8 @@ export default class appStore {
 
       const params = {
         loc: loc,
-        sdate: this.startDate,
-        edate: this.endDate,
+        sdate: sdate,
+        edate: edate,
         grid: 3,
         elems: [{ name: "avgt" }]
       };

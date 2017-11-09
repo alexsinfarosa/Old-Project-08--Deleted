@@ -6,3 +6,8 @@ const store = {
 };
 
 export default store;
+
+// store.app.loadSubjects();
+// store.app.loadStates();
+// store.app.loadStations();
+// store.app.loadGridData();

@@ -33,18 +33,20 @@ export default class PCEgraph extends Component {
             >
               <XAxis
                 dataKey="date"
-                domain={["dataMin", "dataMax"]}
+                // domain={["dataMin", "dataMax"]}
                 minTickGap={30}
                 tickSize={10}
+                interval="preserveStartEnd"
+                axisLine={false}
               />
               <YAxis unit="%" type="number" domain={["dataMin", "dataMax"]} />
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
 
-              {graphData.length !== 0 && (
+              {graphData.length >= 20 && (
                 <Brush
                   tickFormatter={x => graphData[x].date}
                   height={30}
-                  startIndex={20}
+                  startIndex={0}
                 />
               )}
 

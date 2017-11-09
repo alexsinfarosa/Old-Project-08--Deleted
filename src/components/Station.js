@@ -9,13 +9,13 @@ export default class Station extends Component {
   handleChange = value => {
     const {
       setStation,
-      setIsMap,
       closeSidebar,
-      loadGridData
+      loadGridData,
+      setIsTable
     } = this.props.store.app;
     setStation(value);
     loadGridData();
-    setIsMap(false);
+    setIsTable(true);
     closeSidebar();
   };
   render() {

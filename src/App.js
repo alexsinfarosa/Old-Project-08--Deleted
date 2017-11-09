@@ -31,8 +31,8 @@ class App extends Component {
       toggleSidebar,
       setSidebar,
       breakpoints,
-      isMap,
-      isTable,
+      viewMap,
+      viewTable,
       isGraph,
       isUserTable,
       state,
@@ -100,7 +100,7 @@ class App extends Component {
             <Content style={{ margin: "24px 16px" }}>
               <Flex column style={{ maxWidth: "1024px", margin: "0 auto" }}>
                 <ClickMapMessage state={state} />
-                {isMap && <USMap />}
+                {viewMap && <USMap />}
                 {isUserTable && <UserTable />}
                 {isGraph && (
                   <PCEgraph
@@ -110,7 +110,7 @@ class App extends Component {
                     bpxs={breakpoints.xs}
                   />
                 )}
-                {isTable && <PCEtable bpxs={breakpoints.xs} />}
+                {viewTable && <PCEtable bpxs={breakpoints.xs} />}
               </Flex>
             </Content>
 

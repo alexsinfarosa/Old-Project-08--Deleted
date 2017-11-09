@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { Flex, Box } from "rebass";
 import format from "date-fns/format";
-
+import isThisYear from "date-fns/is_this_year";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { Button, Tooltip } from "antd";
@@ -17,16 +17,30 @@ class UserTable extends Component {
     fields: JSON.parse(localStorage.getItem("weedModelUserTable")) || []
   };
 
-  addField = () => {
+  addField = async () => {
     const fields = [...this.state.fields];
-    const { graphData, endDate, state, station } = this.props.store.app;
+    const {
+      loadGridData,
+      endDate,
+      state,
+      station,
+      currentYear
+    } = this.props.store.app;
+    const resetDate = endDate;
+
+    let lastDate = format(new Date(), "YYYY-MM-DD");
+    if (!isThisYear(currentYear)) {
+      lastDate = `${currentYear}-12-31`;
+    }
+
+    await loadGridData(resetDate, lastDate);
 
     const field = {
       action: "edit action...",
       date: format(endDate, "MMM Do YYYY"),
       id: Math.random(),
       name: "edit field name...",
-      graphData: graphData,
+      graphData: this.props.store.app.graphData,
       state: state,
       station: station
     };
@@ -64,7 +78,7 @@ class UserTable extends Component {
 
   render() {
     const { fields } = this.state;
-    // console.log(fields);
+
     return (
       <Flex column bg="white" p={1} mb={2} style={{ borderRadius: "5px" }}>
         <Flex mb={1} justify="space-between" align="center">
@@ -78,9 +92,10 @@ class UserTable extends Component {
 
         <Box>
           <ReactTable
-            noDataText="No User Data"
+            noDataText="No Data"
             data={fields}
             showPagination={false}
+            minRows={1}
             pageSize={fields.length}
             resizable={true}
             className="-highlight"
@@ -130,10 +145,8 @@ class UserTable extends Component {
               }
             ]}
             SubComponent={row => {
-              console.log(row.original);
               return (
                 <div style={{ padding: "20px" }}>
-                  <em>You can write notes here...</em>
                   <PCEgraph
                     graphData={row.original.graphData}
                     station={row.original.station}

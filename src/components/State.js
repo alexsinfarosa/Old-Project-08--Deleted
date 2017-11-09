@@ -7,9 +7,8 @@ import { Select } from "antd";
 @observer
 export default class State extends Component {
   handleChange = value => {
-    const { setState, setIsMap, closeSidebar } = this.props.store.app;
+    const { setState, closeSidebar } = this.props.store.app;
     setState(value);
-    setIsMap(true);
     closeSidebar();
   };
 

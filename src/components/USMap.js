@@ -34,10 +34,11 @@ export default class USMap extends Component {
       state,
       states,
       setStation,
-      setIsMap,
       loadGridData,
       setState,
-      setTable
+      setTable,
+      areRequiredFieldsSet,
+      setIsMap
     } = this.props.store.app;
 
     const selectedStation = stations.find(
@@ -53,14 +54,10 @@ export default class USMap extends Component {
       setStation(selectedStation.name);
       loadGridData();
       setIsMap(false);
-      return;
-    }
-
-    if (selectedStation.state === state.postalCode) {
+    } else if (selectedStation.state === state.postalCode) {
       setStation(selectedStation.name);
       loadGridData();
       setIsMap(false);
-      setTable(true);
     } else {
       this.setState({ visible: true, selectedState: selectedState.name });
     }

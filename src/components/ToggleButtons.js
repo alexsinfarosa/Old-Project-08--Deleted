@@ -28,7 +28,16 @@ class ToggleButtons extends Component {
   };
 
   render() {
-    const { isMap, isTable, isGraph, isUserTable } = this.props.store.app;
+    const {
+      isMap,
+      isTable,
+      isGraph,
+      isUserTable,
+      viewMap,
+      viewTable,
+      areRequiredFieldsSet
+    } = this.props.store.app;
+    console.log(isMap);
     return (
       <div>
         <Flex my={3} w={200} justify="space-between">
@@ -38,6 +47,7 @@ class ToggleButtons extends Component {
               size="large"
               icon="environment-o"
               onClick={this.toggleMap}
+              disabled={areRequiredFieldsSet ? false : true}
             >
               Map
             </Button>
@@ -48,6 +58,7 @@ class ToggleButtons extends Component {
               size="large"
               icon="layout"
               onClick={this.toggleTable}
+              disabled={areRequiredFieldsSet ? false : true}
             >
               Table
             </Button>
@@ -60,6 +71,7 @@ class ToggleButtons extends Component {
               size="large"
               icon="line-chart"
               onClick={this.toggleGraph}
+              disabled={areRequiredFieldsSet ? false : true}
             >
               Graph
             </Button>
@@ -70,6 +82,7 @@ class ToggleButtons extends Component {
               size="large"
               icon="user"
               onClick={this.toggleUserTable}
+              disabled={areRequiredFieldsSet ? false : true}
             >
               User
             </Button>
