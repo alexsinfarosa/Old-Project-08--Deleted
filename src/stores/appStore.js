@@ -30,14 +30,13 @@ export default class appStore {
 
   @computed
   get areRequiredFieldsSet() {
-    if (this.subject && this.state && this.station) {
-      return (
-        Object.keys(this.subject).length !== 0 &&
-        Object.keys(this.state).length !== 0 &&
-        Object.keys(this.station).length !== 0
-      );
-    }
-    return false;
+    return (
+      Object.keys(this.subject).length !== 0 &&
+      Object.keys(this.blockName).length !== 0 &&
+      Object.keys(this.avgStyleLength).length !== 0 &&
+      Object.keys(this.state).length !== 0 &&
+      Object.keys(this.station).length !== 0
+    );
   }
 
   @observable isMobile = window.matchMedia("(max-width: 480px)").matches; // FIX IT
@@ -80,6 +79,10 @@ export default class appStore {
     : true;
   @action toggleUserTable = d => (this.isUserTable = !this.isUserTable);
 
+  // Block ------------------------------------------------------------------
+  @observable blockName = "";
+  @action setBlockName = d => (this.blockName = d);
+
   // Subject ------------------------------------------------------------------
   @observable subjects = [];
   @action updateSubjects = d => (this.subjects = d);
@@ -106,7 +109,7 @@ export default class appStore {
   };
 
   // Average Style Length -----------------------------------------------------
-  @observable avgStyleLength = null;
+  @observable avgStyleLength = "";
   @action setAvgStyleLength = d => (this.avgStyleLength = d);
 
   // States -------------------------------------------------------------------

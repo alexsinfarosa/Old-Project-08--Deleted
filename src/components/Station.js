@@ -38,7 +38,7 @@ export default class Station extends Component {
           size="large"
           value={station.name}
           placeholder={`Select Station (${currentStateStations.length})`}
-          style={{ width: 200 }}
+          style={{ width: "100%" }}
           onChange={this.handleChange}
         >
           {stationList}

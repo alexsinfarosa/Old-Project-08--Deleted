@@ -41,56 +41,64 @@ class ToggleButtons extends Component {
     } = this.props.store.app;
 
     return (
-      <div>
-        <Flex my={3} w={200} justify="space-between">
-          <Box>
-            <Button
-              type={viewMap ? "primary" : ""}
-              size="large"
-              icon="environment-o"
-              onClick={this.toggleMap}
-              disabled={areRequiredFieldsSet ? false : true}
-            >
-              Map
-            </Button>
-          </Box>
-          <Box>
-            <Button
-              type={viewTable ? "primary" : ""}
-              size="large"
-              icon="layout"
-              onClick={this.toggleTable}
-              disabled={areRequiredFieldsSet ? false : true}
-            >
-              Table
-            </Button>
-          </Box>
-        </Flex>
-        <Flex my={3} w={200} justify="space-between">
-          <Box>
-            <Button
-              type={isGraph ? "primary" : ""}
-              size="large"
-              icon="line-chart"
-              onClick={this.toggleGraph}
-              disabled={areRequiredFieldsSet ? false : true}
-            >
-              Graph
-            </Button>
-          </Box>
-          <Box>
-            <Button
-              type={isUserTable ? "primary" : ""}
-              size="large"
-              icon="user"
-              onClick={this.toggleUserTable}
-              disabled={areRequiredFieldsSet ? false : true}
-            >
-              User
-            </Button>
-          </Box>
-        </Flex>
-      </div>
+      <Flex column w={1}>
+        <Box w={1}>
+          <Flex my={2} justify="space-between">
+            <Box w={1 / 2} pr={1}>
+              <Button
+                style={{ width: "100%" }}
+                type={viewMap ? "primary" : ""}
+                size="large"
+                icon="environment-o"
+                onClick={this.toggleMap}
+                disabled={areRequiredFieldsSet ? false : true}
+              >
+                Map
+              </Button>
+            </Box>
+            <Box w={1 / 2} pl={1}>
+              <Button
+                style={{ width: "100%" }}
+                type={viewTable ? "primary" : ""}
+                size="large"
+                icon="layout"
+                onClick={this.toggleTable}
+                disabled={areRequiredFieldsSet ? false : true}
+              >
+                Table
+              </Button>
+            </Box>
+          </Flex>
+        </Box>
+        <Box w={1}>
+          <Flex my={2} justify="space-between">
+            <Box w={1 / 2} pr={1}>
+              <Button
+                style={{ width: "100%" }}
+                type={isGraph ? "primary" : ""}
+                size="large"
+                icon="line-chart"
+                onClick={this.toggleGraph}
+                disabled={areRequiredFieldsSet ? false : true}
+              >
+                Graph
+              </Button>
+            </Box>
+            <Box w={1 / 2} pl={1}>
+              <Button
+                style={{ width: "100%" }}
+                type={isUserTable ? "primary" : ""}
+                size="large"
+                icon="user"
+                onClick={this.toggleUserTable}
+                disabled={areRequiredFieldsSet ? false : true}
+              >
+                User
+              </Button>
+            </Box>
+          </Flex>
+        </Box>
+      </Flex>
     );
   }
 }

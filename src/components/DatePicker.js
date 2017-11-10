@@ -28,7 +28,7 @@ export default class Datepicker extends Component {
       <Box mb={3}>
         <label>Date:</label>
         <AntdDatePicker
-          style={{ width: 200 }}
+          style={{ width: "100%" }}
           size="large"
           allowClear={false}
           value={moment(endDate)}

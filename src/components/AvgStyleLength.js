@@ -26,14 +26,12 @@ class AvgStyleLength extends Component {
     const { value } = e.target;
     const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
     if ((!isNaN(value) && reg.test(value)) || value === "" || value === "-") {
-      // this.setState({ value });
       this.props.store.app.setAvgStyleLength(value);
     }
   };
 
   // '.' at the end or only '-' in the input box.
   onBlur = () => {
-    // const { value } = this.state;
     const { avgStyleLength } = this.props.store.app;
     if (
       avgStyleLength.charAt(avgStyleLength.length - 1) === "." ||
@@ -44,7 +42,6 @@ class AvgStyleLength extends Component {
   };
 
   render() {
-    // const { value } = this.state;
     const { avgStyleLength } = this.props.store.app;
 
     const title = avgStyleLength ? (
@@ -57,7 +54,7 @@ class AvgStyleLength extends Component {
 
     return (
       <Box mb={3}>
-        <label>Average Style Length (mm):</label>
+        <label>Average Style Length:</label>
         <Tooltip
           trigger={["focus"]}
           title={title}
@@ -66,12 +63,13 @@ class AvgStyleLength extends Component {
         >
           <Input
             size="large"
-            style={{ width: 200 }}
+            style={{ width: "100%" }}
             onChange={this.onChange}
             onBlur={this.onBlur}
-            placeholder="Input a number (Integer)"
-            maxLength="2"
+            placeholder="Input a number"
+            maxLength="4"
             value={avgStyleLength}
+            addonAfter="millimiters"
           />
         </Tooltip>
       </Box>

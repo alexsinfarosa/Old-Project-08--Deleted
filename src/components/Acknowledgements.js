@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { observable, action } from "mobx";
-import { Flex } from "rebass";
+import { Box } from "rebass";
 
 import { Modal, Button } from "antd";
 
@@ -13,8 +13,9 @@ class Acknowledgements extends Component {
 
   render() {
     return (
-      <Flex my={3} w={200}>
+      <Box my={3} flex="1 1 auto">
         <Button
+          style={{ width: "100%" }}
           size="large"
           type="default"
           icon="info-circle-o"
@@ -56,7 +57,7 @@ class Acknowledgements extends Component {
             </li>
           </ul>
         </Modal>
-      </Flex>
+      </Box>
     );
   }
 }

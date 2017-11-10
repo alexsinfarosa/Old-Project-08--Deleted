@@ -9,10 +9,14 @@ import { Layout } from "antd";
 
 import Subject from "components/Subject";
 import AvgStyleLength from "components/AvgStyleLength";
+import BlockInput from "components/BlockInput";
 import State from "components/State";
 import Station from "components/Station";
 import DatePicker from "components/DatePicker";
+import UpdateNewButton from "components/UpdateNewButton";
 import Acknowledgements from "components/Acknowledgements";
+
+import Overview from "components/Overview";
 
 import ClickMapMessage from "components/ClickMapMessage";
 import USMap from "components/USMap";
@@ -46,35 +50,65 @@ class App extends Component {
       <MatchMediaProvider breakpoints={breakpoints}>
         <Layout>
           <Sider
-            style={{ background: "white", minHeight: "100vh" }}
             trigger={null}
             breakpoint="sm"
-            width={250}
+            width={245}
             collapsedWidth="0"
             onCollapse={collapsed => {
               setSidebar(collapsed);
             }}
             collapsed={isSidebarCollapsed}
           >
-            <Flex py={12} px={16}>
-              <Box m="auto">
-                <BlockLink
-                  f={[1, 2, 2]}
-                  style={{ color: "#A42D25" }}
-                  href="https://www.cornell.edu/"
-                  children="Cornell University"
-                />
+            <Flex column bg="white" style={{ minHeight: "100vh" }} px={1}>
+              <Box
+                flex="1 1 auto"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  margin: "0 auto"
+                }}
+              >
+                <Box>
+                  <BlockLink
+                    f={[1, 2, 2]}
+                    style={{ color: "#A42D25" }}
+                    href="https://www.cornell.edu/"
+                    children="Cornell University"
+                  />
+                </Box>
               </Box>
-            </Flex>
 
-            <Flex column py={12} px={16}>
-              <Subject />
-              <AvgStyleLength />
-              <State />
-              <Station />
-              <DatePicker />
-              <ToggleButtons />
-              <Acknowledgements />
+              <Box
+                flex="3 1 auto"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between"
+                }}
+              >
+                <Box>
+                  <Flex column>
+                    <Box my={3} m="auto" is="h4">
+                      Create New Block
+                    </Box>
+                    <Subject />
+                    <BlockInput />
+                    <AvgStyleLength />
+                    <State />
+                    <Station />
+                    <DatePicker />
+                    <UpdateNewButton />
+                  </Flex>
+                </Box>
+
+                <Box>
+                  <ToggleButtons />
+                </Box>
+
+                <Box>
+                  <Acknowledgements />
+                </Box>
+              </Box>
             </Flex>
           </Sider>
 
@@ -103,6 +137,7 @@ class App extends Component {
             <Content style={{ margin: "24px 16px" }}>
               <Flex column style={{ maxWidth: "1024px", margin: "0 auto" }}>
                 <ClickMapMessage state={state} />
+                <Overview />
                 {viewMap && <USMap />}
                 {isUserTable && <UserTable />}
                 {isGraph && (

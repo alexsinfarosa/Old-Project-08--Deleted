@@ -33,7 +33,7 @@ class Subject extends Component {
           autoFocus
           value={subject.name}
           placeholder="Select Variety"
-          style={{ width: 200 }}
+          style={{ width: "100%" }}
           onChange={this.handleChange}
         >
           {subjectList}
