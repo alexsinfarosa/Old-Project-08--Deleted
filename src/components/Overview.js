@@ -6,7 +6,7 @@ import { Flex, Box } from "rebass";
 @observer
 export default class Overview extends Component {
   render() {
-    const { avgStyleLength, blockName } = this.props.store.app;
+    const { avgStyleLength } = this.props.store.app;
 
     return (
       <Flex
@@ -16,8 +16,7 @@ export default class Overview extends Component {
         mb={[1, 2, 3]}
         style={{ borderRadius: "5px" }}
       >
-        <Box>{avgStyleLength}</Box>
-        <Box>{blockName}</Box>
+        <Box>ciccio</Box>
       </Flex>
     );
   }

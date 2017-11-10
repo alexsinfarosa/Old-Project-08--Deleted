@@ -89,7 +89,7 @@ class App extends Component {
                 <Box>
                   <Flex column>
                     <Box my={3} m="auto" is="h4">
-                      Create New Block
+                      Select all fields to create new block
                     </Box>
                     <Subject />
                     <BlockInput />
@@ -140,7 +140,7 @@ class App extends Component {
                 <Overview />
                 {viewMap && <USMap />}
                 {isUserTable && <UserTable />}
-                {isGraph && (
+                {false && (
                   <PCEgraph
                     graphData={graphData}
                     state={state}
@@ -148,7 +148,7 @@ class App extends Component {
                     bpxs={breakpoints.xs}
                   />
                 )}
-                {viewTable && !isLoading && <PCEtable bpxs={breakpoints.xs} />}
+                {false && !isLoading && <PCEtable bpxs={breakpoints.xs} />}
               </Flex>
             </Content>
 

@@ -7,9 +7,8 @@ import { Select } from "antd";
 @observer
 class Subject extends Component {
   handleChange = value => {
-    const { setSubject, closeSidebar, loadGridData } = this.props.store.app;
+    const { setSubject, closeSidebar } = this.props.store.app;
     setSubject(value);
-    loadGridData();
     closeSidebar();
   };
 
@@ -26,7 +25,7 @@ class Subject extends Component {
 
     return (
       <Box mb={3}>
-        <label>Select Variety:</label>
+        <label>Variety:</label>
         <Select
           name="subject"
           size="large"

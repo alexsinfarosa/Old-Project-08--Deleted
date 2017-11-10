@@ -80,8 +80,11 @@ export default class appStore {
   @action toggleUserTable = d => (this.isUserTable = !this.isUserTable);
 
   // Block ------------------------------------------------------------------
-  @observable blockName = "";
-  @action setBlockName = d => (this.blockName = d);
+  @observable blockName = "ciccio";
+  @action
+  setBlockName = d => {
+    this.blockName = d;
+  };
 
   // Subject ------------------------------------------------------------------
   @observable subjects = [];
@@ -100,17 +103,20 @@ export default class appStore {
       });
   }
 
-  @observable subject = JSON.parse(localStorage.getItem("subject")) || {};
+  @observable subject = JSON.parse(localStorage.getItem("pollenTube")) || {};
 
   @action
   setSubject = d => {
     this.subject = this.subjects.find(subject => subject.name === d);
-    localStorage.setItem(`subject`, JSON.stringify(this.subject));
+    localStorage.setItem(`pollenTube`, JSON.stringify(this.subject));
   };
 
   // Average Style Length -----------------------------------------------------
-  @observable avgStyleLength = "";
-  @action setAvgStyleLength = d => (this.avgStyleLength = d);
+  @observable avgStyleLength = "6.7";
+  @action
+  setAvgStyleLength = d => {
+    this.avgStyleLength = d;
+  };
 
   // States -------------------------------------------------------------------
   @observable states = [];
@@ -251,7 +257,7 @@ export default class appStore {
   };
 
   @computed
-  get crabgrass() {
+  get fuji() {
     let cdd = 0;
     let results = [];
     this.gridData.forEach((day, i) => {
@@ -260,7 +266,7 @@ export default class appStore {
       let indexMinus2;
       if (i > 1) indexMinus2 = results[i - 2].index;
       results.push({
-        name: "Large crabgrass",
+        name: "Fuji",
         date: day[0],
         cdd: cdd,
         index: Math.round(100 / (1 + Math.exp(19.44 - 3.06 * Math.log(cdd)))),
@@ -270,164 +276,28 @@ export default class appStore {
     return results;
   }
 
-  @computed
-  get gFoxtail() {
-    let cdd = 0;
-    let results = [];
-    this.gridData.forEach((day, i) => {
-      const dd = this.degreeDay(day);
-      cdd += dd;
-      let indexMinus2;
-      if (i > 1) indexMinus2 = results[i - 2].index;
-      results.push({
-        name: "Giant foxtail",
-        date: day[0],
-        cdd: cdd,
-        index: Math.round(100 / (1 + Math.exp(18.05 - 3.06 * Math.log(cdd)))),
-        indexMinus2: indexMinus2
-      });
-    });
-    return results;
-  }
+  @observable
+  blocks = JSON.parse(localStorage.getItem("pollenTubeBlocks")) || [];
+  @action
+  setBlocks = d => {
+    this.blocks = d;
+    localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
+  };
+  @action
+  addBlock = () => {
+    const blocks = [...this.blocks];
+    const block = {
+      id: Math.random(),
+      variety: this.subject,
+      blockName: this.blockName,
+      avgStyleLength: this.avgStyleLength,
+      state: this.state.name,
+      station: this.station.name,
+      date: this.endDate
+    };
 
-  @computed
-  get yFoxtail() {
-    let cdd = 0;
-    let results = [];
-    this.gridData.forEach((day, i) => {
-      const dd = this.degreeDay(day);
-      cdd += dd;
-      let indexMinus2;
-      if (i > 1) indexMinus2 = results[i - 2].index;
-      results.push({
-        name: "Yellow foxtail",
-        date: day[0],
-        cdd: cdd,
-        index: Math.round(100 / (1 + Math.exp(19.46 - 3.31 * Math.log(cdd)))),
-        indexMinus2: indexMinus2
-      });
-    });
-    return results;
-  }
-
-  @computed
-  get lambsquarters() {
-    let cdd = 0;
-    let results = [];
-    this.gridData.forEach((day, i) => {
-      const dd = this.degreeDay(day);
-      cdd += dd;
-      let indexMinus2;
-      if (i > 1) indexMinus2 = results[i - 2].index;
-      results.push({
-        name: "Common lambsquarters",
-        date: day[0],
-        cdd: cdd,
-        index: Math.round(100 / (1 + Math.exp(11.69 - 1.9 * Math.log(cdd)))),
-        indexMinus2: indexMinus2
-      });
-    });
-    return results;
-  }
-
-  @computed
-  get nightshade() {
-    let cdd = 0;
-    let results = [];
-    this.gridData.forEach((day, i) => {
-      const dd = this.degreeDay(day);
-      cdd += dd;
-      let indexMinus2;
-      if (i > 1) indexMinus2 = results[i - 2].index;
-      results.push({
-        name: "Eastern black nightshade",
-        date: day[0],
-        cdd: cdd,
-        index: Math.round(100 / (1 + Math.exp(27.93 - 4.18 * Math.log(cdd)))),
-        indexMinus2: indexMinus2
-      });
-    });
-    return results;
-  }
-
-  @computed
-  get pigweed() {
-    let cdd = 0;
-    let results = [];
-    this.gridData.forEach((day, i) => {
-      const dd = this.degreeDay(day);
-      cdd += dd;
-      let indexMinus2;
-      if (i > 1) indexMinus2 = results[i - 2].index;
-      results.push({
-        name: "Smooth pigweed",
-        date: day[0],
-        cdd: cdd,
-        index: Math.round(100 / (1 + Math.exp(20.06 - 3.12 * Math.log(cdd)))),
-        indexMinus2: indexMinus2
-      });
-    });
-    return results;
-  }
-
-  @computed
-  get ragweed() {
-    let cdd = 0;
-    let results = [];
-    this.gridData.forEach((day, i) => {
-      const dd = this.degreeDay(day);
-      cdd += dd;
-      let indexMinus2;
-      if (i > 1) indexMinus2 = results[i - 2].index;
-      results.push({
-        name: "Common ragweed",
-        date: day[0],
-        cdd: cdd,
-        index: Math.round(100 / (1 + Math.exp(12.93 - 2.63 * Math.log(cdd)))),
-        indexMinus2: indexMinus2
-      });
-    });
-    return results;
-  }
-
-  @computed
-  get velvetleaf() {
-    let cdd = 0;
-    let results = [];
-    this.gridData.forEach((day, i) => {
-      const dd = this.degreeDay(day);
-      cdd += dd;
-      let indexMinus2;
-      if (i > 1) indexMinus2 = results[i - 2].index;
-      results.push({
-        name: "Velvetleaf",
-        date: day[0],
-        cdd: cdd,
-        index: Math.round(100 / (1 + Math.exp(18.86 - 3.21 * Math.log(cdd)))),
-        indexMinus2: indexMinus2
-      });
-    });
-    return results;
-  }
-
-  // Graph ----------------------------------------------------------------------
-  @computed
-  get graphData() {
-    if (this.gridData) {
-      return this.gridData.map((day, i) => {
-        return {
-          date: format(day[0], "MMM D"),
-          "Large crabgrass": this.crabgrass[i].index,
-          "Giant foxtail": this.gFoxtail[i].index,
-          "Yellow foxtail": this.yFoxtail[i].index,
-          "Common lambsquarters": this.lambsquarters[i].index,
-          "Eastern black nightshade": this.nightshade[i].index,
-          "Smooth pigweed": this.pigweed[i].index,
-          "Common ragweed": this.ragweed[i].index,
-          Velvetleaf: this.velvetleaf[i].index
-        };
-      });
-    }
-    return [];
-  }
+    blocks.push(block);
+    this.setBlocks(blocks);
+    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(blocks));
+  };
 }

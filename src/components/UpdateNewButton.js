@@ -7,19 +7,17 @@ import { Box } from "rebass";
 @inject("store")
 @observer
 class UpdateNewButton extends Component {
-  addNewBlock = () => {
-    this.props.store.app.closeSidebar();
-  };
   render() {
-    const { areRequiredFieldsSet } = this.props.store.app;
+    const { areRequiredFieldsSet, addBlock, blocks } = this.props.store.app;
+    console.log(blocks.slice());
     return (
       <Box my={4}>
         <Button
-          type="primary"
+          type="default"
           style={{ width: "100%" }}
           size="large"
           icon="new"
-          onClick={this.addNewBlock}
+          onClick={() => addBlock()}
           disabled={areRequiredFieldsSet ? false : true}
         >
           Add New Block

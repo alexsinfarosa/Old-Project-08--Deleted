@@ -14,51 +14,43 @@ import PCEgraph from "components/PCEgraph";
 @observer
 class UserTable extends Component {
   state = {
-    fields: JSON.parse(localStorage.getItem("weedModelUserTable")) || []
+    blocks: JSON.parse(localStorage.getItem("pollenTubeBlocks")) || []
   };
 
-  addField = async () => {
-    const fields = [...this.state.fields];
+  addBlock = async () => {
+    const blocks = [...this.state.blocks];
     const {
-      loadGridData,
-      endDate,
+      subject,
+      blockName,
+      avgStyleLength,
       state,
       station,
-      currentYear
+      endDate
     } = this.props.store.app;
-    const resetDate = endDate;
 
-    let lastDate = format(new Date(), "YYYY-MM-DD");
-    if (!isThisYear(currentYear)) {
-      lastDate = `${currentYear}-12-31`;
-    }
-
-    await loadGridData(resetDate, lastDate);
-
-    const field = {
-      action: "edit action...",
-      date: format(endDate, "MMM Do YYYY"),
+    const block = {
       id: Math.random(),
-      name: "edit field name...",
-      graphData: this.props.store.app.graphData,
-      state: state,
-      station: station
+      variety: subject,
+      blockName: blockName,
+      avgStyleLength: avgStyleLength,
+      state: state.name,
+      station: station.name,
+      date: endDate
     };
 
-    fields.push(field);
-    this.setState({ fields });
-    localStorage.setItem(`weedModelUserTable`, JSON.stringify(fields));
-    loadGridData();
+    blocks.push(block);
+    this.setState({ blocks });
+    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(blocks));
   };
 
-  deleteField = field => {
-    const fields = [...this.state.fields];
-    fields.splice(field.index, 1);
-    this.setState({ fields });
-    localStorage.setItem(`weedModelUserTable`, JSON.stringify(fields));
+  deleteBlock = block => {
+    const blocks = [...this.state.blocks];
+    blocks.splice(block.index, 1);
+    this.setState({ blocks });
+    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(blocks));
   };
 
-  editField = cellInfo => {
+  editBlock = cellInfo => {
     return (
       <div
         style={{
@@ -72,20 +64,20 @@ class UserTable extends Component {
         contentEditable
         suppressContentEditableWarning
         onBlur={e => {
-          const fields = [...this.state.fields];
-          fields[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-          this.setState({ fields });
-          localStorage.setItem(`weedModelUserTable`, JSON.stringify(fields));
+          const blocks = [...this.state.blocks];
+          blocks[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+          this.setState({ blocks });
+          localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(blocks));
         }}
         dangerouslySetInnerHTML={{
-          __html: this.state.fields[cellInfo.index][cellInfo.column.id]
+          __html: this.state.blocks[cellInfo.index][cellInfo.column.id]
         }}
       />
     );
   };
 
   render() {
-    const { fields } = this.state;
+    const { blocks } = this.state;
 
     return (
       <Flex
@@ -98,7 +90,7 @@ class UserTable extends Component {
         <Flex mb={1} justify="space-between" align="center">
           <Box f={[1, 2, 3]}>Field User Data</Box>
           <Box>
-            <Button icon="plus" onClick={this.addField}>
+            <Button icon="plus" onClick={this.addBlock}>
               Field
             </Button>
           </Box>
@@ -107,10 +99,10 @@ class UserTable extends Component {
         <Box>
           <ReactTable
             noDataText="No Data"
-            data={fields}
+            data={blocks}
             showPagination={false}
             minRows={1}
-            pageSize={fields.length}
+            pageSize={blocks.length}
             resizable={true}
             className="-highlight"
             columns={[
@@ -133,19 +125,25 @@ class UserTable extends Component {
                 )
               },
               {
-                Header: () => <CellHeader>Field Name</CellHeader>,
-                accessor: "name",
-                Cell: this.editField
+                Header: () => <CellHeader>Block Name</CellHeader>,
+                accessor: "blockName",
+                Cell: this.editBlock
               },
               {
-                Header: () => <CellHeader>Action</CellHeader>,
-                accessor: "action",
-                Cell: this.editField
+                Header: () => <CellHeader>Average Style Length</CellHeader>,
+                accessor: "avgStyleLength",
+                Cell: this.editBlock
+              },
+              {
+                Header: () => <CellHeader>Variety</CellHeader>,
+                accessor: "variety",
+                Cell: this.editBlock
+                // Cell: props => <span className="number">{props.value}</span>
               },
               {
                 Header: () => <CellHeader>Start Date</CellHeader>,
                 accessor: "date",
-                Cell: this.editField
+                Cell: this.editBlock
                 // Cell: props => <span className="number">{props.value}</span>
               },
               {
@@ -157,7 +155,7 @@ class UserTable extends Component {
                       <TableIcons
                         style={{ color: "#A42D25" }}
                         type="delete"
-                        onClick={() => this.deleteField(props)}
+                        onClick={() => this.deleteBlock(props)}
                       />
                     </CellWrapper>
                   </Tooltip>

@@ -20,7 +20,7 @@ class BlockInput extends Component {
     const { blockName } = this.props.store.app;
     return (
       <Box mb={3}>
-        <label>Block name:</label>
+        <label>Block Name:</label>
         <Input
           size="large"
           style={{ width: "100%" }}
