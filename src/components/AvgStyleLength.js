@@ -21,7 +21,6 @@ class AvgStyleLength extends Component {
   };
 
   onChange = value => {
-    console.log(value);
     this.props.store.app.setAvgStyleLength(value);
   };
 

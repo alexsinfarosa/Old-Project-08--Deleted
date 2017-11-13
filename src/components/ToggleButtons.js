@@ -20,7 +20,7 @@ class ToggleButtons extends Component {
   };
 
   render() {
-    const { viewMap, isBlocks, areRequiredFieldsSet } = this.props.store.app;
+    const { isMap, isBlocks } = this.props.store.app;
 
     return (
       <Flex column w={1}>
@@ -29,11 +29,10 @@ class ToggleButtons extends Component {
             <Box w={1 / 2} pr={1}>
               <Button
                 style={{ width: "100%" }}
-                type={viewMap ? "primary" : ""}
+                type={isMap ? "primary" : ""}
                 size="large"
                 icon="environment-o"
                 onClick={this.toggleMap}
-                disabled={areRequiredFieldsSet ? false : true}
               >
                 Map
               </Button>
@@ -45,7 +44,6 @@ class ToggleButtons extends Component {
                 size="large"
                 icon="layout"
                 onClick={this.toggleBlocks}
-                disabled={areRequiredFieldsSet ? false : true}
               >
                 Blocks
               </Button>

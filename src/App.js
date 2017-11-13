@@ -17,7 +17,7 @@ import UpdateNewButton from "components/UpdateNewButton";
 import Acknowledgements from "components/Acknowledgements";
 
 // import ClickMapMessage from "components/ClickMapMessage";
-// import USMap from "components/USMap";
+import USMap from "components/USMap";
 import UserTable from "components/UserTable";
 // import PCEtable from "components/PCEtable";
 import ToggleButtons from "components/ToggleButtons";
@@ -35,6 +35,7 @@ class App extends Component {
       setSidebar,
       breakpoints,
       isBlocks,
+      viewMap,
       isEditing
     } = this.props.store.app;
 
@@ -128,6 +129,7 @@ class App extends Component {
 
             <Content style={{ margin: "24px 16px" }}>
               <Flex column style={{ maxWidth: "1200px", margin: "0 auto" }}>
+                {viewMap && <USMap />}
                 {isBlocks && <UserTable />}
               </Flex>
             </Content>

@@ -61,8 +61,13 @@ export default class appStore {
   }
   @action toggleMap = () => (this.isMap = !this.isMap);
 
-  @observable isBlocks = true;
-  @action toggleBlocks = d => (this.isBlocks = !this.isBlocks);
+  @observable
+  isBlocks = JSON.parse(localStorage.getItem("pollenTubeBlocks")) === null
+    ? false
+    : true;
+  @computed
+  @action
+  toggleBlocks = d => (this.isBlocks = !this.isBlocks);
 
   // Block ------------------------------------------------------------------
   @observable blockName = "";
@@ -304,7 +309,6 @@ export default class appStore {
   editBlock = block => {
     const blocks = [...this.blocks];
     const b = blocks[block.index];
-
     this.setSubject(b.variety);
     this.setBlockName(b.blockName);
     this.setAvgStyleLength(b.avgStyleLength);
