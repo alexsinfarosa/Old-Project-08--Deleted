@@ -14,31 +14,13 @@ class ToggleButtons extends Component {
   };
 
   // toggles PCETable component
-  toggleTable = () => {
-    this.props.store.app.toggleTable();
-    this.props.store.app.closeSidebar();
-  };
-
-  // toggles PCETable component
-  toggleGraph = () => {
-    this.props.store.app.toggleGraph();
-    this.props.store.app.closeSidebar();
-  };
-
-  // toggles PCETable component
-  toggleUserTable = () => {
-    this.props.store.app.toggleUserTable();
+  toggleBlocks = () => {
+    this.props.store.app.toggleBlocks();
     this.props.store.app.closeSidebar();
   };
 
   render() {
-    const {
-      isGraph,
-      isUserTable,
-      viewMap,
-      viewTable,
-      areRequiredFieldsSet
-    } = this.props.store.app;
+    const { viewMap, isBlocks, areRequiredFieldsSet } = this.props.store.app;
 
     return (
       <Flex column w={1}>
@@ -59,41 +41,13 @@ class ToggleButtons extends Component {
             <Box w={1 / 2} pl={1}>
               <Button
                 style={{ width: "100%" }}
-                type={viewTable ? "primary" : ""}
+                type={isBlocks ? "primary" : ""}
                 size="large"
                 icon="layout"
-                onClick={this.toggleTable}
+                onClick={this.toggleBlocks}
                 disabled={areRequiredFieldsSet ? false : true}
               >
-                Table
-              </Button>
-            </Box>
-          </Flex>
-        </Box>
-        <Box w={1}>
-          <Flex my={2} justify="space-between">
-            <Box w={1 / 2} pr={1}>
-              <Button
-                style={{ width: "100%" }}
-                type={isGraph ? "primary" : ""}
-                size="large"
-                icon="line-chart"
-                onClick={this.toggleGraph}
-                disabled={areRequiredFieldsSet ? false : true}
-              >
-                Graph
-              </Button>
-            </Box>
-            <Box w={1 / 2} pl={1}>
-              <Button
-                style={{ width: "100%" }}
-                type={isUserTable ? "primary" : ""}
-                size="large"
-                icon="user"
-                onClick={this.toggleUserTable}
-                disabled={areRequiredFieldsSet ? false : true}
-              >
-                User
+                Blocks
               </Button>
             </Box>
           </Flex>

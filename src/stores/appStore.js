@@ -33,7 +33,7 @@ export default class appStore {
     return (
       Object.keys(this.subject).length !== 0 &&
       Object.keys(this.blockName).length !== 0 &&
-      Object.keys(this.avgStyleLength).length !== 0 &&
+      this.avgStyleLength !== null &&
       Object.keys(this.state).length !== 0 &&
       Object.keys(this.station).length !== 0
     );
@@ -57,30 +57,15 @@ export default class appStore {
   @action setIsMap = d => (this.isMap = d);
   @computed
   get viewMap() {
-    return this.isMap ? true : this.areRequiredFieldsSet ? false : true;
+    return this.isMap ? true : this.station.name === undefined ? true : false;
   }
   @action toggleMap = () => (this.isMap = !this.isMap);
 
-  @observable isTable = true;
-  @computed
-  get viewTable() {
-    return this.isTable && this.areRequiredFieldsSet;
-  }
-  @action setIsTable = d => (this.isTable = d);
-  @action toggleTable = d => (this.isTable = !this.isTable);
-
-  @observable isGraph = false;
-  @action toggleGraph = d => (this.isGraph = !this.isGraph);
-
-  @observable
-  isUserTable = JSON.parse(localStorage.getItem("weedModelUserTable")) ===
-    null || JSON.parse(localStorage.getItem("weedModelUserTable")).length === 0
-    ? false
-    : true;
-  @action toggleUserTable = d => (this.isUserTable = !this.isUserTable);
+  @observable isBlocks = true;
+  @action toggleBlocks = d => (this.isBlocks = !this.isBlocks);
 
   // Block ------------------------------------------------------------------
-  @observable blockName = "ciccio";
+  @observable blockName = "";
   @action
   setBlockName = d => {
     this.blockName = d;
@@ -112,7 +97,7 @@ export default class appStore {
   };
 
   // Average Style Length -----------------------------------------------------
-  @observable avgStyleLength = "6.7";
+  @observable avgStyleLength = null;
   @action
   setAvgStyleLength = d => {
     this.avgStyleLength = d;
@@ -239,7 +224,6 @@ export default class appStore {
       return axios
         .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
         .then(res => {
-          // console.log(res.data.data);
           this.updateGridData(res.data.data);
           this.isLoading = false;
         })
@@ -283,12 +267,14 @@ export default class appStore {
     this.blocks = d;
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
   };
+  @observable block = {};
+  @action setBlock = d => (this.block = d);
   @action
   addBlock = () => {
     const blocks = [...this.blocks];
     const block = {
       id: Math.random(),
-      variety: this.subject,
+      variety: this.subject.name,
       blockName: this.blockName,
       avgStyleLength: this.avgStyleLength,
       state: this.state.name,
@@ -299,5 +285,60 @@ export default class appStore {
     blocks.push(block);
     this.setBlocks(blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(blocks));
+    this.subject = {};
+    this.setBlockName("");
+    this.setAvgStyleLength("");
+    this.setState("All States");
+  };
+
+  @action
+  deleteBlock = block => {
+    const blocks = [...this.blocks];
+    blocks.splice(block.index, 1);
+    this.setBlocks(blocks);
+    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(blocks));
+  };
+
+  @observable isEditing = false;
+  @action
+  editBlock = block => {
+    const blocks = [...this.blocks];
+    const b = blocks[block.index];
+
+    this.setSubject(b.variety);
+    this.setBlockName(b.blockName);
+    this.setAvgStyleLength(b.avgStyleLength);
+    this.setState(b.state);
+    this.setStation(b.station);
+    this.endDate = b.date;
+    this.setBlock(b);
+    this.isEditing = true;
+  };
+
+  @action
+  updateBlock = () => {
+    const blocks = [...this.blocks];
+
+    const newBlock = {
+      id: this.block.id,
+      variety: this.subject.name,
+      blockName: this.blockName,
+      avgStyleLength: this.avgStyleLength,
+      state: this.state.name,
+      station: this.station.name,
+      date: this.endDate
+    };
+
+    const idx = blocks.findIndex(block => block.id === this.block.id);
+    blocks.splice(idx, 1, newBlock);
+    this.setBlocks(blocks);
+
+    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(blocks));
+    this.subject = {};
+    this.setBlockName("");
+    this.setAvgStyleLength("");
+    this.setState("All States");
+    this.isEditing = false;
+    this.setBlock({});
   };
 }

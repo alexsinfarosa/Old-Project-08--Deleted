@@ -17,13 +17,17 @@ class BlockInput extends Component {
   };
 
   render() {
-    const { blockName } = this.props.store.app;
+    const { blockName, isEditing } = this.props.store.app;
     return (
       <Box mb={3}>
         <label>Block Name:</label>
         <Input
           size="large"
-          style={{ width: "100%" }}
+          style={{
+            width: "100%",
+            border: isEditing ? "1px solid red" : null,
+            borderRadius: "5px"
+          }}
           placeholder="Block Name"
           onChange={this.onChange}
           onBlur={this.onBlur}

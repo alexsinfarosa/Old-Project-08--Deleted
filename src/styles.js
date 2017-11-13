@@ -28,4 +28,5 @@ export const CellHeader = styled.div`
   display: flex;
   height: 25px;
   align-items: center;
+  justify-content: ${props => (props.center ? "center" : null)};
 `;

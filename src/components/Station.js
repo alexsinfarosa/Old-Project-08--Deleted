@@ -7,19 +7,12 @@ import { Select } from "antd";
 @observer
 export default class Station extends Component {
   handleChange = value => {
-    const {
-      setStation,
-      closeSidebar,
-      loadGridData,
-      setIsTable
-    } = this.props.store.app;
+    const { setStation, closeSidebar } = this.props.store.app;
     setStation(value);
-    loadGridData();
-    setIsTable(true);
     closeSidebar();
   };
   render() {
-    const { currentStateStations, station } = this.props.store.app;
+    const { currentStateStations, station, isEditing } = this.props.store.app;
 
     const stationList = currentStateStations.map(station => (
       <Select.Option
@@ -38,7 +31,11 @@ export default class Station extends Component {
           size="large"
           value={station.name}
           placeholder={`Select Station (${currentStateStations.length})`}
-          style={{ width: "100%" }}
+          style={{
+            width: "100%",
+            border: isEditing ? "1px solid red" : null,
+            borderRadius: "5px"
+          }}
           onChange={this.handleChange}
         >
           {stationList}

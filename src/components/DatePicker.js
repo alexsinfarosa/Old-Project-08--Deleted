@@ -15,26 +15,27 @@ export default class Datepicker extends Component {
     closeSidebar();
   };
 
-  disabledStartDate = startValue => {
-    if (moment(new Date()).isAfter(startValue)) {
-      return false;
-    }
-    return true;
+  disabledStartDate = current => {
+    return current && current.valueOf() > Date.now();
   };
 
   render() {
-    const { endDate } = this.props.store.app;
+    const { endDate, isEditing } = this.props.store.app;
     return (
       <Box mb={3}>
         <label>Date:</label>
         <AntdDatePicker
-          style={{ width: "100%" }}
+          style={{
+            width: "100%",
+            border: isEditing ? "1px solid red" : null,
+            borderRadius: "5px"
+          }}
           size="large"
           allowClear={false}
           value={moment(endDate)}
           format="MMM DD YYYY"
           disabledDate={this.disabledStartDate}
-          showToday={false} // this is antd bug, check.
+          showToday={true}
           onChange={(date, dateString) => this.onChange(date, dateString)}
         />
       </Box>

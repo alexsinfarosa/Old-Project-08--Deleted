@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { Box } from "rebass";
-import { Tooltip, Input } from "antd";
+import { Tooltip, InputNumber } from "antd";
 
 @inject("store")
 @observer
 class AvgStyleLength extends Component {
-  state = { value: "" };
-
   formatNumber = value => {
     value += "";
     const list = value.split(".");
@@ -22,27 +20,13 @@ class AvgStyleLength extends Component {
     return `${prefix}${result}${list[1] ? `.${list[1]}` : ""}`;
   };
 
-  onChange = e => {
-    const { value } = e.target;
-    const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
-    if ((!isNaN(value) && reg.test(value)) || value === "" || value === "-") {
-      this.props.store.app.setAvgStyleLength(value);
-    }
-  };
-
-  // '.' at the end or only '-' in the input box.
-  onBlur = () => {
-    const { avgStyleLength } = this.props.store.app;
-    if (
-      avgStyleLength.charAt(avgStyleLength.length - 1) === "." ||
-      avgStyleLength === "-"
-    ) {
-      this.onChange(avgStyleLength.slice(0, -1));
-    }
+  onChange = value => {
+    console.log(value);
+    this.props.store.app.setAvgStyleLength(value);
   };
 
   render() {
-    const { avgStyleLength } = this.props.store.app;
+    const { avgStyleLength, isEditing } = this.props.store.app;
 
     const title = avgStyleLength ? (
       <span style={{ minWidth: "32px", minHeight: "37px" }}>
@@ -54,22 +38,30 @@ class AvgStyleLength extends Component {
 
     return (
       <Box mb={3}>
-        <label>Average Style Length:</label>
+        <label>Average Style Length (mm):</label>
         <Tooltip
           trigger={["focus"]}
           title={title}
           placement="topLeft"
           style={{ fontSize: "14px" }}
         >
-          <Input
+          <InputNumber
             size="large"
-            style={{ width: "100%" }}
+            style={{
+              width: "100%",
+              border: isEditing ? "1px solid red" : null,
+              borderRadius: "5px"
+            }}
             onChange={this.onChange}
-            onBlur={this.onBlur}
             placeholder="Input a number"
-            maxLength="4"
+            min={6}
+            max={12}
+            // defaultValue={0}
+            step={0.1}
+            precision={2}
+            // formatter={value => `${value} mm`}
+            // parser={value => value.replace("mm", "")}
             value={avgStyleLength}
-            addonAfter="millimiters"
           />
         </Tooltip>
       </Box>

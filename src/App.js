@@ -16,14 +16,12 @@ import DatePicker from "components/DatePicker";
 import UpdateNewButton from "components/UpdateNewButton";
 import Acknowledgements from "components/Acknowledgements";
 
-import Overview from "components/Overview";
-
-import ClickMapMessage from "components/ClickMapMessage";
-import USMap from "components/USMap";
+// import ClickMapMessage from "components/ClickMapMessage";
+// import USMap from "components/USMap";
 import UserTable from "components/UserTable";
-import PCEtable from "components/PCEtable";
+// import PCEtable from "components/PCEtable";
 import ToggleButtons from "components/ToggleButtons";
-import PCEgraph from "components/PCEgraph";
+// import PCEgraph from "components/PCEgraph";
 
 const { Content, Footer, Sider } = Layout;
 
@@ -36,14 +34,8 @@ class App extends Component {
       toggleSidebar,
       setSidebar,
       breakpoints,
-      viewMap,
-      viewTable,
-      isGraph,
-      isUserTable,
-      state,
-      station,
-      graphData,
-      isLoading
+      isBlocks,
+      isEditing
     } = this.props.store.app;
 
     return (
@@ -59,7 +51,7 @@ class App extends Component {
             }}
             collapsed={isSidebarCollapsed}
           >
-            <Flex column bg="white" style={{ minHeight: "100vh" }} px={1}>
+            <Flex column bg="white" style={{ minHeight: "100vh" }} px={2}>
               <Box
                 flex="1 1 auto"
                 style={{
@@ -88,8 +80,8 @@ class App extends Component {
               >
                 <Box>
                   <Flex column>
-                    <Box my={3} m="auto" is="h4">
-                      Select all fields to create new block
+                    <Box my={3} m="auto" is="h3">
+                      {isEditing ? "Edit Block" : "New Block"}
                     </Box>
                     <Subject />
                     <BlockInput />
@@ -135,20 +127,8 @@ class App extends Component {
             </Flex>
 
             <Content style={{ margin: "24px 16px" }}>
-              <Flex column style={{ maxWidth: "1024px", margin: "0 auto" }}>
-                <ClickMapMessage state={state} />
-                <Overview />
-                {viewMap && <USMap />}
-                {isUserTable && <UserTable />}
-                {false && (
-                  <PCEgraph
-                    graphData={graphData}
-                    state={state}
-                    station={station}
-                    bpxs={breakpoints.xs}
-                  />
-                )}
-                {false && !isLoading && <PCEtable bpxs={breakpoints.xs} />}
+              <Flex column style={{ maxWidth: "1200px", margin: "0 auto" }}>
+                {isBlocks && <UserTable />}
               </Flex>
             </Content>
 
