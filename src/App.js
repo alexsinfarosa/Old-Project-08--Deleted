@@ -89,7 +89,7 @@ class App extends Component {
                 <Box>
                   <Flex column>
                     <Box my={3} m="auto" is="h3">
-                      {isEditing ? "Edit Block" : "New Block"}
+                      {isEditing ? "Edit Selected Block" : "Create New Block"}
                     </Box>
                     <Subject />
                     <BlockName />

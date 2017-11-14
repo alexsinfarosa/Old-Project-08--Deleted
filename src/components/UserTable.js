@@ -39,29 +39,22 @@ class UserTable extends Component {
             pageSize={blocks.length}
             resizable={true}
             className="-highlight"
-            columns={[
+            expander={true}
+            defaultSorted={[
               {
-                expander: true,
-                Header: () => <CellHeader>Graph</CellHeader>,
-                width: 45,
-                Expander: ({ isExpanded, ...rest }) => (
-                  <div>
-                    {isExpanded ? (
-                      <CellWrapper>
-                        <TableIcons type="rollback" />
-                      </CellWrapper>
-                    ) : (
-                      <CellWrapper>
-                        <TableIcons type="line-chart" />
-                      </CellWrapper>
-                    )}
-                  </div>
-                )
-              },
+                id: "date",
+                desc: false
+              }
+            ]}
+            columns={[
               {
                 Header: () => <CellHeader>Block Name</CellHeader>,
                 accessor: "name",
-                Cell: props => <CellWrapper>{props.value}</CellWrapper>
+                Cell: props => (
+                  <CellWrapper style={{ background: "orange" }}>
+                    {props.value}
+                  </CellWrapper>
+                )
               },
               {
                 Header: () => <CellHeader>Variety</CellHeader>,

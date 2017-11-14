@@ -275,7 +275,6 @@ export default class appStore {
   @action
   editBlock = d => {
     const block = d.original;
-    console.log(block);
     this.blockId = block.id;
     this.setSubject(block.variety);
     this.setBlockName(block.name);
@@ -306,7 +305,7 @@ export default class appStore {
     };
 
     const idx = this.blocks.findIndex(b => b.id === block.id);
-    console.log(idx);
+
     this.blocks.splice(idx, 1, new Block(block));
     this.setBlocks(this.blocks);
     this.subject = {};
