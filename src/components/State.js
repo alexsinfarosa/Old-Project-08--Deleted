@@ -13,7 +13,7 @@ export default class State extends Component {
   };
 
   render() {
-    const { state, states, isEditing } = this.props.store.app;
+    const { state, states } = this.props.store.app;
 
     const stateList = states.map(state => (
       <Select.Option key={state.postalCode} value={state.name}>
@@ -30,9 +30,7 @@ export default class State extends Component {
           value={state.name}
           placeholder="Select State"
           style={{
-            width: "100%",
-            border: isEditing ? "1px solid red" : null,
-            borderRadius: "5px"
+            width: "100%"
           }}
           onChange={this.handleChange}
         >

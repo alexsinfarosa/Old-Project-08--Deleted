@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { Flex, Box } from "rebass";
-// import format from "date-fns/format";
+import format from "date-fns/format";
 // import isThisYear from "date-fns/is_this_year";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
@@ -13,35 +13,9 @@ import { TableIcons, CellWrapper, CellHeader } from "styles";
 @inject("store")
 @observer
 class UserTable extends Component {
-  // editBlock = cellInfo => {
-  //   const { blocks, setBlocks } = this.props.store.app;
-  //   return (
-  //     <div
-  //       style={{
-  //         backgroundColor: "#fafafa",
-  //         borderRadius: "3px",
-  //         outline: "none",
-  //         height: "25px",
-  //         display: "flex",
-  //         alignItems: "center"
-  //       }}
-  //       contentEditable
-  //       suppressContentEditableWarning
-  //       onBlur={e => {
-  //         const blocksEdit = [...blocks.slice()];
-  //         blocksEdit[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-  //         setBlocks(blocksEdit);
-  //       }}
-  //       dangerouslySetInnerHTML={{
-  //         __html: blocks[cellInfo.index][cellInfo.column.id]
-  //       }}
-  //     />
-  //   );
-  // };
-
   render() {
     const { blocks, deleteBlock, editBlock } = this.props.store.app;
-
+    // blocks.map(block => console.log(block));
     return (
       <Flex
         column
@@ -86,23 +60,8 @@ class UserTable extends Component {
               },
               {
                 Header: () => <CellHeader>Block Name</CellHeader>,
-                accessor: "blockName",
+                accessor: "name",
                 Cell: props => <CellWrapper>{props.value}</CellWrapper>
-              },
-              {
-                Header: () => <CellHeader>State</CellHeader>,
-                accessor: "state",
-                Cell: props => <CellWrapper>{props.value}</CellWrapper>
-              },
-              {
-                Header: () => <CellHeader>Station</CellHeader>,
-                accessor: "station",
-                Cell: props => <CellWrapper>{props.value}</CellWrapper>
-              },
-              {
-                Header: () => <CellHeader>Avg. Style Length</CellHeader>,
-                accessor: "avgStyleLength",
-                Cell: props => <CellWrapper>{props.value} mm</CellWrapper>
               },
               {
                 Header: () => <CellHeader>Variety</CellHeader>,
@@ -111,9 +70,53 @@ class UserTable extends Component {
                 // Cell: props => <span className="number">{props.value}</span>
               },
               {
+                Header: () => <CellHeader>Avg. Style Length</CellHeader>,
+                accessor: "avgStyleLength",
+                Cell: props => <CellWrapper>{props.value} mm</CellWrapper>
+              },
+              {
                 Header: () => <CellHeader>Start Date</CellHeader>,
                 accessor: "date",
-                Cell: props => <CellWrapper>{props.value}</CellWrapper>
+                Cell: props => (
+                  <CellWrapper>
+                    {props.value
+                      ? format(props.value, "MMM DD YYYY HH:mm")
+                      : null}
+                  </CellWrapper>
+                )
+              },
+              {
+                Header: () => <CellHeader>1st Spray Date</CellHeader>,
+                accessor: "firstSpray",
+                Cell: props => (
+                  <CellWrapper>
+                    {props.value
+                      ? format(props.value, "MMM DD YYYY HH:mm")
+                      : null}
+                  </CellWrapper>
+                )
+              },
+              {
+                Header: () => <CellHeader>2nd Spray Date</CellHeader>,
+                accessor: "secondSpray",
+                Cell: props => (
+                  <CellWrapper>
+                    {props.value
+                      ? format(props.value, "MMM DD YYYY HH:mm")
+                      : null}
+                  </CellWrapper>
+                )
+              },
+              {
+                Header: () => <CellHeader>3rd Spray Date</CellHeader>,
+                accessor: "thirdSpray",
+                Cell: props => (
+                  <CellWrapper>
+                    {props.value
+                      ? format(props.value, "MMM DD YYYY HH:mm")
+                      : null}
+                  </CellWrapper>
+                )
               },
               {
                 Header: () => <CellHeader center>Delete</CellHeader>,
@@ -145,7 +148,12 @@ class UserTable extends Component {
               }
             ]}
             SubComponent={row => {
-              return <div style={{ padding: "20px" }}>ciccio</div>;
+              return (
+                <Flex p={[1, 1, 2]} column>
+                  <Box>content...</Box>
+                  <Box>content...</Box>
+                </Flex>
+              );
             }}
           />
         </Box>

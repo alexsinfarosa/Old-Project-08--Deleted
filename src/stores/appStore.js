@@ -1,8 +1,8 @@
 import { observable, action, when, computed } from "mobx";
 import axios from "axios";
 import format from "date-fns/format";
-import isAfter from "date-fns/is_after";
-import isBefore from "date-fns/is_before";
+
+import Block from "stores/Block";
 
 export default class appStore {
   constructor(fetch) {
@@ -93,16 +93,16 @@ export default class appStore {
       });
   }
 
-  @observable subject = JSON.parse(localStorage.getItem("pollenTube")) || {};
+  @observable subject = {};
 
   @action
   setSubject = d => {
     this.subject = this.subjects.find(subject => subject.name === d);
-    localStorage.setItem(`pollenTube`, JSON.stringify(this.subject));
+    // localStorage.setItem(`pollenTubeVariety`, JSON.stringify(this.subject));
   };
 
   // Average Style Length -----------------------------------------------------
-  @observable avgStyleLength = null;
+  @observable avgStyleLength;
   @action
   setAvgStyleLength = d => {
     this.avgStyleLength = d;
@@ -184,30 +184,21 @@ export default class appStore {
   };
 
   // Dates---------------------------------------------------------------------
-  @observable endDate = format(new Date(), "YYYY-MM-DD");
-  @action setEndDate = d => (this.endDate = format(d, "YYYY-MM-DD"));
-  @computed
-  get currentYear() {
-    return format(this.endDate, "YYYY");
-  }
-  @computed
-  get startDate() {
-    return `${this.currentYear}-03-01`;
-  }
-  @computed
-  get isSeason() {
-    return (
-      isAfter(this.endDate, this.startDate) &&
-      isBefore(this.endDate, `${this.currentYear}-09-30`)
-    );
-  }
+  @observable date = new Date();
+  @action setDate = d => (this.date = d);
+  @observable firstSprayDate = "";
+  @action setFirstSprayDate = d => (this.firstSprayDate = d);
+  @observable secondSprayDate = "";
+  @action setSecondSprayDate = d => (this.secondSprayDate = d);
+  @observable thirdSprayDate = "";
+  @action setThirdSprayDate = d => (this.thirdSprayDate = d);
 
   // Load Grid Data --------------------------------------------------------------
   @observable gridData = [];
   @action updateGridData = d => (this.gridData = d);
 
   @action
-  loadGridData = (sdate = this.startDate, edate = this.endDate) => {
+  loadGridData = (sdate = this.date, edate = this.date) => {
     if (this.areRequiredFieldsSet) {
       this.isLoading = true;
 
@@ -218,8 +209,8 @@ export default class appStore {
 
       const params = {
         loc: loc,
-        sdate: sdate,
-        edate: edate,
+        sdate: format(sdate, "YYYY-MM-DD"),
+        edate: format(edate, "YYYY-MM-DD"),
         grid: 3,
         elems: [{ name: "avgt" }]
       };
@@ -229,6 +220,7 @@ export default class appStore {
       return axios
         .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
         .then(res => {
+          // console.log(res.data.data);
           this.updateGridData(res.data.data);
           this.isLoading = false;
         })
@@ -240,109 +232,86 @@ export default class appStore {
   };
 
   // Current Model ----------------------------------------------------------------
-  @action
-  degreeDay = (day, base = 48.2) => {
-    return day[1] - base > 0 ? Math.round(day[1] - base) : 0;
-  };
-
-  @computed
-  get fuji() {
-    let cdd = 0;
-    let results = [];
-    this.gridData.forEach((day, i) => {
-      const dd = this.degreeDay(day);
-      cdd += dd;
-      let indexMinus2;
-      if (i > 1) indexMinus2 = results[i - 2].index;
-      results.push({
-        name: "Fuji",
-        date: day[0],
-        cdd: cdd,
-        index: Math.round(100 / (1 + Math.exp(19.44 - 3.06 * Math.log(cdd)))),
-        indexMinus2: indexMinus2
-      });
-    });
-    return results;
-  }
+  // @action
+  // degreeDay = (day, base = 48.2) => {
+  //   return day[1] - base > 0 ? Math.round(day[1] - base) : 0;
+  // };
 
   @observable
   blocks = JSON.parse(localStorage.getItem("pollenTubeBlocks")) || [];
-  @action
-  setBlocks = d => {
-    this.blocks = d;
-    localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
-  };
-  @observable block = {};
-  @action setBlock = d => (this.block = d);
+  @action setBlocks = d => (this.blocks = d);
+
   @action
   addBlock = () => {
-    const blocks = [...this.blocks];
     const block = {
       id: Math.random(),
       variety: this.subject.name,
-      blockName: this.blockName,
+      name: this.blockName,
       avgStyleLength: this.avgStyleLength,
       state: this.state.name,
       station: this.station.name,
-      date: this.endDate
+      date: this.date,
+      firstSpray: this.firstSprayDate,
+      secondSpray: this.secondSprayDate,
+      thirdSpray: this.thirdSprayDate
     };
 
-    blocks.push(block);
-    this.setBlocks(blocks);
-    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(blocks));
+    this.blocks.push(new Block(block));
+    localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
     this.subject = {};
     this.setBlockName("");
     this.setAvgStyleLength("");
-    this.setState("All States");
+    this.setDate(new Date());
   };
 
   @action
   deleteBlock = block => {
-    const blocks = [...this.blocks];
-    blocks.splice(block.index, 1);
-    this.setBlocks(blocks);
-    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(blocks));
+    this.blocks.splice(block.index, 1);
+    this.setBlocks(this.blocks);
+    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
   };
 
   @observable isEditing = false;
   @action
-  editBlock = block => {
-    const blocks = [...this.blocks];
-    const b = blocks[block.index];
-    this.setSubject(b.variety);
-    this.setBlockName(b.blockName);
-    this.setAvgStyleLength(b.avgStyleLength);
-    this.setState(b.state);
-    this.setStation(b.station);
-    this.endDate = b.date;
-    this.setBlock(b);
+  editBlock = d => {
+    const block = d.original;
+    console.log(block);
+    this.blockId = block.id;
+    this.setSubject(block.variety);
+    this.setBlockName(block.name);
+    this.setAvgStyleLength(block.avgStyleLength);
+    this.setState(block.state);
+    this.setStation(block.station);
+    this.setDate(block.date);
+    this.setFirstSprayDate(block.firstSpray);
+    this.setSecondSprayDate(block.secondSpray);
+    this.setThirdSprayDate(block.thirdSpray);
     this.isEditing = true;
   };
 
+  @observable blockId;
   @action
   updateBlock = () => {
-    const blocks = [...this.blocks];
-
-    const newBlock = {
-      id: this.block.id,
+    const block = {
+      id: this.blockId,
       variety: this.subject.name,
-      blockName: this.blockName,
+      name: this.blockName,
       avgStyleLength: this.avgStyleLength,
       state: this.state.name,
       station: this.station.name,
-      date: this.endDate
+      date: this.date,
+      firstSpray: this.firstSprayDate,
+      secondSpray: this.secondSprayDate,
+      thirdSpray: this.thirdSprayDate
     };
 
-    const idx = blocks.findIndex(block => block.id === this.block.id);
-    blocks.splice(idx, 1, newBlock);
-    this.setBlocks(blocks);
-
-    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(blocks));
+    const idx = this.blocks.findIndex(b => b.id === block.id);
+    console.log(idx);
+    this.blocks.splice(idx, 1, new Block(block));
+    this.setBlocks(this.blocks);
     this.subject = {};
     this.setBlockName("");
     this.setAvgStyleLength("");
-    this.setState("All States");
     this.isEditing = false;
-    this.setBlock({});
   };
 }

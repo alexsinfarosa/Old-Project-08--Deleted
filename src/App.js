@@ -9,21 +9,21 @@ import { Layout } from "antd";
 
 import Subject from "components/Subject";
 import AvgStyleLength from "components/AvgStyleLength";
-import BlockInput from "components/BlockInput";
+import BlockName from "components/BlockName";
 import State from "components/State";
 import Station from "components/Station";
 import DatePicker from "components/DatePicker";
-import UpdateNewButton from "components/UpdateNewButton";
+import AddUpdateButton from "components/AddUpdateButton";
 import Acknowledgements from "components/Acknowledgements";
 
 // import ClickMapMessage from "components/ClickMapMessage";
-import USMap from "components/USMap";
+// import USMap from "components/USMap";
 import UserTable from "components/UserTable";
 // import PCEtable from "components/PCEtable";
 import ToggleButtons from "components/ToggleButtons";
 // import PCEgraph from "components/PCEgraph";
 
-const { Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 @inject("store")
 @observer
@@ -35,8 +35,15 @@ class App extends Component {
       setSidebar,
       breakpoints,
       isBlocks,
-      viewMap,
-      isEditing
+      isEditing,
+      firstSprayDate,
+      setFirstSprayDate,
+      secondSprayDate,
+      setSecondSprayDate,
+      thirdSprayDate,
+      setThirdSprayDate,
+      date,
+      setDate
     } = this.props.store.app;
 
     return (
@@ -54,8 +61,8 @@ class App extends Component {
           >
             <Flex column bg="white" style={{ minHeight: "100vh" }} px={2}>
               <Box
-                flex="1 1 auto"
                 style={{
+                  flex: "1 1 auto",
                   display: "flex",
                   alignItems: "center",
                   margin: "0 auto"
@@ -85,12 +92,31 @@ class App extends Component {
                       {isEditing ? "Edit Block" : "New Block"}
                     </Box>
                     <Subject />
-                    <BlockInput />
+                    <BlockName />
                     <AvgStyleLength />
                     <State />
                     <Station />
-                    <DatePicker />
-                    <UpdateNewButton />
+                    <DatePicker label={"Date"} value={date} setDate={setDate} />
+                    {isEditing && (
+                      <Flex column>
+                        <DatePicker
+                          label={"First Spray Date"}
+                          value={firstSprayDate}
+                          setDate={setFirstSprayDate}
+                        />
+                        <DatePicker
+                          label={"Second Spray Date"}
+                          value={secondSprayDate}
+                          setDate={setSecondSprayDate}
+                        />
+                        <DatePicker
+                          label={"Third Spray Date"}
+                          value={thirdSprayDate}
+                          setDate={setThirdSprayDate}
+                        />
+                      </Flex>
+                    )}
+                    <AddUpdateButton />
                   </Flex>
                 </Box>
 
@@ -129,12 +155,9 @@ class App extends Component {
 
             <Content style={{ margin: "24px 16px" }}>
               <Flex column style={{ maxWidth: "1200px", margin: "0 auto" }}>
-                {viewMap && <USMap />}
                 {isBlocks && <UserTable />}
               </Flex>
             </Content>
-
-            <Footer />
           </Layout>
         </Layout>
       </MatchMediaProvider>

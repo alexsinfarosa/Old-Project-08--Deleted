@@ -5,7 +5,7 @@ import { Input } from "antd";
 
 @inject("store")
 @observer
-class BlockInput extends Component {
+class BlockName extends Component {
   onChange = e => {
     const value = e.target.value;
     this.props.store.app.setBlockName(value);
@@ -17,16 +17,14 @@ class BlockInput extends Component {
   };
 
   render() {
-    const { blockName, isEditing } = this.props.store.app;
+    const { blockName } = this.props.store.app;
     return (
       <Box mb={3}>
         <label>Block Name:</label>
         <Input
           size="large"
           style={{
-            width: "100%",
-            border: isEditing ? "1px solid red" : null,
-            borderRadius: "5px"
+            width: "100%"
           }}
           placeholder="Block Name"
           onChange={this.onChange}
@@ -38,4 +36,4 @@ class BlockInput extends Component {
   }
 }
 
-export default BlockInput;
+export default BlockName;

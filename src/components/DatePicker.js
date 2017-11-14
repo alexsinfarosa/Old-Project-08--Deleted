@@ -9,8 +9,15 @@ import moment from "moment";
 @observer
 export default class Datepicker extends Component {
   onChange = (date, dateString) => {
-    const { setEndDate, closeSidebar, loadGridData } = this.props.store.app;
-    setEndDate(dateString);
+    const { closeSidebar, loadGridData } = this.props.store.app;
+    this.props.setDate(dateString);
+    loadGridData();
+    closeSidebar();
+  };
+
+  onOk = value => {
+    const { closeSidebar, loadGridData } = this.props.store.app;
+    this.props.setDate(value._i);
     loadGridData();
     closeSidebar();
   };
@@ -20,23 +27,22 @@ export default class Datepicker extends Component {
   };
 
   render() {
-    const { endDate, isEditing } = this.props.store.app;
+    const { label, value } = this.props;
+    const date = moment(value);
     return (
       <Box mb={3}>
-        <label>Date:</label>
+        <label>{label}:</label>
         <AntdDatePicker
-          style={{
-            width: "100%",
-            border: isEditing ? "1px solid red" : null,
-            borderRadius: "5px"
-          }}
+          showTime
+          style={{ width: "100%" }}
+          value={value ? date : null}
           size="large"
           allowClear={false}
-          value={moment(endDate)}
-          format="MMM DD YYYY"
+          format="MMM DD YYYY HH:mm"
           disabledDate={this.disabledStartDate}
           showToday={true}
           onChange={(date, dateString) => this.onChange(date, dateString)}
+          onOk={value => this.onOk(value)}
         />
       </Box>
     );

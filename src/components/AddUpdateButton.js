@@ -6,29 +6,28 @@ import { Box } from "rebass";
 
 @inject("store")
 @observer
-class UpdateNewButton extends Component {
+class AddUpdateButton extends Component {
   render() {
     const {
       areRequiredFieldsSet,
       addBlock,
-      isEditing,
-      updateBlock
+      updateBlock,
+      isEditing
     } = this.props.store.app;
 
     return (
       <Box my={4}>
         <Button
           type="default"
-          style={{ width: "100%" }}
+          style={{ width: "100%", background: isEditing ? "#FDF7D0" : null }}
           size="large"
-          icon="new"
           onClick={() => (isEditing ? updateBlock() : addBlock())}
           disabled={areRequiredFieldsSet ? false : true}
         >
-          {isEditing ? "Upload Block" : "New Block"}
+          {isEditing ? "Update Block" : "New Block"}
         </Button>
       </Box>
     );
   }
 }
-export default UpdateNewButton;
+export default AddUpdateButton;

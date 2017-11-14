@@ -12,7 +12,7 @@ export default class Station extends Component {
     closeSidebar();
   };
   render() {
-    const { currentStateStations, station, isEditing } = this.props.store.app;
+    const { currentStateStations, station } = this.props.store.app;
 
     const stationList = currentStateStations.map(station => (
       <Select.Option
@@ -32,9 +32,7 @@ export default class Station extends Component {
           value={station.name}
           placeholder={`Select Station (${currentStateStations.length})`}
           style={{
-            width: "100%",
-            border: isEditing ? "1px solid red" : null,
-            borderRadius: "5px"
+            width: "100%"
           }}
           onChange={this.handleChange}
         >

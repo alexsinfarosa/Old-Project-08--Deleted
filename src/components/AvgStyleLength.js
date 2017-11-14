@@ -25,7 +25,7 @@ class AvgStyleLength extends Component {
   };
 
   render() {
-    const { avgStyleLength, isEditing } = this.props.store.app;
+    const { avgStyleLength } = this.props.store.app;
 
     const title = avgStyleLength ? (
       <span style={{ minWidth: "32px", minHeight: "37px" }}>
@@ -47,19 +47,14 @@ class AvgStyleLength extends Component {
           <InputNumber
             size="large"
             style={{
-              width: "100%",
-              border: isEditing ? "1px solid red" : null,
-              borderRadius: "5px"
+              width: "100%"
             }}
             onChange={this.onChange}
             placeholder="Input a number"
             min={6}
             max={12}
-            // defaultValue={0}
             step={0.1}
             precision={2}
-            // formatter={value => `${value} mm`}
-            // parser={value => value.replace("mm", "")}
             value={avgStyleLength}
           />
         </Tooltip>

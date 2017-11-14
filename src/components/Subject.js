@@ -13,7 +13,7 @@ class Subject extends Component {
   };
 
   render() {
-    const { subject, subjects, isEditing } = this.props.store.app;
+    const { subject, subjects } = this.props.store.app;
 
     const subjectList = subjects.map(subject => {
       return (
@@ -33,9 +33,7 @@ class Subject extends Component {
           value={subject.name}
           placeholder="Select Variety"
           style={{
-            width: "100%",
-            border: isEditing ? "1px solid red" : null,
-            borderRadius: "5px"
+            width: "100%"
           }}
           onChange={this.handleChange}
         >
