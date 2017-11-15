@@ -54,71 +54,56 @@ class App extends Component {
             breakpoint="sm"
             width={245}
             collapsedWidth="0"
+            style={{
+              background: "white",
+              padding: "0 16px",
+              minHeight: "100vh"
+            }}
             onCollapse={collapsed => {
               setSidebar(collapsed);
             }}
             collapsed={isSidebarCollapsed}
           >
-            <Flex column bg="white" style={{ minHeight: "100vh" }} px={2}>
-              <Box
-                style={{
-                  flex: "1 1 auto",
-                  display: "flex",
-                  alignItems: "center",
-                  margin: "0 auto"
-                }}
-              >
-                <Box>
-                  <BlockLink
-                    f={[1, 2, 2]}
-                    style={{ color: "#A42D25" }}
-                    href="https://www.cornell.edu/"
-                    children="Cornell University"
-                  />
-                </Box>
-              </Box>
+            <Box
+              style={{
+                display: "flex",
+                height: "48px",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+              is="h3"
+            >
+              {isEditing ? "Edit Selected Block" : "Create New Block"}
+            </Box>
 
-              <Box
-                flex="3 1 auto"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between"
-                }}
-              >
-                <Box>
+            <Flex column>
+              <Box flex="1 1 auto">
+                <Subject />
+                <BlockName />
+                <AvgStyleLength />
+                <State />
+                <Station />
+                <DatePicker label={"Date"} value={date} setDate={setDate} />
+                {isEditing && (
                   <Flex column>
-                    <Box my={3} m="auto" is="h3">
-                      {isEditing ? "Edit Selected Block" : "Create New Block"}
-                    </Box>
-                    <Subject />
-                    <BlockName />
-                    <AvgStyleLength />
-                    <State />
-                    <Station />
-                    <DatePicker label={"Date"} value={date} setDate={setDate} />
-                    {isEditing && (
-                      <Flex column>
-                        <DatePicker
-                          label={"First Spray Date"}
-                          value={firstSprayDate}
-                          setDate={setFirstSprayDate}
-                        />
-                        <DatePicker
-                          label={"Second Spray Date"}
-                          value={secondSprayDate}
-                          setDate={setSecondSprayDate}
-                        />
-                        <DatePicker
-                          label={"Third Spray Date"}
-                          value={thirdSprayDate}
-                          setDate={setThirdSprayDate}
-                        />
-                      </Flex>
-                    )}
-                    <AddUpdateButton />
+                    <DatePicker
+                      label={"First Spray Date"}
+                      value={firstSprayDate}
+                      setDate={setFirstSprayDate}
+                    />
+                    <DatePicker
+                      label={"Second Spray Date"}
+                      value={secondSprayDate}
+                      setDate={setSecondSprayDate}
+                    />
+                    <DatePicker
+                      label={"Third Spray Date"}
+                      value={thirdSprayDate}
+                      setDate={setThirdSprayDate}
+                    />
                   </Flex>
-                </Box>
+                )}
+                <AddUpdateButton />
 
                 <Box>
                   <ToggleButtons />

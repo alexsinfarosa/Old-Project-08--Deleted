@@ -16,7 +16,7 @@ class AddUpdateButton extends Component {
     } = this.props.store.app;
 
     return (
-      <Box my={4}>
+      <Box my={3}>
         <Button
           type="default"
           style={{ width: "100%", background: isEditing ? "#FDF7D0" : null }}

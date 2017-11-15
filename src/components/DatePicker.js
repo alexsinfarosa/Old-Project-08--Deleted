@@ -32,7 +32,7 @@ export default class Datepicker extends Component {
     const { isEditing } = this.props.store.app;
     const date = moment(value);
     return (
-      <Box mb={3} style={{ background: isEditing ? "#FDF7D0" : null }}>
+      <Box mb={4} style={{ background: isEditing ? "#FDF7D0" : null }}>
         <label>{label}:</label>
         <AntdDatePicker
           showTime
