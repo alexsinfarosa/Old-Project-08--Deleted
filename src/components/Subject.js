@@ -13,7 +13,7 @@ class Subject extends Component {
   };
 
   render() {
-    const { subject, subjects } = this.props.store.app;
+    const { subject, subjects, isEditing } = this.props.store.app;
 
     const subjectList = subjects.map(subject => {
       return (
@@ -24,7 +24,7 @@ class Subject extends Component {
     });
 
     return (
-      <Box mb={3}>
+      <Box mb={3} style={{ background: isEditing ? "#FDF7D0" : null }}>
         <label>Variety:</label>
         <Select
           name="subject"

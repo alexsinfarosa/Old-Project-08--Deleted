@@ -14,6 +14,7 @@ export default class Block {
   @observable firstSpray;
   @observable secondSpray;
   @observable thirdSpray;
+  @observable isEditing;
 
   constructor({
     id,
@@ -25,7 +26,8 @@ export default class Block {
     date,
     firstSpray,
     secondSpray,
-    thirdSpray
+    thirdSpray,
+    isEditing = false
   }) {
     this.id = id;
     this.name = name.trim();
@@ -37,6 +39,7 @@ export default class Block {
     this.firstSpray = firstSpray;
     this.secondSpray = secondSpray;
     this.thirdSpray = thirdSpray;
+    this.isEditing = isEditing;
   }
 
   @computed

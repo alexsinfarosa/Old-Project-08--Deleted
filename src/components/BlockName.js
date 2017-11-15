@@ -17,9 +17,9 @@ class BlockName extends Component {
   };
 
   render() {
-    const { blockName } = this.props.store.app;
+    const { blockName, isEditing } = this.props.store.app;
     return (
-      <Box mb={3}>
+      <Box mb={3} style={{ background: isEditing ? "#FDF7D0" : null }}>
         <label>Block Name:</label>
         <Input
           size="large"

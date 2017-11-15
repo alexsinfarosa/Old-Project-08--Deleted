@@ -13,7 +13,7 @@ export default class State extends Component {
   };
 
   render() {
-    const { state, states } = this.props.store.app;
+    const { state, states, isEditing } = this.props.store.app;
 
     const stateList = states.map(state => (
       <Select.Option key={state.postalCode} value={state.name}>
@@ -22,7 +22,7 @@ export default class State extends Component {
     ));
 
     return (
-      <Box mb={3}>
+      <Box mb={3} style={{ background: isEditing ? "#FDF7D0" : null }}>
         <label>State:</label>
         <Select
           name="state"

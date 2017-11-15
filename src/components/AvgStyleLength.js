@@ -25,7 +25,7 @@ class AvgStyleLength extends Component {
   };
 
   render() {
-    const { avgStyleLength } = this.props.store.app;
+    const { avgStyleLength, isEditing } = this.props.store.app;
 
     const title = avgStyleLength ? (
       <span style={{ minWidth: "32px", minHeight: "37px" }}>
@@ -36,7 +36,7 @@ class AvgStyleLength extends Component {
     );
 
     return (
-      <Box mb={3}>
+      <Box mb={3} style={{ background: isEditing ? "#FDF7D0" : null }}>
         <label>Average Style Length (mm):</label>
         <Tooltip
           trigger={["focus"]}

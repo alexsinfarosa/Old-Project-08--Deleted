@@ -50,11 +50,7 @@ class UserTable extends Component {
               {
                 Header: () => <CellHeader>Block Name</CellHeader>,
                 accessor: "name",
-                Cell: props => (
-                  <CellWrapper style={{ background: "orange" }}>
-                    {props.value}
-                  </CellWrapper>
-                )
+                Cell: props => <CellWrapper>{props.value}</CellWrapper>
               },
               {
                 Header: () => <CellHeader>Variety</CellHeader>,

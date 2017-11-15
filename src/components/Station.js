@@ -12,7 +12,7 @@ export default class Station extends Component {
     closeSidebar();
   };
   render() {
-    const { currentStateStations, station } = this.props.store.app;
+    const { currentStateStations, station, isEditing } = this.props.store.app;
 
     const stationList = currentStateStations.map(station => (
       <Select.Option
@@ -24,7 +24,7 @@ export default class Station extends Component {
     ));
 
     return (
-      <Box mb={3}>
+      <Box mb={3} style={{ background: isEditing ? "#FDF7D0" : null }}>
         <label>Station:</label>
         <Select
           name="station"
