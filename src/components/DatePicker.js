@@ -10,7 +10,8 @@ import moment from "moment";
 export default class Datepicker extends Component {
   onChange = (date, dateString) => {
     const { closeSidebar, loadGridData } = this.props.store.app;
-    this.props.setDate(dateString);
+    console.log(dateString);
+    this.props.setDate(moment(dateString));
     loadGridData();
     closeSidebar();
   };
@@ -30,7 +31,6 @@ export default class Datepicker extends Component {
     const { label, value } = this.props;
     const { isEditing } = this.props.store.app;
     const date = moment(value);
-    console.log(isEditing);
     return (
       <Box mb={3} style={{ background: isEditing ? "#FDF7D0" : null }}>
         <label>{label}:</label>
