@@ -295,6 +295,7 @@ export default class appStore {
   @action
   editBlock = b => {
     const idx = this.blocks.findIndex(block => block.id === b.id);
+    this.blocks.map(b => (b.isEditing = false));
     this.blocks[idx].isEditing = true;
     this.setBlockIsEditing(b.isEditing);
     this.setBlockId(b.id);

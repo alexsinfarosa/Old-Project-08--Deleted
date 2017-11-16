@@ -24,8 +24,11 @@ class UserTable extends Component {
   };
 
   render() {
-    const { blocks, deleteBlock } = this.props.store.app;
-    // blocks.map(b => console.log(b));
+    const { blocks, deleteBlock, block } = this.props.store.app;
+    console.log("----------------------");
+    blocks.map(b => console.log(b.name, b.id, b.isEditing));
+    console.log("----------------------");
+    console.log(block.name, block.id, block.isEditing);
     return (
       <Flex
         column
