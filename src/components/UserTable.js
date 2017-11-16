@@ -25,7 +25,7 @@ class UserTable extends Component {
 
   render() {
     const { blocks, deleteBlock } = this.props.store.app;
-    console.log(blocks.slice());
+    // blocks.map(b => console.log(b));
     return (
       <Flex
         column
@@ -52,7 +52,7 @@ class UserTable extends Component {
             defaultSorted={[
               {
                 id: "date",
-                desc: false
+                desc: true
               }
             ]}
             columns={[

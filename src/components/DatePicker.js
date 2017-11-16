@@ -9,18 +9,20 @@ import moment from "moment";
 @observer
 export default class Datepicker extends Component {
   onChange = (date, dateString) => {
+    this.props.setDate("");
     const { closeSidebar, loadGridData } = this.props.store.app;
-    this.props.setDate(dateString);
+    this.props.setDate(date);
     loadGridData();
     closeSidebar();
   };
 
-  onOk = value => {
-    const { closeSidebar, loadGridData } = this.props.store.app;
-    this.props.setDate(value._i);
-    loadGridData();
-    closeSidebar();
-  };
+  // onOk = value => {
+  //   const { closeSidebar, loadGridData } = this.props.store.app;
+  //   console.log(value);
+  //   this.props.setDate(value);
+  //   loadGridData();
+  //   closeSidebar();
+  // };
 
   disabledStartDate = current => {
     return current && current.valueOf() > Date.now();
@@ -30,9 +32,14 @@ export default class Datepicker extends Component {
     const { label, value } = this.props;
     const { isEditing } = this.props.store.app;
     const date = moment(value);
-    console.log(isEditing);
     return (
-      <Box mb={3} style={{ background: isEditing ? "#FDF7D0" : null }}>
+      <Box
+        mb={3}
+        style={{
+          background: isEditing ? "#FDF7D0" : null,
+          borderRadius: isEditing ? "5px" : null
+        }}
+      >
         <label>{label}:</label>
         <AntdDatePicker
           showTime
@@ -44,7 +51,7 @@ export default class Datepicker extends Component {
           disabledDate={this.disabledStartDate}
           showToday={true}
           onChange={(date, dateString) => this.onChange(date, dateString)}
-          onOk={value => this.onOk(value)}
+          // onOk={v => this.onOk(v)}
         />
       </Box>
     );
