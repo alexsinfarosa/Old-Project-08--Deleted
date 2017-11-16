@@ -272,9 +272,9 @@ export default class appStore {
   };
 
   @observable isEditing = false;
+
   @action
-  editBlock = d => {
-    const block = d.original;
+  editBlock = block => {
     this.blockId = block.id;
     this.setSubject(block.variety);
     this.setBlockName(block.name);
@@ -308,6 +308,7 @@ export default class appStore {
 
     this.blocks.splice(idx, 1, new Block(block));
     this.setBlocks(this.blocks);
+    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
     this.subject = {};
     this.setBlockName("");
     this.setAvgStyleLength("");
