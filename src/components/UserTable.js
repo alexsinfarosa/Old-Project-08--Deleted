@@ -40,134 +40,135 @@ class UserTable extends Component {
           </Box>
         </Flex>
 
-        <Box>
-          <ReactTable
-            noDataText="No Data"
-            data={blocks.slice()}
-            showPagination={false}
-            minRows={1}
-            pageSize={blocks.length}
-            resizable={true}
-            className="-highlight"
-            defaultSorted={[
-              {
-                id: "date",
-                desc: true
-              }
-            ]}
-            columns={[
-              {
-                Header: () => <CellHeader>Block Name</CellHeader>,
-                accessor: "name",
-                Cell: props => <CellWrapper>{props.value}</CellWrapper>
-              },
-              {
-                Header: () => <CellHeader>Variety</CellHeader>,
-                accessor: "variety",
-                Cell: props => <CellWrapper>{props.value}</CellWrapper>
-                // Cell: props => <span className="number">{props.value}</span>
-              },
-              {
-                Header: () => <CellHeader>Avg. Style Length</CellHeader>,
-                accessor: "avgStyleLength",
-                Cell: props => <CellWrapper>{props.value} mm</CellWrapper>
-              },
-              {
-                Header: () => <CellHeader>Start Date</CellHeader>,
-                accessor: "date",
-                Cell: props => (
-                  <CellWrapper>
-                    {props.value
-                      ? format(props.value, "MMM DD YYYY HH:mm")
-                      : null}
-                  </CellWrapper>
-                )
-              },
-              {
-                Header: () => <CellHeader>1st Spray Date</CellHeader>,
-                accessor: "firstSpray",
-                Cell: props => (
-                  <CellWrapper>
-                    {props.value
-                      ? format(props.value, "MMM DD YYYY HH:mm")
-                      : null}
-                  </CellWrapper>
-                )
-              },
-              {
-                Header: () => <CellHeader>2nd Spray Date</CellHeader>,
-                accessor: "secondSpray",
-                Cell: props => (
-                  <CellWrapper>
-                    {props.value
-                      ? format(props.value, "MMM DD YYYY HH:mm")
-                      : null}
-                  </CellWrapper>
-                )
-              },
-              {
-                Header: () => <CellHeader>3rd Spray Date</CellHeader>,
-                accessor: "thirdSpray",
-                Cell: props => (
-                  <CellWrapper>
-                    {props.value
-                      ? format(props.value, "MMM DD YYYY HH:mm")
-                      : null}
-                  </CellWrapper>
-                )
-              },
-              {
-                Header: () => <CellHeader center>Delete</CellHeader>,
-                width: 60,
-                Cell: props => (
-                  <Tooltip title="Delete Block">
-                    <CellWrapper>
-                      <TableIcons
-                        type="delete"
-                        onClick={() => deleteBlock(props)}
-                      />
-                    </CellWrapper>
-                  </Tooltip>
-                )
-              },
-              {
-                Header: () => <CellHeader center>Edit</CellHeader>,
-                width: 45,
-                Cell: props => (
-                  <Tooltip title="Edit Block">
-                    <CellWrapper>
-                      <TableIcons
-                        type="edit"
-                        onClick={() => this.handleEdit(props.original)}
-                      />
-                    </CellWrapper>
-                  </Tooltip>
-                )
-              }
-            ]}
-            SubComponent={row => {
-              return (
-                <Flex p={[1, 1, 2]} column>
-                  <Box>content...</Box>
-                  <Box>content...</Box>
-                </Flex>
-              );
-            }}
-            getTrProps={(state, rowInfo, column) => {
-              const { props } = this.state;
-              const { isEditing } = this.props.store.app;
-              let isRow;
-              if (isEditing) {
-                isRow = rowInfo.original.id === props.id;
-              }
-              return {
-                style: {
-                  background: isRow ? "#FDF7D0" : null
+        {blocks.length > 0 && (
+          <Box>
+            <ReactTable
+              noDataText="No Data"
+              data={blocks.slice()}
+              showPagination={false}
+              pageSize={blocks.length}
+              className="-highlight"
+              defaultSorted={[
+                {
+                  id: "date",
+                  desc: true
                 }
-              };
-            }}
-          />
-        </Box>
+              ]}
+              columns={[
+                {
+                  Header: () => <CellHeader>Block Name</CellHeader>,
+                  accessor: "name",
+                  Cell: props => <CellWrapper>{props.value}</CellWrapper>
+                },
+                {
+                  Header: () => <CellHeader>Variety</CellHeader>,
+                  accessor: "variety",
+                  Cell: props => <CellWrapper>{props.value}</CellWrapper>
+                  // Cell: props => <span className="number">{props.value}</span>
+                },
+                {
+                  Header: () => <CellHeader>Avg. Style Length</CellHeader>,
+                  accessor: "avgStyleLength",
+                  Cell: props => <CellWrapper>{props.value} mm</CellWrapper>
+                },
+                {
+                  Header: () => <CellHeader>Start Date</CellHeader>,
+                  accessor: "date",
+                  Cell: props => (
+                    <CellWrapper>
+                      {props.value
+                        ? format(props.value, "MMM DD YYYY HH:mm")
+                        : null}
+                    </CellWrapper>
+                  )
+                },
+                {
+                  Header: () => <CellHeader>1st Spray Date</CellHeader>,
+                  accessor: "firstSpray",
+                  Cell: props => (
+                    <CellWrapper>
+                      {props.value
+                        ? format(props.value, "MMM DD YYYY HH:mm")
+                        : null}
+                    </CellWrapper>
+                  )
+                },
+                {
+                  Header: () => <CellHeader>2nd Spray Date</CellHeader>,
+                  accessor: "secondSpray",
+                  Cell: props => (
+                    <CellWrapper>
+                      {props.value
+                        ? format(props.value, "MMM DD YYYY HH:mm")
+                        : null}
+                    </CellWrapper>
+                  )
+                },
+                {
+                  Header: () => <CellHeader>3rd Spray Date</CellHeader>,
+                  accessor: "thirdSpray",
+                  Cell: props => (
+                    <CellWrapper>
+                      {props.value
+                        ? format(props.value, "MMM DD YYYY HH:mm")
+                        : null}
+                    </CellWrapper>
+                  )
+                },
+                {
+                  Header: () => <CellHeader center>Delete</CellHeader>,
+                  width: 60,
+                  Cell: props => (
+                    <Tooltip title="Delete Block">
+                      <CellWrapper>
+                        <TableIcons
+                          type="delete"
+                          onClick={() => deleteBlock(props)}
+                        />
+                      </CellWrapper>
+                    </Tooltip>
+                  )
+                },
+                {
+                  Header: () => <CellHeader center>Edit</CellHeader>,
+                  width: 45,
+                  Cell: props => (
+                    <Tooltip title="Edit Block">
+                      <CellWrapper>
+                        <TableIcons
+                          type="edit"
+                          onClick={() => this.handleEdit(props.original)}
+                        />
+                      </CellWrapper>
+                    </Tooltip>
+                  )
+                }
+              ]}
+              SubComponent={row => {
+                return (
+                  <Flex p={[1, 1, 2]} column>
+                    <Box>content...</Box>
+                    <Box>content...</Box>
+                  </Flex>
+                );
+              }}
+              getTrProps={(state, rowInfo, column) => {
+                const { props } = this.state;
+                const { isEditing } = this.props.store.app;
+                // console.log(props);
+                let isRow;
+                if (isEditing) {
+                  isRow = rowInfo.original.id === props.id;
+                }
+                return {
+                  style: {
+                    background: isRow ? "#FDF7D0" : null
+                  }
+                };
+              }}
+            />
+          </Box>
+        )}
       </Flex>
     );
   }

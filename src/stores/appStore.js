@@ -240,10 +240,16 @@ export default class appStore {
   blocks = JSON.parse(localStorage.getItem("pollenTubeBlocks")) || [];
   @action setBlocks = d => (this.blocks = d);
 
-  @action
-  addBlock = () => {
-    const block = {
-      id: Math.random(),
+  @observable blockId;
+  @action setBlockId = d => (this.blockId = d);
+
+  @observable blockIsEditing = false;
+  @action setBlockIsEditing = d => (this.blockIsEditing = d);
+
+  @computed
+  get block() {
+    return {
+      id: this.blockId,
       variety: this.subject.name,
       name: this.blockName,
       avgStyleLength: this.avgStyleLength,
@@ -252,15 +258,29 @@ export default class appStore {
       date: this.date,
       firstSpray: this.firstSprayDate,
       secondSpray: this.secondSprayDate,
-      thirdSpray: this.thirdSprayDate
+      thirdSpray: this.thirdSprayDate,
+      isEditing: this.blockIsEditing
     };
+  }
 
-    this.blocks.push(new Block(block));
-    localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
+  resetFields = d => {
+    this.setBlockId(null);
+    this.setBlockIsEditing(false);
     this.subject = {};
     this.setBlockName("");
     this.setAvgStyleLength("");
     this.setDate(new Date());
+    this.setFirstSprayDate("");
+    this.setSecondSprayDate("");
+    this.setThirdSprayDate("");
+  };
+
+  @action
+  addBlock = () => {
+    this.blockId = Math.random();
+    this.blocks.push(new Block(this.block));
+    localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
+    this.resetFields();
   };
 
   @action
@@ -273,44 +293,37 @@ export default class appStore {
   @observable isEditing = false;
 
   @action
-  editBlock = block => {
-    this.blockId = block.id;
-    this.setSubject(block.variety);
-    this.setBlockName(block.name);
-    this.setAvgStyleLength(block.avgStyleLength);
-    this.setState(block.state);
-    this.setStation(block.station);
-    this.setDate(block.date);
-    this.setFirstSprayDate(block.firstSpray);
-    this.setSecondSprayDate(block.secondSpray);
-    this.setThirdSprayDate(block.thirdSpray);
+  editBlock = b => {
+    const idx = this.blocks.findIndex(block => block.id === b.id);
+    this.blocks[idx].isEditing = true;
+    this.setBlockIsEditing(b.isEditing);
+    this.setBlockId(b.id);
+    this.setSubject(b.variety);
+    this.setBlockName(b.name);
+    this.setAvgStyleLength(b.avgStyleLength);
+    this.setState(b.state);
+    this.setStation(b.station);
+    this.setDate(b.date);
+    this.setFirstSprayDate(b.firstSpray);
+    this.setSecondSprayDate(b.secondSpray);
+    this.setThirdSprayDate(b.thirdSpray);
     this.isEditing = true;
   };
 
-  @observable blockId;
   @action
   updateBlock = () => {
-    const block = {
-      id: this.blockId,
-      variety: this.subject.name,
-      name: this.blockName,
-      avgStyleLength: this.avgStyleLength,
-      state: this.state.name,
-      station: this.station.name,
-      date: this.date,
-      firstSpray: this.firstSprayDate,
-      secondSpray: this.secondSprayDate,
-      thirdSpray: this.thirdSprayDate
-    };
-
-    const idx = this.blocks.findIndex(b => b.id === block.id);
-
-    this.blocks.splice(idx, 1, new Block(block));
+    const idx = this.blocks.findIndex(b => b.id === this.blockId);
+    this.setBlockIsEditing(false);
+    this.blocks.splice(idx, 1, new Block(this.block));
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
-    this.subject = {};
-    this.setBlockName("");
-    this.setAvgStyleLength("");
+    this.resetFields();
+    this.isEditing = false;
+  };
+
+  @action
+  cancelBlock = () => {
+    this.resetFields();
     this.isEditing = false;
   };
 }

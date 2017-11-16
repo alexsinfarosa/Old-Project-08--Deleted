@@ -45,7 +45,6 @@ class App extends Component {
       date,
       setDate
     } = this.props.store.app;
-
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
         <Layout>

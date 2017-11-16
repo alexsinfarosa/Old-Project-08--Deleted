@@ -9,7 +9,6 @@ import moment from "moment";
 @observer
 export default class Datepicker extends Component {
   onChange = (date, dateString) => {
-    this.props.setDate("");
     const { closeSidebar, loadGridData } = this.props.store.app;
     this.props.setDate(date);
     loadGridData();
