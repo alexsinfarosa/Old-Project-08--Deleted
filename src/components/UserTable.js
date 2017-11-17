@@ -13,22 +13,8 @@ import { TableIcons, CellWrapper, CellHeader } from "styles";
 @inject("store")
 @observer
 class UserTable extends Component {
-  state = {
-    props: {}
-  };
-
-  handleEdit = props => {
-    const { editBlock } = this.props.store.app;
-    this.setState({ props });
-    editBlock(props);
-  };
-
   render() {
-    const { blocks, deleteBlock, block } = this.props.store.app;
-    console.log("----------------------");
-    blocks.map(b => console.log(b.name, b.id, b.isEditing));
-    console.log("----------------------");
-    console.log(block.name, block.id, block.isEditing);
+    const { deleteBlock, blocks, editBlock } = this.props.store.app;
     return (
       <Flex
         column
@@ -140,7 +126,7 @@ class UserTable extends Component {
                       <CellWrapper>
                         <TableIcons
                           type="edit"
-                          onClick={() => this.handleEdit(props.original)}
+                          onClick={() => editBlock(props.original)}
                         />
                       </CellWrapper>
                     </Tooltip>
@@ -156,16 +142,9 @@ class UserTable extends Component {
                 );
               }}
               getTrProps={(state, rowInfo, column) => {
-                const { props } = this.state;
-                const { isEditing } = this.props.store.app;
-                // console.log(props);
-                let isRow;
-                if (isEditing) {
-                  isRow = rowInfo.original.id === props.id;
-                }
                 return {
                   style: {
-                    background: isRow ? "#FDF7D0" : null
+                    background: rowInfo.original.isEditing ? "#FDF7D0" : null
                   }
                 };
               }}
