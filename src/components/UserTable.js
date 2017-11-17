@@ -15,6 +15,9 @@ import { TableIcons, CellWrapper, CellHeader } from "styles";
 class UserTable extends Component {
   render() {
     const { deleteBlock, blocks, editBlock } = this.props.store.app;
+    blocks.map(b => console.log(b.name, b.isEditing));
+    console.log("-------------------");
+
     return (
       <Flex
         column

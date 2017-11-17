@@ -68,7 +68,7 @@ export default class appStore {
   @action
   toggleBlocks = d => (this.isBlocks = !this.isBlocks);
 
-  // Block ------------------------------------------------------------------
+  // BlockName ----------------------------------------------------------------
   @observable blockName = "";
   @action
   setBlockName = d => {
@@ -192,7 +192,7 @@ export default class appStore {
   @observable thirdSprayDate = "";
   @action setThirdSprayDate = d => (this.thirdSprayDate = d);
 
-  // Load Grid Data --------------------------------------------------------------
+  // Load Grid Data ------------------------------------------------------------
   @observable gridData = [];
   @action updateGridData = d => (this.gridData = d);
 
@@ -230,21 +230,13 @@ export default class appStore {
     return [];
   };
 
-  // Current Model ----------------------------------------------------------------
-  // @action
-  // degreeDay = (day, base = 48.2) => {
-  //   return day[1] - base > 0 ? Math.round(day[1] - base) : 0;
-  // };
-
+  // User Data (Table of blocks) ------------------------------------------------
   @observable
   blocks = JSON.parse(localStorage.getItem("pollenTubeBlocks")) || [];
   @action setBlocks = d => (this.blocks = d);
 
   @observable blockId;
   @action setBlockId = d => (this.blockId = d);
-
-  @observable blockIsEditing = false;
-  @action setBlockIsEditing = d => (this.blockIsEditing = d);
 
   @computed
   get block() {
@@ -259,13 +251,12 @@ export default class appStore {
       firstSpray: this.firstSprayDate,
       secondSpray: this.secondSprayDate,
       thirdSpray: this.thirdSprayDate,
-      isEditing: this.blockIsEditing
+      isEditing: false
     };
   }
 
   resetFields = d => {
     this.setBlockId(null);
-    this.setBlockIsEditing(false);
     this.subject = {};
     this.setBlockName("");
     this.setAvgStyleLength("");
@@ -273,6 +264,7 @@ export default class appStore {
     this.setFirstSprayDate("");
     this.setSecondSprayDate("");
     this.setThirdSprayDate("");
+    this.blocks.findIndex(b => (b.isEditing = false));
   };
 
   @action
@@ -294,10 +286,9 @@ export default class appStore {
 
   @action
   editBlock = b => {
-    const idx = this.blocks.findIndex(block => block.id === b.id);
     this.blocks.map(b => (b.isEditing = false));
+    const idx = this.blocks.findIndex(block => block.id === b.id);
     this.blocks[idx].isEditing = true;
-    this.setBlockIsEditing(b.isEditing);
     this.setBlockId(b.id);
     this.setSubject(b.variety);
     this.setBlockName(b.name);
@@ -314,7 +305,6 @@ export default class appStore {
   @action
   updateBlock = () => {
     const idx = this.blocks.findIndex(b => b.id === this.blockId);
-    this.setBlockIsEditing(false);
     this.blocks.splice(idx, 1, new Block(this.block));
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
@@ -327,4 +317,10 @@ export default class appStore {
     this.resetFields();
     this.isEditing = false;
   };
+
+  // Hourly station data ------------------------------------------------------
+  // @action
+  // degreeDay = (day, base = 48.2) => {
+  //   return day[1] - base > 0 ? Math.round(day[1] - base) : 0;
+  // };
 }
