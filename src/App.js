@@ -43,8 +43,11 @@ class App extends Component {
       thirdSprayDate,
       setThirdSprayDate,
       date,
-      setDate
+      setDate,
+      acisData
     } = this.props.store.app;
+
+    acisData;
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
         <Layout>

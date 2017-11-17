@@ -3,13 +3,15 @@ import axios from "axios";
 import format from "date-fns/format";
 import Block from "stores/Block";
 
+import { fetchACISData } from "fetchACISData";
+
 export default class appStore {
   constructor(fetch) {
     this.fetch = fetch;
     when(() => this.subjects.length === 0, () => this.loadSubjects());
     when(() => this.states.length === 0, () => this.loadStates());
     when(() => this.stations.length === 0, () => this.loadStations());
-    when(() => this.gridData.length === 0, () => this.loadGridData());
+    // when(() => this.gridData.length === 0, () => this.loadGridData());
   }
 
   // Logic ------------------------------------------------------------------
@@ -183,7 +185,7 @@ export default class appStore {
   };
 
   // Dates---------------------------------------------------------------------
-  @observable date = new Date();
+  @observable date = format(new Date(), "YYYY-MM-DD");
   @action setDate = d => (this.date = d);
   @observable firstSprayDate = "";
   @action setFirstSprayDate = d => (this.firstSprayDate = d);
@@ -193,42 +195,42 @@ export default class appStore {
   @action setThirdSprayDate = d => (this.thirdSprayDate = d);
 
   // Load Grid Data ------------------------------------------------------------
-  @observable gridData = [];
-  @action updateGridData = d => (this.gridData = d);
+  // @observable gridData = [];
+  // @action updateGridData = d => (this.gridData = d);
 
-  @action
-  loadGridData = (sdate = this.date, edate = this.date) => {
-    if (this.areRequiredFieldsSet) {
-      this.isLoading = true;
+  // @action
+  // loadGridData = (sdate = this.date, edate = this.date) => {
+  //   if (this.areRequiredFieldsSet) {
+  //     this.isLoading = true;
 
-      let loc = "-75.7,42.5";
-      if (this.state.name !== "All States") {
-        loc = `${this.station.lon},${this.station.lat}`;
-      }
+  //     let loc = "-75.7,42.5";
+  //     if (this.state.name !== "All States") {
+  //       loc = `${this.station.lon},${this.station.lat}`;
+  //     }
 
-      const params = {
-        loc: loc,
-        sdate: format(sdate, "YYYY-MM-DD"),
-        edate: format(edate, "YYYY-MM-DD"),
-        grid: 3,
-        elems: [{ name: "avgt" }]
-      };
+  //     const params = {
+  //       loc: loc,
+  //       sdate: format(sdate, "YYYY-MM-DD"),
+  //       edate: format(edate, "YYYY-MM-DD"),
+  //       grid: 3,
+  //       elems: [{ name: "avgt" }]
+  //     };
 
-      // console.log(params);
+  //     // console.log(params);
 
-      return axios
-        .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
-        .then(res => {
-          // console.log(res.data.data);
-          this.updateGridData(res.data.data);
-          this.isLoading = false;
-        })
-        .catch(err => {
-          console.log("Failed to load grid data", err);
-        });
-    }
-    return [];
-  };
+  //     return axios
+  //       .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
+  //       .then(res => {
+  //         // console.log(res.data.data);
+  //         this.updateGridData(res.data.data);
+  //         this.isLoading = false;
+  //       })
+  //       .catch(err => {
+  //         console.log("Failed to load grid data", err);
+  //       });
+  //   }
+  //   return [];
+  // };
 
   // User Data (Table of blocks) ------------------------------------------------
   @observable
@@ -323,4 +325,9 @@ export default class appStore {
   // degreeDay = (day, base = 48.2) => {
   //   return day[1] - base > 0 ? Math.round(day[1] - base) : 0;
   // };
+
+  @computed
+  get acisData() {
+    return fetchACISData(this.station, this.date);
+  }
 }

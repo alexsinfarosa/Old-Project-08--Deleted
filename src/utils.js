@@ -1,6 +1,3 @@
-import format from "date-fns/format";
-import addDays from "date-fns/add_days";
-
 // PRE FETCHING ---------------------------------------------------------
 export const matchIconsToStations = (protocol, station, state) => {
   const { network } = station;
@@ -73,39 +70,6 @@ export const michiganIdAdjustment = station => {
   return station.id;
 };
 
-export const allStations = (
-  protocol,
-  acis,
-  stations,
-  state,
-  startDate,
-  endDate
-) => {
-  let stationsWithIcons = matchIconsToStations(protocol, stations, state);
-
-  // building the station object with the things I might need
-  for (const station of stationsWithIcons) {
-    station["sid"] = `${station.name} ${station.network}`;
-    station["sdate"] = startDate;
-    station["edate"] = format(addDays(endDate, 6), "YYYY-MM-DD");
-    station["id-adj"] = michiganIdAdjustment(station);
-    station["elems"] = [
-      // temperature
-      networkTemperatureAdjustment(station.network),
-      // relative humidity
-      networkHumidityAdjustment(station.network),
-      // leaf wetness
-      "118",
-      // precipitation
-      "5"
-    ];
-  }
-  // console.log(stationsWithIcons);
-  return stationsWithIcons;
-};
-
-// POST FETCHING ----------------------------------------------------------------------------
-
 // Returns the average of two numbers.
 export const avgTwoStringNumbers = (a, b) => {
   const aNum = parseFloat(a);
@@ -138,7 +102,7 @@ export const replaceNonConsecutiveMissingValues = data => {
   });
 };
 
-// Replaces current station (cStation) missing values with compared station
+// Replaces current station (cStation) missing values with compared station (sStation)
 export const replaceMissingValues = (cStation, sStation) => {
   return cStation.map((e, i) => {
     if (e === "M" && sStation[i] !== "M") {
@@ -188,51 +152,4 @@ export const aboveEqualToValue = (data, value) => {
     }
     return false;
   });
-};
-
-// This function will shift data from (0, 23) to (13, 12)
-export const noonToNoon = data => {
-  let results = [];
-
-  // get all dates
-  const dates = data.map(day => day[0]);
-
-  // shifting Temperature array
-  const TP = data.map(day => day[1]);
-  const TPFlat = [].concat(...TP);
-  let TPShifted = [];
-  while (TPFlat.length > 24) {
-    TPShifted.push(TPFlat.splice(12, 24));
-  }
-
-  // shifting relative humidity array
-  let RH = data.map(day => day[2]);
-  const RHFlat = [].concat(...RH);
-  let RHShifted = [];
-  while (RHFlat.length > 24) {
-    RHShifted.push(RHFlat.splice(12, 24));
-  }
-
-  // shifting leaf wetness array
-  const LW = data.map(day => day[3]);
-  const LWFlat = [].concat(...LW);
-  let LWShifted = [];
-  while (LWFlat.length > 24) {
-    LWShifted.push(LWFlat.splice(12, 24));
-  }
-
-  // shifting precipitation array
-  const PT = data.map(day => day[4]);
-  const PTFlat = [].concat(...PT);
-  let PTShifted = [];
-  while (PTFlat.length > 24) {
-    PTShifted.push(PTFlat.splice(12, 24));
-  }
-
-  for (const [i, el] of dates.entries()) {
-    results[i] = [el, TPShifted[i], RHShifted[i], LWShifted[i], PTShifted[i]];
-  }
-
-  // Since to shift data we requested one day more, we slice to get rid of the extra day
-  return results.slice(0, -1);
 };

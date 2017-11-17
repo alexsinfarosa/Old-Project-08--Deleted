@@ -1,28 +1,33 @@
 import axios from "axios";
+import { michiganIdAdjustment, networkTemperatureAdjustment } from "utils";
+import getYear from "date-fns/get_year";
 import format from "date-fns/format";
 import addDays from "date-fns/add_days";
-import {
-  michiganIdAdjustment,
-  networkTemperatureAdjustment,
-  networkHumidityAdjustment
-} from "utils";
+
+const protocol = window.location.protocol;
+const sdate = date => `${getYear(date)}-01-01`;
 
 // Fetch acis data -------------------------------------------------------------
-export const fetchACISData = (protocol, station, startDate, endDate, days) => {
+const fetchHourlyStationData = (station, date) => {
+  let sid, network;
+  if (station !== null && typeof station === "object") {
+    network = station.network;
+    sid = `${michiganIdAdjustment(station)} ${network}`;
+  }
+
+  if (station !== null && typeof station === "string") {
+    const [id, sisNetwork] = station.split(" ");
+    network = sisNetwork;
+    sid = `${id} ${network}`;
+  }
+
   const params = {
-    sid: `${michiganIdAdjustment(station)} ${station.network}`,
-    sdate: startDate,
-    // Plus 6 days because we account for the noonToNoon function
-    edate: format(addDays(endDate, days), "YYYY-MM-DD"),
+    sid: sid,
+    sdate: sdate(date),
+    edate: format(date, "YYYY-MM-DD"),
     elems: [
       // temperature
-      networkTemperatureAdjustment(station.network),
-      // relative humidity
-      networkHumidityAdjustment(station.network),
-      // leaf wetness
-      "118",
-      // precipitation
-      "5"
+      networkTemperatureAdjustment(network)
     ]
   };
 
@@ -31,179 +36,65 @@ export const fetchACISData = (protocol, station, startDate, endDate, days) => {
   return axios
     .post(`${protocol}//data.nrcc.rcc-acis.org/StnData`, params)
     .then(res => {
-      if (!res.data.hasOwnProperty("error")) {
-        // res.data.data.map(e => console.log(e[1]));
-        return res.data.data;
-      }
-      console.log(res.data.error);
+      // res.data.data.map(arr => console.log(arr[1]));
+      return res.data.data;
     })
     .catch(err => {
-      console.log(err);
+      console.log("Failed to load ACIS data", err);
     });
 };
 
 // Get sister station Id and network -------------------------------------------
-export const getSisterStationIdAndNetwork = (protocol, station) => {
+const getSisterStationIdAndNetwork = station => {
   return axios(
     `${protocol}//newa2.nrcc.cornell.edu/newaUtil/stationSisterInfo/${station.id}/${station.network}`
   )
     .then(res => {
+      // console.log(res.data);
       return res.data.temp;
     })
     .catch(err => {
-      console.log(err);
-    });
-};
-
-// Fetch sister station data ---------------------------------------------------
-export const fetchSisterStationData = (
-  protocol,
-  idAndNetwork,
-  station,
-  startDate,
-  endDate,
-  currentYear,
-  startDateYear,
-  days
-) => {
-  const [id, network] = idAndNetwork.split(" ");
-
-  const params = {
-    sid: `${id} ${network}`,
-    sdate: startDate,
-    edate: format(addDays(endDate, days), "YYYY-MM-DD"),
-    elems: [
-      // temperature
-      networkTemperatureAdjustment(station.network),
-      // relative humidity
-      networkHumidityAdjustment(station.network),
-      // leaf wetness
-      "118",
-      // precipitation
-      "5"
-    ]
-  };
-
-  // console.log(params);
-  return axios
-    .post(`${protocol}//data.nrcc.rcc-acis.org/StnData`, params)
-    .then(res => {
-      if (!res.data.hasOwnProperty("error")) {
-        return res.data.data;
-      }
-      console.log(res.data.error);
-    })
-    .catch(err => {
-      console.log(err);
+      console.log("Failed to load sister station's id and network", err);
     });
 };
 
 // Fetch forecast temperature --------------------------------------------------
-export const fetchForecastTemps = (
-  protocol,
-  station,
-  startDate,
-  endDate,
-  days
-) => {
+const fetchHourlyForcestData = (station, date) => {
+  const plusFiveDays = format(addDays(date, 5), "YYYY-MM-DD");
   return axios
     .get(
-      `${protocol}//newa2.nrcc.cornell.edu/newaUtil/getFcstData/${station.id}/${station.network}/temp/${startDate}/${format(
-        addDays(endDate, days),
-        "YYYY-MM-DD"
-      )}`
+      `${protocol}//newa2.nrcc.cornell.edu/newaUtil/getFcstData/${station.id}/${station.network}/temp/${sdate(
+        date
+      )}/${plusFiveDays}`
     )
     .then(res => {
-      if (!res.data.hasOwnProperty("error")) {
-        return res.data.data;
-      }
-      console.log(res.data.error);
+      // console.log(res.data.data);
+      return res.data.data;
     })
     .catch(err => {
-      console.log(err);
+      console.log("Failed to load hourly forecast data", err);
     });
 };
 
-// Fetch forecast relative humidity --------------------------------------------
-export const fetchForecastRH = (
-  protocol,
-  station,
-  startDate,
-  endDate,
-  days
-) => {
-  return axios
-    .get(
-      `${protocol}//newa2.nrcc.cornell.edu/newaUtil/getFcstData/${station.id}/${station.network}/rhum/${startDate}/${format(
-        addDays(endDate, days),
-        "YYYY-MM-DD"
-      )}`
-    )
-    .then(res => {
-      if (!res.data.hasOwnProperty("error")) {
-        return res.data.data;
-      }
-      console.log(res.data.error);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-};
+export const fetchACISData = async (station, date) => {
+  // get sister station id and network
+  const sisterStationIdAndNetwork = await getSisterStationIdAndNetwork(
+    station
+  ).then(res => res);
 
-// Fetch forecast relative humidity --------------------------------------------
-export const fetchPrecipitation = (
-  protocol,
-  station,
-  startDate,
-  endDate,
-  days
-) => {
-  return axios
-    .get(
-      `${protocol}//newa2.nrcc.cornell.edu/newaUtil/getFcstData/${station.id}/${station.network}/qpf/${startDate}/${format(
-        addDays(endDate, days),
-        "YYYY-MM-DD"
-      )}`
-    )
-    .then(res => {
-      if (!res.data.hasOwnProperty("error")) {
-        return res.data.data;
-      }
-      console.log(res.data.error);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-};
+  // get current station hourly data
+  const currentStation = fetchHourlyStationData(station, date).then(res => res);
 
-// Fetch forecast data ---------------------------------------------------------
-export const fetchForecastData = (
-  protocol,
-  station,
-  startDate,
-  endDate,
-  days
-) => {
-  return axios
-    .all([
-      fetchForecastTemps(protocol, station, startDate, endDate, days),
-      fetchForecastRH(protocol, station, startDate, endDate, days),
-      fetchPrecipitation(protocol, station, startDate, endDate, days)
-    ])
-    .then(res => {
-      const dates = res[0].map(day => day[0]);
-      const TP = res[0].map(day => day[1]);
-      const RH = res[1].map(day => day[1]);
-      // Fake data, done to make forecast similar to ACIS since forecast does not have LW
-      // const LW = new Array(24).fill("M");
-      const PT = res[2].map(day => day[1]);
-      let results = [];
-      dates.map((day, i) => {
-        return results.push([dates[i], TP[i], RH[i], PT[i]]);
-      });
-      return results;
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  // get sister station hourly data
+  const sisterStation = fetchHourlyStationData(
+    sisterStationIdAndNetwork,
+    date
+  ).then(res => res);
+
+  const forecastData = fetchHourlyForcestData(station, date).then(res => res);
+
+  console.log(sisterStationIdAndNetwork);
+  console.log(currentStation);
+  console.log(sisterStation);
+  console.log(forecastData);
 };

@@ -9,9 +9,8 @@ import moment from "moment";
 @observer
 export default class Datepicker extends Component {
   onChange = (date, dateString) => {
-    const { closeSidebar, loadGridData } = this.props.store.app;
+    const { closeSidebar } = this.props.store.app;
     this.props.setDate(date);
-    loadGridData();
     closeSidebar();
   };
 
@@ -46,7 +45,7 @@ export default class Datepicker extends Component {
           value={value ? date : null}
           size="large"
           allowClear={false}
-          format="MMM DD YYYY HH:mm"
+          format="MMM DD YYYY H:00"
           disabledDate={this.disabledStartDate}
           showToday={true}
           onChange={(date, dateString) => this.onChange(date, dateString)}
