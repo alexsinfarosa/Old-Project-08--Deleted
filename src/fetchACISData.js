@@ -82,9 +82,6 @@ export const fetchACISData = async (station, date) => {
     station
   ).then(res => res);
 
-  // get current station hourly data
-  const currentStation = fetchHourlyStationData(station, date).then(res => res);
-
   // get sister station hourly data
   const sisterStation = fetchHourlyStationData(
     sisterStationIdAndNetwork,
@@ -93,8 +90,13 @@ export const fetchACISData = async (station, date) => {
 
   const forecastData = fetchHourlyForcestData(station, date).then(res => res);
 
-  console.log(sisterStationIdAndNetwork);
-  console.log(currentStation);
-  console.log(sisterStation);
-  console.log(forecastData);
+  // get current station hourly data
+  const currentStation = fetchHourlyStationData(station, date).then(res => res);
+
+  return {
+    sisterStationIdAndNetwork,
+    currentStation,
+    sisterStation,
+    forecastData
+  };
 };

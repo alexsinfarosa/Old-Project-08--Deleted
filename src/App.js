@@ -47,7 +47,8 @@ class App extends Component {
       acisData
     } = this.props.store.app;
 
-    acisData;
+    acisData.then(res => console.log(res));
+
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
         <Layout>
