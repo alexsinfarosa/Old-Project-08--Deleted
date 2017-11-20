@@ -3,12 +3,19 @@ import { michiganIdAdjustment, networkTemperatureAdjustment } from "utils";
 import getYear from "date-fns/get_year";
 import format from "date-fns/format";
 import addDays from "date-fns/add_days";
+import isThisYear from "date-fns/is_this_year";
+// utils
+import {
+  replaceNonConsecutiveMissingValues,
+  replaceMissingValues
+} from "utils";
 
 const protocol = window.location.protocol;
 const sdate = date => `${getYear(date)}-01-01`;
 
 // Fetch acis data -------------------------------------------------------------
 const fetchHourlyStationData = (station, date) => {
+  // console.log("fetchHourlyStationData");
   let sid, network;
   if (station !== null && typeof station === "object") {
     network = station.network;
@@ -31,7 +38,7 @@ const fetchHourlyStationData = (station, date) => {
     ]
   };
 
-  // console.log(params);
+  console.log(params);
 
   return axios
     .post(`${protocol}//data.nrcc.rcc-acis.org/StnData`, params)
@@ -46,6 +53,7 @@ const fetchHourlyStationData = (station, date) => {
 
 // Get sister station Id and network -------------------------------------------
 const getSisterStationIdAndNetwork = station => {
+  // console.log("getSisterStationIdAndNetwork");
   return axios(
     `${protocol}//newa2.nrcc.cornell.edu/newaUtil/stationSisterInfo/${station.id}/${station.network}`
   )
@@ -60,7 +68,9 @@ const getSisterStationIdAndNetwork = station => {
 
 // Fetch forecast temperature --------------------------------------------------
 const fetchHourlyForcestData = (station, date) => {
+  // console.log("fetchHourlyForcestData");
   const plusFiveDays = format(addDays(date, 5), "YYYY-MM-DD");
+
   return axios
     .get(
       `${protocol}//newa2.nrcc.cornell.edu/newaUtil/getFcstData/${station.id}/${station.network}/temp/${sdate(
@@ -77,26 +87,44 @@ const fetchHourlyForcestData = (station, date) => {
 };
 
 export const fetchACISData = async (station, date) => {
+  // console.log("fetchACISData");
+
   // get sister station id and network
   const sisterStationIdAndNetwork = await getSisterStationIdAndNetwork(
     station
   ).then(res => res);
 
   // get sister station hourly data
-  const sisterStation = fetchHourlyStationData(
+  const sisterStation = await fetchHourlyStationData(
     sisterStationIdAndNetwork,
     date
   ).then(res => res);
-
-  const forecastData = fetchHourlyForcestData(station, date).then(res => res);
+  const sStation = await replaceNonConsecutiveMissingValues(sisterStation);
 
   // get current station hourly data
-  const currentStation = fetchHourlyStationData(station, date).then(res => res);
+  const currentStation = await fetchHourlyStationData(station, date).then(
+    res => res
+  );
+  const cStation = await replaceNonConsecutiveMissingValues(currentStation);
 
-  return {
-    sisterStationIdAndNetwork,
-    currentStation,
-    sisterStation,
-    forecastData
-  };
+  // replace missing values with sister station
+  const replacedMissingValuesWithSisterStation = await replaceMissingValues(
+    cStation,
+    sStation
+  );
+
+  // If this year, replace missing value with forecast data
+  if (isThisYear(date)) {
+    const forecastData = await fetchHourlyForcestData(station, date).then(
+      res => res
+    );
+
+    const replacedMissingValuesWithForecast = await replaceMissingValues(
+      replacedMissingValuesWithSisterStation,
+      forecastData
+    );
+    return replacedMissingValuesWithForecast;
+  }
+
+  return replacedMissingValuesWithSisterStation;
 };

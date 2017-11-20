@@ -104,11 +104,18 @@ export const replaceNonConsecutiveMissingValues = data => {
 
 // Replaces current station (cStation) missing values with compared station (sStation)
 export const replaceMissingValues = (cStation, sStation) => {
-  return cStation.map((e, i) => {
-    if (e === "M" && sStation[i] !== "M") {
-      return sStation[i].toString();
-    }
-    return e.toString();
+  return cStation.map((day, i) => {
+    return day.map(param => {
+      if (Array.isArray(param)) {
+        return param.map((temp, j) => {
+          if (temp === "M") {
+            return sStation[i][1][j].toString();
+          }
+          return temp;
+        });
+      }
+      return param;
+    });
   });
 };
 

@@ -18,7 +18,7 @@ import Acknowledgements from "components/Acknowledgements";
 
 // import ClickMapMessage from "components/ClickMapMessage";
 // import USMap from "components/USMap";
-import UserTable from "components/UserTable";
+import UserData from "components/UserData";
 // import PCEtable from "components/PCEtable";
 import ToggleButtons from "components/ToggleButtons";
 // import PCEgraph from "components/PCEgraph";
@@ -34,7 +34,6 @@ class App extends Component {
       toggleSidebar,
       setSidebar,
       breakpoints,
-      isBlocks,
       isEditing,
       firstSprayDate,
       setFirstSprayDate,
@@ -43,11 +42,8 @@ class App extends Component {
       thirdSprayDate,
       setThirdSprayDate,
       date,
-      setDate,
-      acisData
+      setDate
     } = this.props.store.app;
-
-    acisData.then(res => console.log(res));
 
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
@@ -158,7 +154,7 @@ class App extends Component {
 
             <Content style={{ margin: "24px 16px" }}>
               <Flex column style={{ maxWidth: "1200px", margin: "0 auto" }}>
-                {isBlocks && <UserTable />}
+                <UserData />
               </Flex>
             </Content>
           </Layout>

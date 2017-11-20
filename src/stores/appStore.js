@@ -271,15 +271,15 @@ export default class appStore {
 
   @action
   addBlock = () => {
-    this.blockId = Math.random();
+    this.blockId = Math.random().toString();
     this.blocks.push(new Block(this.block));
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
     this.resetFields();
   };
 
   @action
-  deleteBlock = block => {
-    this.blocks.splice(block.index, 1);
+  deleteBlock = (block, index) => {
+    this.blocks.splice(index, 1);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
   };
@@ -287,10 +287,9 @@ export default class appStore {
   @observable isEditing = false;
 
   @action
-  editBlock = b => {
+  editBlock = (b, index) => {
     this.blocks.map(b => (b.isEditing = false));
-    const idx = this.blocks.findIndex(block => block.id === b.id);
-    this.blocks[idx].isEditing = true;
+    this.blocks[index].isEditing = true;
     this.setBlockId(b.id);
     this.setSubject(b.variety);
     this.setBlockName(b.name);
@@ -328,6 +327,8 @@ export default class appStore {
 
   @computed
   get acisData() {
-    return fetchACISData(this.station, this.date);
+    return this.areRequiredFieldsSet
+      ? fetchACISData(this.station, this.date)
+      : [];
   }
 }

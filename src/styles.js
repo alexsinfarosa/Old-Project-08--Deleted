@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Icon } from "antd";
+import { Icon, Row } from "antd";
 
 export const MenuFold = styled(Icon)`
   font-size: 1.1rem;
@@ -30,3 +30,11 @@ export const CellHeader = styled.div`
   align-items: center;
   justify-content: ${props => (props.center ? "center" : null)};
 `;
+
+export const Block = styled.div`
+  background: white;
+  border-radius: 5px;
+  padding: 16px 8px;
+`;
+
+export const MRow = styled(Row)`margin-bottom: 8px;`;
