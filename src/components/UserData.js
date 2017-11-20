@@ -13,7 +13,9 @@ import { Block, MRow } from "styles";
 @inject("store")
 @observer
 class UserData extends Component {
-  state = {};
+  state = {
+    record: {}
+  };
 
   render() {
     const { blocks, editBlock, deleteBlock } = this.props.store.app;
@@ -72,12 +74,23 @@ class UserData extends Component {
           <span>
             <a onClick={() => deleteBlock(record, index)}>Delete</a>
             <span className="ant-divider" />
-            <a onClick={() => editBlock(record, index)}>Edit</a>
+            <a
+              onClick={() => {
+                editBlock(record, index);
+                this.setState({ record });
+              }}
+            >
+              Edit
+            </a>
           </span>
         )
       }
     ];
     //  end columns ------------------------------------------------------
+
+    const isRowSelected = record => {
+      if (record.id === this.state.record.id) return "selected";
+    };
 
     return (
       <Block>
@@ -91,6 +104,7 @@ class UserData extends Component {
           </MRow>
           <MRow>
             <Table
+              rowClassName={record => isRowSelected(record)}
               size="middle"
               pagination={false}
               rowKey={record => record.id}
