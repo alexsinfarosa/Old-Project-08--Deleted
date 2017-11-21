@@ -142,7 +142,7 @@ class App2 extends Component {
                   span={6}
                   style={{
                     textAlign: "right",
-                    paddingRight: breakpoints.xs ? "48px" : "16px"
+                    paddingRight: breakpoints.xs ? "48px" : "24px"
                   }}
                 >
                   {breakpoints.xs ? <h3>NEWA</h3> : <h2>NEWA</h2>}
