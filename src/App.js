@@ -5,7 +5,6 @@ import "./index.css";
 import { Flex, Box, BlockLink } from "rebass";
 import { MenuFold } from "./styles";
 import { MatchMediaProvider } from "mobx-react-matchmedia";
-import { Layout } from "antd";
 
 import Subject from "components/Subject";
 import AvgStyleLength from "components/AvgStyleLength";
@@ -23,6 +22,7 @@ import UserData from "components/UserData";
 import ToggleButtons from "components/ToggleButtons";
 // import PCEgraph from "components/PCEgraph";
 
+import { Layout } from "antd";
 const { Content, Sider } = Layout;
 
 @inject("store")
@@ -42,7 +42,8 @@ class App extends Component {
       thirdSprayDate,
       setThirdSprayDate,
       date,
-      setDate
+      setDate,
+      isBlocks
     } = this.props.store.app;
 
     return (
@@ -154,7 +155,7 @@ class App extends Component {
 
             <Content style={{ margin: "24px 16px" }}>
               <Flex column style={{ maxWidth: "1200px", margin: "0 auto" }}>
-                <UserData />
+                {isBlocks && <UserData />}
               </Flex>
             </Content>
           </Layout>

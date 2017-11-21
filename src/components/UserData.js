@@ -18,7 +18,7 @@ class UserData extends Component {
   };
 
   render() {
-    const { blocks, editBlock, deleteBlock } = this.props.store.app;
+    const { blocks, editBlock, deleteBlock, isEditing } = this.props.store.app;
     // blocks.map(b => console.table(toJS(b)));
 
     // columns ----------------------------------------------------------
@@ -36,7 +36,8 @@ class UserData extends Component {
       {
         title: "Avg. Style Length",
         dataIndex: "avgStyleLength",
-        key: "avgStyleLength"
+        key: "avgStyleLength",
+        render: text => <span>{`${text} mm`}</span>
       },
       {
         title: "Start Date",
@@ -89,7 +90,7 @@ class UserData extends Component {
     //  end columns ------------------------------------------------------
 
     const isRowSelected = record => {
-      if (record.id === this.state.record.id) return "selected";
+      if (record.isEditing && isEditing) return "selected";
     };
 
     return (
@@ -105,6 +106,8 @@ class UserData extends Component {
           <MRow>
             <Table
               rowClassName={record => isRowSelected(record)}
+              expandIconColumnIndex={0}
+              expandIconAsCell={false}
               size="middle"
               pagination={false}
               rowKey={record => record.id}

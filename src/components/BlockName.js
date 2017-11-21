@@ -1,39 +1,26 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Box } from "rebass";
-import { Input } from "antd";
+import { Col, Input } from "antd";
 
 @inject("store")
 @observer
-class BlockName extends Component {
-  onChange = e => {
-    const value = e.target.value;
-    this.props.store.app.setBlockName(value);
-  };
-
-  onBlur = value => {
-    const { blockName } = this.props.store.app;
-    this.props.store.app.setBlockName(blockName.trim());
-  };
-
+export default class BlockName extends Component {
   render() {
-    const { blockName, isEditing } = this.props.store.app;
+    const { blockName, isEditing, setBlockName } = this.props.store.app;
     return (
-      <Box mb={3} style={{ background: isEditing ? "#FDF7D0" : null }}>
-        <label>Block Name:</label>
+      <Col
+        style={{ background: isEditing ? "#FDF7D0" : null, margin: "16px 0" }}
+      >
+        <p style={{ lineHeight: "1.5" }}>Block Name:</p>
         <Input
           size="large"
-          style={{
-            width: "100%"
-          }}
-          placeholder="Block Name"
-          onChange={this.onChange}
-          onBlur={this.onBlur}
+          style={{ width: "100%" }}
+          placeholder="Insert Block Name"
+          onChange={e => setBlockName(e.target.value)}
+          onBlur={() => setBlockName(blockName.trim())}
           value={blockName}
         />
-      </Box>
+      </Col>
     );
   }
 }
-
-export default BlockName;

@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-
-import { Button } from "antd";
-import { Flex, Box } from "rebass";
+import { Row, Col, Button } from "antd";
 
 @inject("store")
 @observer
@@ -17,46 +15,44 @@ class AddUpdateButton extends Component {
     } = this.props.store.app;
 
     return (
-      <Flex my={3}>
+      <Col style={{ margin: "32px 0" }}>
         {!isEditing ? (
-          <Box w={1}>
-            <Button
-              type="default"
-              style={{
-                width: "100%"
-              }}
-              size="large"
-              onClick={() => addBlock()}
-              disabled={areRequiredFieldsSet ? false : true}
-            >
-              New Block
-            </Button>
-          </Box>
+          <Row>
+            <Col>
+              <Button
+                type="default"
+                style={{ width: "100%" }}
+                size="large"
+                onClick={() => addBlock()}
+                disabled={areRequiredFieldsSet ? false : true}
+              >
+                New Block
+              </Button>
+            </Col>
+          </Row>
         ) : (
-          <Box w={1}>
-            <Flex justify="space-between">
-              <Box w={1 / 2} pr={1}>
-                <Button
-                  style={{ width: "100%", background: "#FDF7D0" }}
-                  size="large"
-                  onClick={() => cancelBlock()}
-                >
-                  Cancel
-                </Button>
-              </Box>
-              <Box w={1 / 2} pl={1}>
-                <Button
-                  style={{ width: "100%", background: "#FDF7D0" }}
-                  size="large"
-                  onClick={() => updateBlock()}
-                >
-                  Update
-                </Button>
-              </Box>
-            </Flex>
-          </Box>
+          <Row type="flex" justify="space-between">
+            <Col span={11}>
+              <Button
+                style={{ width: "100%", background: "#FDF7D0" }}
+                size="large"
+                onClick={() => cancelBlock()}
+              >
+                Cancel
+              </Button>
+            </Col>
+            <Col span={11}>
+              <Button
+                style={{ width: "100%", background: "#FDF7D0" }}
+                size="large"
+                onClick={() => updateBlock()}
+              >
+                Update
+              </Button>
+            </Col>
+          </Row>
         )}
-      </Flex>
+      </Col>
     );
   }
 }

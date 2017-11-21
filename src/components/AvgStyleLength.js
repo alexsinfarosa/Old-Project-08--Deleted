@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Box } from "rebass";
-import { Tooltip, InputNumber } from "antd";
+import { Col, Tooltip, InputNumber } from "antd";
 
 @inject("store")
 @observer
@@ -36,8 +35,10 @@ class AvgStyleLength extends Component {
     );
 
     return (
-      <Box mb={3} style={{ background: isEditing ? "#FDF7D0" : null }}>
-        <label>Average Style Length (mm):</label>
+      <Col
+        style={{ background: isEditing ? "#FDF7D0" : null, margin: "16px 0" }}
+      >
+        <p style={{ lineHeight: "1.5" }}>Avg. Style Length:</p>
         <Tooltip
           trigger={["focus"]}
           title={title}
@@ -50,7 +51,7 @@ class AvgStyleLength extends Component {
               width: "100%"
             }}
             onChange={this.onChange}
-            placeholder="Input a number"
+            placeholder="Insert Avg. Style Length"
             min={6}
             max={12}
             step={0.1}
@@ -58,7 +59,7 @@ class AvgStyleLength extends Component {
             value={avgStyleLength}
           />
         </Tooltip>
-      </Box>
+      </Col>
     );
   }
 }

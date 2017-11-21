@@ -94,12 +94,17 @@ export default class appStore {
       });
   }
 
-  @observable subject = {};
+  @observable
+  subject = {
+    subject: "Variety",
+    placeholder: "Apple Variety"
+  };
 
   @action
   setSubject = d => {
-    this.subject = this.subjects.find(subject => subject.name === d);
-    // localStorage.setItem(`pollenTubeVariety`, JSON.stringify(this.subject));
+    const obj = this.subjects.find(subject => subject.name === d);
+    this.subject = { ...this.subject, ...obj };
+    localStorage.setItem(`pollenTubeVariety`, JSON.stringify(this.subject));
   };
 
   // Average Style Length -----------------------------------------------------
@@ -128,6 +133,8 @@ export default class appStore {
 
   @observable
   state = JSON.parse(localStorage.getItem("state")) || {
+    subject: "State",
+    placeholder: "State",
     postalCode: "ALL",
     lat: 42.5,
     lon: -75.7,
@@ -138,7 +145,12 @@ export default class appStore {
   @action
   setState = d => {
     this.station = {};
-    this.state = this.states.find(state => state.name === d);
+    const obj = this.states.find(state => state.name === d);
+    this.state = {
+      subject: "State",
+      placeholder: "State",
+      ...obj
+    };
     localStorage.setItem("state", JSON.stringify(this.state));
   };
 
@@ -176,11 +188,16 @@ export default class appStore {
     );
   }
 
-  @observable station = JSON.parse(localStorage.getItem("station")) || {};
+  @observable
+  station = JSON.parse(localStorage.getItem("station")) || {
+    subject: "Station",
+    placeholder: "Station"
+  };
+
   @action
   setStation = d => {
-    this.station = this.stations.find(station => station.name === d);
-
+    const obj = this.stations.find(station => station.name === d);
+    this.station = { ...this.station, ...obj };
     localStorage.setItem("station", JSON.stringify(this.station));
   };
 
@@ -237,7 +254,7 @@ export default class appStore {
   blocks = JSON.parse(localStorage.getItem("pollenTubeBlocks")) || [];
   @action setBlocks = d => (this.blocks = d);
 
-  @observable blockId;
+  @observable blockId = "";
   @action setBlockId = d => (this.blockId = d);
 
   @computed
@@ -257,8 +274,8 @@ export default class appStore {
     };
   }
 
-  resetFields = d => {
-    this.setBlockId(null);
+  resetFields = () => {
+    this.setBlockId("");
     this.subject = {};
     this.setBlockName("");
     this.setAvgStyleLength("");
@@ -266,7 +283,7 @@ export default class appStore {
     this.setFirstSprayDate("");
     this.setSecondSprayDate("");
     this.setThirdSprayDate("");
-    this.blocks.findIndex(b => (b.isEditing = false));
+    this.blocks.map(b => (b.isEditing = false));
   };
 
   @action

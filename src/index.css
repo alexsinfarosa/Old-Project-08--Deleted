@@ -17,3 +17,25 @@ body {
 .selected {
   background: #fdf7d0;
 }
+
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 16px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trigger:hover {
+  color: #108ee9;
+}
+
+.logo {
+  height: 32px;
+  margin: 16px 16px 32px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #a52c25;
+  font-size: 14px;
+}
