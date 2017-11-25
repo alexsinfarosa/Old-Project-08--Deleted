@@ -20,7 +20,7 @@ import ToggleButtons from "components/ToggleButtons";
 // import PCEgraph from "components/PCEgraph";
 
 import { Row, Col, Layout, Menu, Icon } from "antd";
-const { Header, Content, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 @inject("store")
 @observer
@@ -113,42 +113,34 @@ class App2 extends Component {
           </Sider>
 
           <Layout>
-            <Header style={{ background: "#fff", padding: 0 }}>
-              <Row
-                style={{
-                  display: "flex",
-                  flexWrap: "nowrap",
-                  height: "100%",
-                  justifyContent: "space-between"
-                }}
-              >
-                <Col span={1} style={{ minWidth: "50px" }}>
-                  <Icon
-                    style={{ fontSize: breakpoints.xs ? 14 : 16 }}
-                    className="trigger"
-                    type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
-                    onClick={this.toggle}
-                  />
-                </Col>
-                <Col span={17}>
-                  {breakpoints.xs ? (
-                    <h3>Pollen Tube Growth Model</h3>
-                  ) : (
-                    <h2>Pollen Tube Growth Model</h2>
-                  )}
-                </Col>
+            <Row
+              type="flex"
+              justify="space-between"
+              style={{
+                background: "white",
+                alignItems: "center",
+                paddingRight: 16,
+                height: 48
+              }}
+            >
+              <Col>
+                <Icon
+                  style={{ fontSize: breakpoints.xs ? 14 : 18 }}
+                  className="trigger"
+                  type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
+                  onClick={this.toggle}
+                />
+              </Col>
+              <Col>
+                {breakpoints.xs ? (
+                  <h3>Pollen Tube Growth Model</h3>
+                ) : (
+                  <h2>Pollen Tube Growth Model</h2>
+                )}
+              </Col>
 
-                <Col
-                  span={6}
-                  style={{
-                    textAlign: "right",
-                    paddingRight: breakpoints.xs ? "48px" : "24px"
-                  }}
-                >
-                  {breakpoints.xs ? <h3>NEWA</h3> : <h2>NEWA</h2>}
-                </Col>
-              </Row>
-            </Header>
+              <Col>{breakpoints.xs ? <h3>NEWA</h3> : <h2>NEWA</h2>}</Col>
+            </Row>
 
             <Content style={{ margin: "24px 16px" }}>
               <Row style={{ maxWidth: "1200px", margin: "0 auto" }}>

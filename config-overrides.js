@@ -18,8 +18,5 @@ module.exports = function override(config, env) {
   // use the MobX rewire
   config = rewireMobX(config, env);
 
-  // use the styled component rewire
-  config = rewireStyledComponents(config, env);
-
   return config;
 };
