@@ -114,6 +114,7 @@ class UserData extends Component {
               dataSource={blocks.slice()}
               columns={columns}
               expandedRowRender={record => <p>{record.name}</p>}
+              scroll={{ x: 900 }}
             />
           </MRow>
         </Row>
