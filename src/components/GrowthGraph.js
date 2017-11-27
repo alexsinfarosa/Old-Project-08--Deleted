@@ -15,7 +15,7 @@ import {
 
 @inject("store")
 @observer
-export default class PCEgraph extends Component {
+export default class GrowthGraph extends Component {
   render() {
     const { graphData, station, state } = this.props;
     return (

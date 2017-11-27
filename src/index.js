@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App2 from "./App2";
+import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
 
 // Mobx
@@ -15,7 +15,7 @@ import enUS from "antd/lib/locale-provider/en_US";
 ReactDOM.render(
   <Provider store={store}>
     <LocaleProvider locale={enUS}>
-      <App2 />
+      <App />
     </LocaleProvider>
   </Provider>,
   document.getElementById("root")
@@ -27,7 +27,7 @@ if (module.hot) {
     ReactDOM.render(
       <Provider store={store}>
         <LocaleProvider locale={enUS}>
-          <App2 />
+          <App />
         </LocaleProvider>
       </Provider>,
       document.getElementById("root")

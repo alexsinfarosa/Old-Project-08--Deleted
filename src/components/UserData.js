@@ -10,6 +10,10 @@ import { Row, Col, Table } from "antd";
 // styled components
 import { Block, MRow } from "styles";
 
+// custom components
+// import GrowthGraph from "components/GrowthGraph";
+import GrowthTable from "components/GrowthTable";
+
 @inject("store")
 @observer
 class UserData extends Component {
@@ -18,7 +22,13 @@ class UserData extends Component {
   };
 
   render() {
-    const { blocks, editBlock, deleteBlock, isEditing } = this.props.store.app;
+    const {
+      blocks,
+      editBlock,
+      deleteBlock,
+      isEditing,
+      isLoading
+    } = this.props.store.app;
     // blocks.map(b => console.table(toJS(b)));
 
     // columns ----------------------------------------------------------
@@ -44,7 +54,7 @@ class UserData extends Component {
         dataIndex: "date",
         key: "date",
         render: (text, record) => (
-          <span>{format(text, "MMM DD YYYY HH:mm")}</span>
+          <span>{format(text, "MMM DD YYYY HH:00")}</span>
         )
       },
       {
@@ -52,21 +62,21 @@ class UserData extends Component {
         dataIndex: "firstSpray",
         key: "firstSpray",
         render: (text, record) =>
-          text ? <span>{format(text, "MMM DD YYYY HH:mm")}</span> : null
+          text ? <span>{format(text, "MMM DD YYYY HH:00")}</span> : null
       },
       {
         title: "2nd Spray Date",
         dataIndex: "secondSpray",
         key: "secondSpray",
         render: (text, record) =>
-          text ? <span>{format(text, "MMM DD YYYY HH:mm")}</span> : null
+          text ? <span>{format(text, "MMM DD YYYY HH:00")}</span> : null
       },
       {
         title: "3rd Spray Date",
         dataIndex: "thirdSpray",
         key: "thirdSpray",
         render: (text, record) =>
-          text ? <span>{format(text, "MMM DD YYYY HH:mm")}</span> : null
+          text ? <span>{format(text, "MMM DD YYYY HH:00")}</span> : null
       },
       {
         title: "Actions",
@@ -105,6 +115,7 @@ class UserData extends Component {
           </MRow>
           <MRow>
             <Table
+              loading={isLoading}
               rowClassName={record => isRowSelected(record)}
               expandIconColumnIndex={0}
               expandIconAsCell={false}
@@ -113,7 +124,7 @@ class UserData extends Component {
               rowKey={record => record.id}
               dataSource={blocks.slice()}
               columns={columns}
-              expandedRowRender={record => <p>{record.name}</p>}
+              expandedRowRender={record => <GrowthTable record={record} />}
               scroll={{ x: 900 }}
             />
           </MRow>

@@ -1,7 +1,11 @@
 import { observable, action, when, computed } from "mobx";
 import axios from "axios";
-import Block from "stores/Block";
 
+import format from "date-fns/format";
+import isAfter from "date-fns/is_after";
+import isBefore from "date-fns/is_before";
+
+// utils
 import { fetchACISData } from "fetchACISData";
 
 export default class appStore {
@@ -197,6 +201,28 @@ export default class appStore {
   // Dates---------------------------------------------------------------------
   @observable date = new Date();
   @action setDate = d => (this.date = d);
+  @computed
+  get currentYear() {
+    return format(this.date, "YYYY");
+  }
+
+  @computed
+  get seasonStartDate() {
+    return `${this.currentYear}-03-01`;
+  }
+
+  @computed
+  get seasonEndDate() {
+    return `${this.currentYear}-07-30`;
+  }
+
+  @computed
+  get isSeason() {
+    return (
+      isAfter(this.date, this.seasonStartDate) &&
+      isBefore(this.date, this.seasonEndDate)
+    );
+  }
   @observable firstSprayDate = "";
   @action setFirstSprayDate = d => (this.firstSprayDate = d);
   @observable secondSprayDate = "";
@@ -263,7 +289,8 @@ export default class appStore {
       firstSpray: this.firstSprayDate,
       secondSpray: this.secondSprayDate,
       thirdSpray: this.thirdSprayDate,
-      isEditing: false
+      isEditing: false,
+      data: []
     };
   }
 
@@ -279,12 +306,31 @@ export default class appStore {
     this.blocks.map(b => (b.isEditing = false));
   };
 
+  dateWithHours = res => {
+    let data = [];
+    let obj = {};
+    res.forEach(day => {
+      day[1].forEach((hour, i) => {
+        obj[`${day[0]} ${i + 1}:00`] = hour;
+      });
+      data.push(obj);
+    });
+    return data;
+  };
+
   @action
-  addBlock = () => {
+  addBlock = async () => {
+    this.isLoading = true;
     this.blockId = Math.random().toString();
-    this.blocks.push(new Block(this.block));
+    let block = {};
+    block = { block, ...this.block };
+    await fetchACISData(this.station, this.date).then(res => {
+      this.dateWithHours(res);
+    });
+    this.blocks.push(block);
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
     this.resetFields();
+    this.isLoading = false;
   };
 
   @action
@@ -316,7 +362,7 @@ export default class appStore {
   @action
   updateBlock = () => {
     const idx = this.blocks.findIndex(b => b.id === this.blockId);
-    this.blocks.splice(idx, 1, new Block(this.block));
+    this.blocks.splice(idx, 1, this.block);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
     this.resetFields();
@@ -338,7 +384,9 @@ export default class appStore {
   @computed
   get acisData() {
     return this.areRequiredFieldsSet
-      ? fetchACISData(this.station, this.date)
+      ? fetchACISData(this.station, this.date).then(res => {
+          return res;
+        })
       : [];
   }
 }

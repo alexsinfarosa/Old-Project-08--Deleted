@@ -38,7 +38,7 @@ const fetchHourlyStationData = (station, date) => {
     ]
   };
 
-  console.log(params);
+  // console.log(params);
 
   return axios
     .post(`${protocol}//data.nrcc.rcc-acis.org/StnData`, params)
@@ -90,21 +90,18 @@ export const fetchACISData = async (station, date) => {
   // console.log("fetchACISData");
 
   // get sister station id and network
-  const sisterStationIdAndNetwork = await getSisterStationIdAndNetwork(
-    station
-  ).then(res => res);
+  const sisterStationIdAndNetwork = await getSisterStationIdAndNetwork(station);
 
   // get sister station hourly data
   const sisterStation = await fetchHourlyStationData(
     sisterStationIdAndNetwork,
     date
-  ).then(res => res);
+  );
+
   const sStation = await replaceNonConsecutiveMissingValues(sisterStation);
 
   // get current station hourly data
-  const currentStation = await fetchHourlyStationData(station, date).then(
-    res => res
-  );
+  const currentStation = await fetchHourlyStationData(station, date);
   const cStation = await replaceNonConsecutiveMissingValues(currentStation);
 
   // replace missing values with sister station
@@ -115,9 +112,7 @@ export const fetchACISData = async (station, date) => {
 
   // If this year, replace missing value with forecast data
   if (isThisYear(date)) {
-    const forecastData = await fetchHourlyForcestData(station, date).then(
-      res => res
-    );
+    const forecastData = await fetchHourlyForcestData(station, date);
 
     const replacedMissingValuesWithForecast = await replaceMissingValues(
       replacedMissingValuesWithSisterStation,

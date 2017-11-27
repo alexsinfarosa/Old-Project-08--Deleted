@@ -2,37 +2,38 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 // import { toJS } from "mobx";
 import "./index.css";
-import { Flex, Box, BlockLink } from "rebass";
-import { MenuFold } from "./styles";
+
 import { MatchMediaProvider } from "mobx-react-matchmedia";
 
-import Subject from "components/Subject";
+import DropDown from "components/DropDown";
 import AvgStyleLength from "components/AvgStyleLength";
 import BlockName from "components/BlockName";
-import State from "components/State";
-import Station from "components/Station";
 import DatePicker from "components/DatePicker";
 import AddUpdateButton from "components/AddUpdateButton";
 import Acknowledgements from "components/Acknowledgements";
-
-// import ClickMapMessage from "components/ClickMapMessage";
-// import USMap from "components/USMap";
-import UserData from "components/UserData";
-// import PCEtable from "components/PCEtable";
 import ToggleButtons from "components/ToggleButtons";
-// import PCEgraph from "components/PCEgraph";
 
-import { Layout } from "antd";
+import USMap from "components/USMap";
+import UserData from "components/UserData";
+
+import { Row, Col, Layout, Menu, Icon } from "antd";
 const { Content, Sider } = Layout;
 
 @inject("store")
 @observer
-class App extends Component {
+class App2 extends Component {
+  state = {
+    collapsed: false
+  };
+
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed
+    });
+  };
+
   render() {
     const {
-      isSidebarCollapsed,
-      toggleSidebar,
-      setSidebar,
       breakpoints,
       isEditing,
       firstSprayDate,
@@ -43,120 +44,108 @@ class App extends Component {
       setThirdSprayDate,
       date,
       setDate,
-      isBlocks
+      isBlocks,
+      subjects,
+      subject,
+      setSubject,
+      state,
+      states,
+      setState,
+      stations,
+      station,
+      setStation,
+      isMap
     } = this.props.store.app;
 
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
-        <Layout>
+        <Layout style={{ minHeight: "100vh" }}>
           <Sider
+            style={{ background: "white" }}
+            width={250}
             trigger={null}
-            breakpoint="sm"
-            width={245}
-            collapsedWidth="0"
-            onCollapse={collapsed => {
-              setSidebar(collapsed);
-            }}
-            collapsed={isSidebarCollapsed}
+            collapsible
+            collapsed={this.state.collapsed}
+            collapsedWidth={0}
           >
-            <Flex column bg="white" style={{ minHeight: "100vh" }} px={2}>
-              <Box
-                style={{
-                  flex: "1 1 auto",
-                  display: "flex",
-                  alignItems: "center",
-                  margin: "0 auto"
-                }}
-              >
-                <Box>
-                  <BlockLink
-                    f={[1, 2, 2]}
-                    style={{ color: "#A42D25" }}
-                    href="https://www.cornell.edu/"
-                    children="Cornell University"
+            <div className="logo">Cornell University</div>
+
+            <Menu style={{ margin: "0 16px", border: "none" }}>
+              <BlockName />
+              <DropDown
+                list={subjects}
+                object={subject}
+                setOption={setSubject}
+              />
+              <AvgStyleLength />
+              <DropDown list={states} object={state} setOption={setState} />
+              <DropDown
+                list={stations}
+                object={station}
+                setOption={setStation}
+              />
+              <DatePicker label={"Date"} value={date} setDate={setDate} />
+              {isEditing && (
+                <div>
+                  <DatePicker
+                    label={"First Spray Date"}
+                    value={firstSprayDate}
+                    setDate={setFirstSprayDate}
                   />
-                </Box>
-              </Box>
+                  <DatePicker
+                    label={"Second Spray Date"}
+                    value={secondSprayDate}
+                    setDate={setSecondSprayDate}
+                  />
+                  <DatePicker
+                    label={"Third Spray Date"}
+                    value={thirdSprayDate}
+                    setDate={setThirdSprayDate}
+                  />
+                </div>
+              )}
 
-              <Box
-                flex="3 1 auto"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between"
-                }}
-              >
-                <Box>
-                  <Flex column>
-                    <Box my={3} m="auto" is="h3">
-                      {isEditing ? "Edit Selected Block" : "Create New Block"}
-                    </Box>
-                    <Subject />
-                    <BlockName />
-                    <AvgStyleLength />
-                    <State />
-                    <Station />
-                    <DatePicker label={"Date"} value={date} setDate={setDate} />
-                    {isEditing && (
-                      <Flex column>
-                        <DatePicker
-                          label={"First Spray Date"}
-                          value={firstSprayDate}
-                          setDate={setFirstSprayDate}
-                        />
-                        <DatePicker
-                          label={"Second Spray Date"}
-                          value={secondSprayDate}
-                          setDate={setSecondSprayDate}
-                        />
-                        <DatePicker
-                          label={"Third Spray Date"}
-                          value={thirdSprayDate}
-                          setDate={setThirdSprayDate}
-                        />
-                      </Flex>
-                    )}
-                    <AddUpdateButton />
-                  </Flex>
-                </Box>
-
-                <Box>
-                  <ToggleButtons />
-                </Box>
-
-                <Box>
-                  <Acknowledgements />
-                </Box>
-              </Box>
-            </Flex>
+              <AddUpdateButton />
+              <ToggleButtons />
+              <Acknowledgements />
+            </Menu>
           </Sider>
 
           <Layout>
-            <Flex
-              bg="#4F5D75"
-              color="white"
-              py={12}
-              px={16}
-              align="center"
+            <Row
+              type="flex"
               justify="space-between"
+              style={{
+                background: "white",
+                alignItems: "center",
+                paddingRight: 16,
+                height: 48
+              }}
             >
-              <Flex align="center">
-                <MenuFold
-                  type={isSidebarCollapsed ? "menu-unfold" : "menu-fold"}
-                  onClick={toggleSidebar}
+              <Col>
+                <Icon
+                  style={{ fontSize: breakpoints.xs ? 14 : 18 }}
+                  className="trigger"
+                  type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
+                  onClick={this.toggle}
                 />
-                <Box f={[1, 2, 2]}>Pollen Tube Growth Model</Box>
-              </Flex>
+              </Col>
+              <Col>
+                {breakpoints.xs ? (
+                  <h3>VA Tech Pollen Tube Growth Model</h3>
+                ) : (
+                  <h2>VA Tech Pollen Tube Growth Model</h2>
+                )}
+              </Col>
 
-              <Flex>
-                <Box f={[1, 2, 2]}>NEWA</Box>
-              </Flex>
-            </Flex>
+              <Col>{breakpoints.xs ? <h3>NEWA</h3> : <h2>NEWA</h2>}</Col>
+            </Row>
 
             <Content style={{ margin: "24px 16px" }}>
-              <Flex column style={{ maxWidth: "1200px", margin: "0 auto" }}>
+              <Row style={{ maxWidth: "1200px", margin: "0 auto" }}>
+                {isMap && <USMap />}
                 {isBlocks && <UserData />}
-              </Flex>
+              </Row>
             </Content>
           </Layout>
         </Layout>
@@ -165,4 +154,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default App2;
