@@ -9,13 +9,11 @@ class ToggleButtons extends Component {
   // toggles USMap component
   toggleMap = () => {
     this.props.store.app.toggleMap();
-    this.props.store.app.closeSidebar();
   };
 
   // toggles PCETable component
   toggleBlocks = () => {
     this.props.store.app.toggleBlocks();
-    this.props.store.app.closeSidebar();
   };
 
   render() {

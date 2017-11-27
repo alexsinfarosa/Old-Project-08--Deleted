@@ -1,6 +1,5 @@
 import { observable, action, when, computed } from "mobx";
 import axios from "axios";
-import format from "date-fns/format";
 import Block from "stores/Block";
 
 import { fetchACISData } from "fetchACISData";
@@ -14,7 +13,7 @@ export default class appStore {
     // when(() => this.gridData.length === 0, () => this.loadGridData());
   }
 
-  // Logic ------------------------------------------------------------------
+  // Logic -----------------------------------------------------------
   @observable
   breakpoints = {
     xs: "(max-width: 767px)",
@@ -32,21 +31,12 @@ export default class appStore {
   @computed
   get areRequiredFieldsSet() {
     return (
-      Object.keys(this.subject).length !== 0 &&
-      Object.keys(this.blockName).length !== 0 &&
+      Object.keys(this.subject).length > 2 &&
+      this.blockName.length !== 0 &&
       this.avgStyleLength !== null &&
-      Object.keys(this.state).length !== 0 &&
-      Object.keys(this.station).length !== 0
+      Object.keys(this.station).length > 2
     );
   }
-
-  @observable isMobile = window.matchMedia("(max-width: 480px)").matches; // FIX IT
-  @action
-  closeSidebar = () => {
-    if (this.areRequiredFieldsSet && this.isMobile) {
-      this.toggleSidebar();
-    }
-  };
 
   @observable isSidebarCollapsed = false;
   @action setSidebar = d => (this.isSidebarCollapsed = d);
@@ -144,7 +134,10 @@ export default class appStore {
 
   @action
   setState = d => {
-    this.station = {};
+    this.station = {
+      subject: "Station",
+      placeholder: "Station"
+    };
     const obj = this.states.find(state => state.name === d);
     this.state = {
       subject: "State",
@@ -202,7 +195,7 @@ export default class appStore {
   };
 
   // Dates---------------------------------------------------------------------
-  @observable date = format(new Date(), "YYYY-MM-DD");
+  @observable date = new Date();
   @action setDate = d => (this.date = d);
   @observable firstSprayDate = "";
   @action setFirstSprayDate = d => (this.firstSprayDate = d);

@@ -38,7 +38,7 @@ class AvgStyleLength extends Component {
       <Col
         style={{ background: isEditing ? "#FDF7D0" : null, margin: "16px 0" }}
       >
-        <p style={{ lineHeight: "1.5" }}>Avg. Style Length:</p>
+        <p style={{ lineHeight: "1.5" }}>Avg. Style Length (mm):</p>
         <Tooltip
           trigger={["focus"]}
           title={title}

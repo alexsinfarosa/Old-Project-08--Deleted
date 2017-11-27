@@ -11,13 +11,10 @@ import BlockName from "components/BlockName";
 import DatePicker from "components/DatePicker";
 import AddUpdateButton from "components/AddUpdateButton";
 import Acknowledgements from "components/Acknowledgements";
-
-// import ClickMapMessage from "components/ClickMapMessage";
-// import USMap from "components/USMap";
-import UserData from "components/UserData";
-// import PCEtable from "components/PCEtable";
 import ToggleButtons from "components/ToggleButtons";
-// import PCEgraph from "components/PCEgraph";
+
+import USMap from "components/USMap";
+import UserData from "components/UserData";
 
 import { Row, Col, Layout, Menu, Icon } from "antd";
 const { Content, Sider } = Layout;
@@ -56,7 +53,8 @@ class App2 extends Component {
       setState,
       stations,
       station,
-      setStation
+      setStation,
+      isMap
     } = this.props.store.app;
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
@@ -144,6 +142,7 @@ class App2 extends Component {
 
             <Content style={{ margin: "24px 16px" }}>
               <Row style={{ maxWidth: "1200px", margin: "0 auto" }}>
+                {isMap && <USMap />}
                 {isBlocks && <UserData />}
               </Row>
             </Content>

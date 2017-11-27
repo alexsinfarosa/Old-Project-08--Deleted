@@ -12,7 +12,7 @@ export default class Datepicker extends Component {
   };
 
   render() {
-    const { isEditing, closeSidebar } = this.props.store.app;
+    const { isEditing } = this.props.store.app;
     const { label, value, setDate } = this.props;
 
     return (
@@ -35,7 +35,6 @@ export default class Datepicker extends Component {
           showToday={true}
           onChange={(date, dateString) => {
             setDate(date);
-            closeSidebar();
           }}
         />
       </Col>
