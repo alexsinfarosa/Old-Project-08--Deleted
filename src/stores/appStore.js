@@ -29,14 +29,13 @@ export default class appStore {
   };
 
   @observable protocol = window.location.protocol;
-
   @observable isLoading = false;
 
   @computed
   get areRequiredFieldsSet() {
     return (
+      this.blockName.length >= 2 &&
       Object.keys(this.subject).length > 2 &&
-      this.blockName.length !== 0 &&
       this.avgStyleLength !== null &&
       Object.keys(this.station).length > 2
     );
@@ -55,14 +54,6 @@ export default class appStore {
     return this.isMap ? true : this.station.name === undefined ? true : false;
   }
   @action toggleMap = () => (this.isMap = !this.isMap);
-
-  @observable
-  isBlocks = JSON.parse(localStorage.getItem("pollenTubeBlocks")) === null
-    ? false
-    : true;
-  @computed
-  @action
-  toggleBlocks = d => (this.isBlocks = !this.isBlocks);
 
   // BlockName ----------------------------------------------------------------
   @observable blockName = "";
@@ -102,7 +93,7 @@ export default class appStore {
   };
 
   // Average Style Length -----------------------------------------------------
-  @observable avgStyleLength;
+  @observable avgStyleLength = null;
   @action
   setAvgStyleLength = d => {
     this.avgStyleLength = d;
@@ -148,6 +139,7 @@ export default class appStore {
       placeholder: "State",
       ...obj
     };
+    this.setIsMap(true);
     localStorage.setItem("state", JSON.stringify(this.state));
   };
 
@@ -180,6 +172,10 @@ export default class appStore {
 
   @computed
   get currentStateStations() {
+    if (this.state.name === "All States") {
+      return this.stations;
+    }
+
     return this.stations.filter(
       station => station.state === this.state.postalCode
     );
@@ -192,9 +188,14 @@ export default class appStore {
   };
 
   @action
-  setStation = d => {
-    const obj = this.stations.find(station => station.name === d);
+  setStation = id => {
+    const obj = this.stations.find(station => station.id === id);
     this.station = { ...this.station, ...obj };
+    const state = this.states.find(
+      state => state.postalCode === this.station.state
+    );
+    this.setStateFromMap(state.postalCode);
+    this.setIsMap(false);
     localStorage.setItem("station", JSON.stringify(this.station));
   };
 
@@ -273,6 +274,28 @@ export default class appStore {
   blocks = JSON.parse(localStorage.getItem("pollenTubeBlocks")) || [];
   @action setBlocks = d => (this.blocks = d);
 
+  @observable selectedBlock = {};
+  @computed
+  get getBlock() {
+    if (Object.keys(this.selectedBlock).length === 0) {
+      return {};
+    }
+    console.log(this.blocks.find(block => block.id === this.selectedBlock.id));
+    return this.blocks.find(block => block.id === this.selectedBlock.id);
+  }
+  @computed
+  get isSelectedBlock() {
+    if (this.blocks.length > 0) {
+      return true;
+    }
+    return false;
+  }
+  @action
+  setSelectedBlock = d => {
+    const obj = this.blocks.find(block => block.name === d);
+    this.selectedBlock = obj;
+  };
+
   @observable blockId = "";
   @action setBlockId = d => (this.blockId = d);
 
@@ -283,7 +306,7 @@ export default class appStore {
       variety: this.subject.name,
       name: this.blockName,
       avgStyleLength: this.avgStyleLength,
-      state: this.state.name,
+      state: this.state.postalCode,
       station: this.station.name,
       date: this.date,
       firstSpray: this.firstSprayDate,
@@ -306,7 +329,7 @@ export default class appStore {
     this.blocks.map(b => (b.isEditing = false));
   };
 
-  dateWithHours = res => {
+  convertDateToHourlyDate = res => {
     let data = [];
     let obj = {};
     res.forEach(day => {
@@ -322,10 +345,10 @@ export default class appStore {
   addBlock = async () => {
     this.isLoading = true;
     this.blockId = Math.random().toString();
-    let block = {};
-    block = { block, ...this.block };
+
+    const block = { ...this.block };
     await fetchACISData(this.station, this.date).then(res => {
-      this.dateWithHours(res);
+      this.convertDateToHourlyDate(res);
     });
     this.blocks.push(block);
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
@@ -344,6 +367,7 @@ export default class appStore {
 
   @action
   editBlock = (b, index) => {
+    this.isEditing = true;
     this.blocks.map(b => (b.isEditing = false));
     this.blocks[index].isEditing = true;
     this.setBlockId(b.id);
@@ -356,7 +380,6 @@ export default class appStore {
     this.setFirstSprayDate(b.firstSpray);
     this.setSecondSprayDate(b.secondSpray);
     this.setThirdSprayDate(b.thirdSpray);
-    this.isEditing = true;
   };
 
   @action

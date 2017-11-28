@@ -34,7 +34,8 @@ export default class USMap extends Component {
       state,
       states,
       setStation,
-      setState
+      setState,
+      setIsMap
     } = this.props.store.app;
 
     const selectedStation = stations.find(
@@ -47,9 +48,11 @@ export default class USMap extends Component {
 
     if (state.name === "All States") {
       setState(selectedState.name);
-      setStation(selectedStation.name);
+      setStation(selectedStation.id);
+      setIsMap(false);
     } else if (selectedStation.state === state.postalCode) {
-      setStation(selectedStation.name);
+      setStation(selectedStation.id);
+      setIsMap(false);
     } else {
       this.setState({ visible: true, selectedState: selectedState.name });
     }
@@ -64,7 +67,7 @@ export default class USMap extends Component {
     });
 
     // Marker list
-    const MarkerList = stationsWithMatchedIcons.map(station => (
+    const MarkerList = stationsWithMatchedIcons.map((station, i) => (
       <Marker
         key={`${station.id} ${station.network}`}
         position={[station.lat, station.lon]}

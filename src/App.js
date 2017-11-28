@@ -14,6 +14,7 @@ import Acknowledgements from "components/Acknowledgements";
 import ToggleButtons from "components/ToggleButtons";
 
 import USMap from "components/USMap";
+import BlocksDropdown from "components/BlocksDropdown";
 import UserData from "components/UserData";
 
 import { Row, Col, Layout, Menu, Icon } from "antd";
@@ -44,18 +45,23 @@ class App2 extends Component {
       setThirdSprayDate,
       date,
       setDate,
-      isBlocks,
       subjects,
       subject,
       setSubject,
       state,
       states,
       setState,
-      stations,
       station,
       setStation,
-      isMap
+      isMap,
+      currentStateStations
+      // blocks,
+      // areRequiredFieldsSet
     } = this.props.store.app;
+
+    // blocks.map(b => console.log(b));
+    // console.log(areRequiredFieldsSet);
+    // currentStateStations.map(s => console.log(s));
 
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
@@ -80,11 +86,15 @@ class App2 extends Component {
               <AvgStyleLength />
               <DropDown list={states} object={state} setOption={setState} />
               <DropDown
-                list={stations}
+                list={currentStateStations}
                 object={station}
                 setOption={setStation}
               />
-              <DatePicker label={"Date"} value={date} setDate={setDate} />
+              <DatePicker
+                label={"Model Start Date"}
+                value={date}
+                setDate={setDate}
+              />
               {isEditing && (
                 <div>
                   <DatePicker
@@ -144,7 +154,8 @@ class App2 extends Component {
             <Content style={{ margin: "24px 16px" }}>
               <Row style={{ maxWidth: "1200px", margin: "0 auto" }}>
                 {isMap && <USMap />}
-                {isBlocks && <UserData />}
+                <BlocksDropdown />
+                {false && <UserData />}
               </Row>
             </Content>
           </Layout>

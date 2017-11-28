@@ -4,15 +4,16 @@ import { inject, observer } from "mobx-react";
 
 import format from "date-fns/format";
 
-// antd
-import { Row, Col, Table } from "antd";
-
 // styled components
 import { Block, MRow } from "styles";
 
 // custom components
 // import GrowthGraph from "components/GrowthGraph";
-import GrowthTable from "components/GrowthTable";
+// import GrowthTable from "components/GrowthTable";
+
+// antd
+import { Row, Table, Steps } from "antd";
+const Step = Steps.Step;
 
 @inject("store")
 @observer
@@ -23,21 +24,15 @@ class UserData extends Component {
 
   render() {
     const {
-      blocks,
+      getBlock,
       editBlock,
       deleteBlock,
       isEditing,
       isLoading
     } = this.props.store.app;
-    // blocks.map(b => console.table(toJS(b)));
 
     // columns ----------------------------------------------------------
     const columns = [
-      {
-        title: "Block Name",
-        dataIndex: "name",
-        key: "name"
-      },
       {
         title: "Variety",
         dataIndex: "variety",
@@ -47,7 +42,7 @@ class UserData extends Component {
         title: "Avg. Style Length",
         dataIndex: "avgStyleLength",
         key: "avgStyleLength",
-        render: text => <span>{`${text} mm`}</span>
+        render: text => <span>{`${text}`}</span>
       },
       {
         title: "Start Date",
@@ -58,26 +53,41 @@ class UserData extends Component {
         )
       },
       {
-        title: "1st Spray Date",
+        title: "Spray Dates",
         dataIndex: "firstSpray",
         key: "firstSpray",
         render: (text, record) =>
-          text ? <span>{format(text, "MMM DD YYYY HH:00")}</span> : null
+          text ? (
+            <Steps direction="vertical" size="small">
+              <Step
+                title="1st"
+                description={format(text, "MMM DD YYYY HH:00")}
+              />
+              <Step
+                title="2nd"
+                description={format(text, "MMM DD YYYY HH:00")}
+              />
+              <Step
+                title="3rd"
+                description={format(text, "MMM DD YYYY HH:00")}
+              />
+            </Steps>
+          ) : null
       },
-      {
-        title: "2nd Spray Date",
-        dataIndex: "secondSpray",
-        key: "secondSpray",
-        render: (text, record) =>
-          text ? <span>{format(text, "MMM DD YYYY HH:00")}</span> : null
-      },
-      {
-        title: "3rd Spray Date",
-        dataIndex: "thirdSpray",
-        key: "thirdSpray",
-        render: (text, record) =>
-          text ? <span>{format(text, "MMM DD YYYY HH:00")}</span> : null
-      },
+      // {
+      //   title: "2nd Spray Date",
+      //   dataIndex: "secondSpray",
+      //   key: "secondSpray",
+      //   render: (text, record) =>
+      //     text ? <span>{format(text, "MMM DD YYYY HH:00")}</span> : null
+      // },
+      // {
+      //   title: "3rd Spray Date",
+      //   dataIndex: "thirdSpray",
+      //   key: "thirdSpray",
+      //   render: (text, record) =>
+      //     text ? <span>{format(text, "MMM DD YYYY HH:00")}</span> : null
+      // },
       {
         title: "Actions",
         dataIndex: "actions",
@@ -106,13 +116,15 @@ class UserData extends Component {
     return (
       <Block>
         <Row>
-          <MRow>
-            <Col>
-              <h2>
-                Blocks <small>({blocks.length})</small>
-              </h2>
-            </Col>
+          <MRow type="flex" justify="center">
+            <h2>
+              Block Info:{" "}
+              <i>
+                {getBlock.name} for {getBlock.station}, {getBlock.state}
+              </i>
+            </h2>
           </MRow>
+
           <MRow>
             <Table
               loading={isLoading}
@@ -122,9 +134,9 @@ class UserData extends Component {
               size="middle"
               pagination={false}
               rowKey={record => record.id}
-              dataSource={blocks.slice()}
+              dataSource={[getBlock]}
               columns={columns}
-              expandedRowRender={record => <GrowthTable record={record} />}
+              // expandedRowRender={record => <GrowthTable record={record} />}
               scroll={{ x: 900 }}
             />
           </MRow>

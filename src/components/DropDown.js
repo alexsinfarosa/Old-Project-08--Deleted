@@ -10,13 +10,21 @@ class DropDown extends Component {
     const { isEditing } = this.props.store.app;
     const { list, object, setOption } = this.props;
 
-    const optionList = list.map((el, i) => {
+    const isStation = object.subject === "Station";
+    const optionList = list.map(el => {
       return (
-        <Select.Option key={i} value={el.name}>
+        <Select.Option key={el.id} value={isStation ? el.id : el.name}>
           {el.name}
         </Select.Option>
       );
     });
+
+    const NumOfStations = () => {
+      if (isStation) {
+        return <small>({list.length})</small>;
+      }
+      return null;
+    };
 
     return (
       <Col
@@ -25,7 +33,9 @@ class DropDown extends Component {
           margin: "16px 0"
         }}
       >
-        <p style={{ lineHeight: "1.5" }}>{object.subject}:</p>
+        <p style={{ lineHeight: "1.5" }}>
+          {object.subject} {<NumOfStations />}:
+        </p>
         <Select
           name={`${object.subject}`}
           size="large"

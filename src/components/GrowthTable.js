@@ -14,7 +14,6 @@ export default class GrowthTable extends Component {
   render() {
     // const { areRequiredFieldsSet } = this.props.store.app;
     const { record } = this.props;
-    console.log(record);
 
     //columns for the model
     const columns = [
