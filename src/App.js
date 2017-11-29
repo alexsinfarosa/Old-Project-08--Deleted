@@ -99,12 +99,14 @@ class App extends Component {
                 setOption={setStation}
               />
               <DatePicker
+                date={date}
                 label={"Model Start Date"}
                 value={date}
                 setDate={setDate}
               />
               {isEditing && (
                 <DatePicker
+                  date={date}
                   label={"First Spray Date"}
                   value={firstSprayDate}
                   setDate={setFirstSprayDate}
@@ -112,6 +114,7 @@ class App extends Component {
               )}
               {isEditing && (
                 <DatePicker
+                  date={firstSprayDate}
                   label={"Second Spray Date"}
                   value={secondSprayDate}
                   setDate={setSecondSprayDate}
@@ -119,6 +122,7 @@ class App extends Component {
               )}
               {isEditing && (
                 <DatePicker
+                  date={secondSprayDate}
                   label={"Third Spray Date"}
                   value={thirdSprayDate}
                   setDate={setThirdSprayDate}

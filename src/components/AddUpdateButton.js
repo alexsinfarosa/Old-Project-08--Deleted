@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Row, Col, Button } from "antd";
+import { Row, Col, Button, message } from "antd";
 
 @inject("store")
 @observer
@@ -11,7 +11,8 @@ class AddUpdateButton extends Component {
       addBlock,
       updateBlock,
       cancelBlock,
-      isEditing
+      isEditing,
+      selectedBlock
     } = this.props.store.app;
 
     return (
@@ -23,7 +24,10 @@ class AddUpdateButton extends Component {
                 type="default"
                 style={{ width: "100%" }}
                 size="large"
-                onClick={() => addBlock()}
+                onClick={() => {
+                  addBlock();
+                  message.success("New block has been created!");
+                }}
                 disabled={areRequiredFieldsSet ? false : true}
               >
                 New Block
@@ -45,7 +49,12 @@ class AddUpdateButton extends Component {
               <Button
                 style={{ width: "100%", background: "#FDF7D0" }}
                 size="large"
-                onClick={() => updateBlock()}
+                onClick={() => {
+                  updateBlock();
+                  message.success(
+                    `Block ${selectedBlock.name} has been updated!`
+                  );
+                }}
               >
                 Update
               </Button>

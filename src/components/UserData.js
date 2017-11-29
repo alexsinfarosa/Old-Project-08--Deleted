@@ -1,18 +1,14 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { toJS } from "mobx";
+// import { toJS } from "mobx";
 
 import format from "date-fns/format";
 
 // styled components
 import { Block, MRow } from "styles";
 
-// custom components
-// import GrowthGraph from "components/GrowthGraph";
-// import GrowthTable from "components/GrowthTable";
-
 // antd
-import { Row, Table, Steps } from "antd";
+import { Row, Table, Steps, Popconfirm, message } from "antd";
 const Step = Steps.Step;
 
 @inject("store")
@@ -25,14 +21,16 @@ class UserData extends Component {
   render() {
     const {
       getBlock,
-      selectedBlock,
       editBlock,
       deleteBlock,
       isEditing,
       isLoading
     } = this.props.store.app;
 
-    console.log(toJS(selectedBlock));
+    const confirm = (record, index) => {
+      message.success(`Block ${record.name} has been deleted`);
+      deleteBlock(record, index);
+    };
 
     // columns ----------------------------------------------------------
     const columns = [
@@ -77,26 +75,21 @@ class UserData extends Component {
             </Steps>
           ) : null
       },
-      // {
-      //   title: "2nd Spray Date",
-      //   dataIndex: "secondSpray",
-      //   key: "secondSpray",
-      //   render: (text, record) =>
-      //     text ? <span>{format(text, "MMM DD YYYY HH:00")}</span> : null
-      // },
-      // {
-      //   title: "3rd Spray Date",
-      //   dataIndex: "thirdSpray",
-      //   key: "thirdSpray",
-      //   render: (text, record) =>
-      //     text ? <span>{format(text, "MMM DD YYYY HH:00")}</span> : null
-      // },
       {
         title: "Actions",
         dataIndex: "actions",
         render: (text, record, index) => (
           <span>
-            <a onClick={() => deleteBlock(record, index)}>Delete</a>
+            <Popconfirm
+              key={index}
+              onConfirm={() => confirm(record, index)}
+              title="Are you sure？"
+              okText="Yes"
+              cancelText="No"
+            >
+              <a>Delete</a>
+            </Popconfirm>
+
             <span className="ant-divider" />
             <a
               onClick={() => {
@@ -118,13 +111,10 @@ class UserData extends Component {
     return (
       <Block>
         <Row>
-          <MRow type="flex" justify="center">
-            <h2>
-              Block Info:{" "}
-              <i>
-                {getBlock.name} for {getBlock.station}, {getBlock.state}
-              </i>
-            </h2>
+          <MRow>
+            <h3>
+              {getBlock.station.name}, {getBlock.state}
+            </h3>
           </MRow>
 
           <MRow>
@@ -138,7 +128,6 @@ class UserData extends Component {
               rowKey={record => record.id}
               dataSource={[getBlock]}
               columns={columns}
-              // expandedRowRender={record => <GrowthTable record={record} />}
               scroll={{ x: 800 }}
             />
           </MRow>

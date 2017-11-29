@@ -37,4 +37,4 @@ export const Block = styled.div`
   padding: 16px 8px;
 `;
 
-export const MRow = styled(Row)`margin-bottom: 8px;`;
+export const MRow = styled(Row)`margin-bottom: 16px;`;

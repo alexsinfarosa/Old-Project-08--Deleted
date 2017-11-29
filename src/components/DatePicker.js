@@ -8,6 +8,8 @@ import moment from "moment";
 @observer
 export default class Datepicker extends Component {
   disabledStartDate = current => {
+    // const { date } = this.props;
+    // Try Date.now(date)
     return current && current.valueOf() > Date.now();
   };
 

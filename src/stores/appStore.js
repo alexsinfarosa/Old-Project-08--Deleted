@@ -293,13 +293,12 @@ export default class appStore {
       name: this.blockName,
       avgStyleLength: this.avgStyleLength,
       state: this.state.postalCode,
-      station: this.station.id,
+      station: this.station,
       date: this.date,
       firstSpray: this.firstSprayDate,
       secondSpray: this.secondSprayDate,
       thirdSpray: this.thirdSprayDate,
-      isEditing: false,
-      data: []
+      isEditing: false
     };
   }
 
@@ -315,17 +314,17 @@ export default class appStore {
     this.blocks.map(b => (b.isEditing = false));
   };
 
-  convertDateToHourlyDate = res => {
-    let data = [];
-    let obj = {};
-    res.forEach(day => {
-      day[1].forEach((hour, i) => {
-        obj[`${day[0]} ${i + 1}:00`] = hour;
-      });
-      data.push(obj);
-    });
-    return data;
-  };
+  // convertDateToHourlyDate = res => {
+  //   let data = [];
+  //   let obj = {};
+  //   res.forEach(day => {
+  //     day[1].forEach((hour, i) => {
+  //       obj[`${day[0]} ${i + 1}:00`] = hour;
+  //     });
+  //     data.push(obj);
+  //   });
+  //   return data;
+  // };
 
   @action
   addBlock = async () => {
@@ -333,9 +332,9 @@ export default class appStore {
     this.blockId = Math.random().toString();
 
     const block = { ...this.block };
-    await fetchACISData(this.station, this.date).then(res => {
-      this.convertDateToHourlyDate(res);
-    });
+    // await fetchACISData(this.station, this.date).then(res => {
+    //   this.convertDateToHourlyDate(res);
+    // });
     this.blocks.push(block);
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
     this.resetFields();
@@ -362,7 +361,7 @@ export default class appStore {
     this.setBlockName(b.name);
     this.setAvgStyleLength(b.avgStyleLength);
     this.setState(b.state);
-    this.setStation(b.station);
+    this.setStation(b.station.id);
     this.setDate(b.date);
     this.setFirstSprayDate(b.firstSpray);
     this.setSecondSprayDate(b.secondSpray);
