@@ -263,7 +263,6 @@ export default class appStore {
     if (Object.keys(this.selectedBlock).length === 0) {
       return {};
     }
-    console.log(this.blocks.find(block => block.id === this.selectedBlock.id));
     return this.blocks.find(block => block.id === this.selectedBlock.id);
   }
   @computed

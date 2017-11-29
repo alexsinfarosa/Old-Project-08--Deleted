@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Col, Select } from "antd";
+import { Row, Col, Select, Badge } from "antd";
 // import { toJS } from "mobx";
 
 @inject("store")
@@ -19,11 +19,27 @@ class DropDown extends Component {
       );
     });
 
-    const NumOfStations = () => {
-      if (isStation) {
-        return <small> ({list.length})</small>;
-      }
-      return null;
+    const Label = () => {
+      return (
+        <Row type="flex" align="middle" style={{ height: 16 }}>
+          <Col>{label}:</Col>
+          {isStation && (
+            <Col>
+              <Badge
+                count={list.length}
+                overflowCount={999}
+                style={{
+                  fontSize: 9,
+                  marginLeft: 2,
+                  background: "#fff",
+                  color: "#616161",
+                  boxShadow: "0 0 0 1px #D9D9D9 inset"
+                }}
+              />
+            </Col>
+          )}
+        </Row>
+      );
     };
 
     return (
@@ -33,10 +49,7 @@ class DropDown extends Component {
           margin: "16px 0"
         }}
       >
-        <p style={{ lineHeight: "1.5" }}>
-          {label}
-          {<NumOfStations />}:
-        </p>
+        <Label />
         <Select
           name={label}
           size="large"

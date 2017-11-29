@@ -54,7 +54,8 @@ class App2 extends Component {
       station,
       setStation,
       isMap,
-      currentStateStations
+      currentStateStations,
+      isSelectedBlock
       // blocks,
       // areRequiredFieldsSet
     } = this.props.store.app;
@@ -162,7 +163,7 @@ class App2 extends Component {
               <Row style={{ maxWidth: "1200px", margin: "0 auto" }}>
                 {isMap && <USMap />}
                 <BlocksDropdown />
-                {false && <UserData />}
+                {isSelectedBlock && <UserData />}
               </Row>
             </Content>
           </Layout>

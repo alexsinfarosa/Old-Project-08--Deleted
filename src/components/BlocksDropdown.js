@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Col, Select } from "antd";
+import { Row, Col, Select, Badge } from "antd";
 // import { toJS } from "mobx";
 
 @inject("store")
@@ -23,7 +23,23 @@ class BlocksDropdown extends Component {
           margin: "0 0 48px 0"
         }}
       >
-        <h2>{`Block List (${blocks.length}):`}</h2>
+        <Row type="flex" align="middle">
+          <Col>
+            <h2>Block List</h2>
+          </Col>
+          <Col>
+            <Badge
+              count={blocks.length}
+              style={{
+                marginLeft: 2,
+                background: "#fff",
+                color: "#616161",
+                boxShadow: "0 0 0 1px #d9d9d9 inset"
+              }}
+            />
+          </Col>
+        </Row>
+
         <Select
           name="blocks"
           size="large"
