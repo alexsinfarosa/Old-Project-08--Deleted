@@ -1,7 +1,6 @@
 /* config-overrides.js */
 const { injectBabelPlugin } = require("react-app-rewired");
 const rewireMobX = require("react-app-rewire-mobx");
-const rewireStyledComponents = require("react-app-rewire-styled-components");
 const rewireLess = require("react-app-rewire-less");
 
 module.exports = function override(config, env) {

@@ -8,9 +8,9 @@ import { Col, Select } from "antd";
 class DropDown extends Component {
   render() {
     const { isEditing } = this.props.store.app;
-    const { list, object, setOption } = this.props;
+    const { list, object, setOption, label } = this.props;
 
-    const isStation = object.subject === "Station";
+    const isStation = label === "Station";
     const optionList = list.map(el => {
       return (
         <Select.Option key={el.id} value={isStation ? el.id : el.name}>
@@ -21,7 +21,7 @@ class DropDown extends Component {
 
     const NumOfStations = () => {
       if (isStation) {
-        return <small>({list.length})</small>;
+        return <small> ({list.length})</small>;
       }
       return null;
     };
@@ -34,14 +34,15 @@ class DropDown extends Component {
         }}
       >
         <p style={{ lineHeight: "1.5" }}>
-          {object.subject} {<NumOfStations />}:
+          {label}
+          {<NumOfStations />}:
         </p>
         <Select
-          name={`${object.subject}`}
+          name={label}
           size="large"
           autoFocus
           value={object.name}
-          placeholder={`Select ${object.placeholder}`}
+          placeholder={`Select ${label}`}
           style={{ width: "100%" }}
           onChange={option => {
             setOption(option);

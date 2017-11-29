@@ -35,9 +35,9 @@ export default class appStore {
   get areRequiredFieldsSet() {
     return (
       this.blockName.length >= 2 &&
-      Object.keys(this.subject).length > 2 &&
+      Object.keys(this.subject).length !== 0 &&
       this.avgStyleLength !== null &&
-      Object.keys(this.station).length > 2
+      Object.keys(this.station).length !== 0
     );
   }
 
@@ -79,16 +79,12 @@ export default class appStore {
       });
   }
 
-  @observable
-  subject = {
-    subject: "Variety",
-    placeholder: "Apple Variety"
-  };
+  @observable subject = {};
 
   @action
   setSubject = d => {
     const obj = this.subjects.find(subject => subject.name === d);
-    this.subject = { ...this.subject, ...obj };
+    this.subject = { ...obj };
     localStorage.setItem(`pollenTubeVariety`, JSON.stringify(this.subject));
   };
 
@@ -118,8 +114,6 @@ export default class appStore {
 
   @observable
   state = JSON.parse(localStorage.getItem("state")) || {
-    subject: "State",
-    placeholder: "State",
     postalCode: "ALL",
     lat: 42.5,
     lon: -75.7,
@@ -129,16 +123,9 @@ export default class appStore {
 
   @action
   setState = d => {
-    this.station = {
-      subject: "Station",
-      placeholder: "Station"
-    };
+    this.station = {};
     const obj = this.states.find(state => state.name === d);
-    this.state = {
-      subject: "State",
-      placeholder: "State",
-      ...obj
-    };
+    this.state = { ...obj };
     this.setIsMap(true);
     localStorage.setItem("state", JSON.stringify(this.state));
   };
@@ -181,11 +168,7 @@ export default class appStore {
     );
   }
 
-  @observable
-  station = JSON.parse(localStorage.getItem("station")) || {
-    subject: "Station",
-    placeholder: "Station"
-  };
+  @observable station = JSON.parse(localStorage.getItem("station")) || {};
 
   @action
   setStation = id => {

@@ -79,13 +79,20 @@ class App2 extends Component {
             <Menu style={{ margin: "0 16px", border: "none" }}>
               <BlockName />
               <DropDown
+                label={"Variety"}
                 list={subjects}
                 object={subject}
                 setOption={setSubject}
               />
               <AvgStyleLength />
-              <DropDown list={states} object={state} setOption={setState} />
               <DropDown
+                label={"States"}
+                list={states}
+                object={state}
+                setOption={setState}
+              />
+              <DropDown
+                label={"Station"}
                 list={currentStateStations}
                 object={station}
                 setOption={setStation}
