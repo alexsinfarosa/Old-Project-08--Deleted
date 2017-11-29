@@ -4,7 +4,7 @@ import { Col, Tooltip, InputNumber } from "antd";
 
 @inject("store")
 @observer
-class AvgStyleLength extends Component {
+class StyleLength extends Component {
   formatNumber = value => {
     value += "";
     const list = value.split(".");
@@ -20,15 +20,16 @@ class AvgStyleLength extends Component {
   };
 
   onChange = value => {
-    this.props.store.app.setAvgStyleLength(value);
+    // console.log(value);
+    this.props.store.app.setStyleLength(value);
   };
 
   render() {
-    const { avgStyleLength, isEditing } = this.props.store.app;
+    const { isEditing, styleLength } = this.props.store.app;
 
-    const title = avgStyleLength ? (
+    const title = styleLength ? (
       <span style={{ minWidth: "32px", minHeight: "37px" }}>
-        {avgStyleLength !== "-" ? this.formatNumber(avgStyleLength) : "-"}
+        {styleLength !== "-" ? this.formatNumber(styleLength) : "-"}
       </span>
     ) : (
       "Range: 6mm to 12mm"
@@ -38,7 +39,7 @@ class AvgStyleLength extends Component {
       <Col
         style={{ background: isEditing ? "#FDF7D0" : null, margin: "16px 0" }}
       >
-        <p style={{ lineHeight: "1.5" }}>Avg. Style Length (mm):</p>
+        <p style={{ lineHeight: "1.5" }}>Style Length (mm):</p>
         <Tooltip
           trigger={["focus"]}
           title={title}
@@ -51,12 +52,12 @@ class AvgStyleLength extends Component {
               width: "100%"
             }}
             onChange={this.onChange}
-            placeholder="Insert Avg. Style Length"
+            placeholder="Insert Style Length"
             min={6}
             max={12}
-            step={0.1}
+            step={0.01}
             precision={2}
-            value={avgStyleLength}
+            value={styleLength}
           />
         </Tooltip>
       </Col>
@@ -64,4 +65,4 @@ class AvgStyleLength extends Component {
   }
 }
 
-export default AvgStyleLength;
+export default StyleLength;

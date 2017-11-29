@@ -8,14 +8,33 @@ import format from "date-fns/format";
 import { Block, MRow } from "styles";
 
 // antd
-import { Row, Table, Steps, Popconfirm, message } from "antd";
+import { Row, Table, Steps, Popconfirm, message, Modal, Icon } from "antd";
 const Step = Steps.Step;
 
 @inject("store")
 @observer
 class UserData extends Component {
   state = {
-    record: {}
+    record: {},
+    visible: false
+  };
+
+  showModal = () => {
+    this.setState({
+      visible: true
+    });
+  };
+  handleOk = e => {
+    console.log(e);
+    this.setState({
+      visible: false
+    });
+  };
+  handleCancel = e => {
+    console.log(e);
+    this.setState({
+      visible: false
+    });
   };
 
   render() {
@@ -32,6 +51,10 @@ class UserData extends Component {
       deleteBlock(record, index);
     };
 
+    // const styleLengthsList = styleLengths.map((length, i) => {
+    //   return <li key={i}>{length}</li>;
+    // });
+
     // columns ----------------------------------------------------------
     const columns = [
       {
@@ -41,9 +64,22 @@ class UserData extends Component {
       },
       {
         title: "Avg. Style Length",
-        dataIndex: "avgStyleLength",
-        key: "avgStyleLength",
-        render: text => <span>{`${text}`}</span>
+        dataIndex: "styleLength",
+        key: "styleLength",
+        render: text => (
+          <Row type="flex" align="middle">
+            <span style={{ marginRight: 6 }}>{`${text}`}</span>
+            <Icon type="info-circle" onClick={this.showModal} />
+            <Modal
+              title="List of Average Style Length"
+              visible={this.state.visible}
+              onOk={this.handleOk}
+              onCancel={this.handleCancel}
+            >
+              ciccio
+            </Modal>
+          </Row>
+        )
       },
       {
         title: "Start Date",

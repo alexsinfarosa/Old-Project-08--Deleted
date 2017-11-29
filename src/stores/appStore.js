@@ -36,7 +36,7 @@ export default class appStore {
     return (
       this.blockName.length >= 2 &&
       Object.keys(this.subject).length !== 0 &&
-      this.avgStyleLength !== null &&
+      this.styleLength !== null &&
       Object.keys(this.station).length !== 0
     );
   }
@@ -89,10 +89,10 @@ export default class appStore {
   };
 
   // Average Style Length -----------------------------------------------------
-  @observable avgStyleLength = null;
+  @observable styleLength = null;
   @action
-  setAvgStyleLength = d => {
-    this.avgStyleLength = d;
+  setStyleLength = d => {
+    this.styleLength = d;
   };
 
   // States -------------------------------------------------------------------
@@ -291,7 +291,7 @@ export default class appStore {
       id: this.blockId,
       variety: this.subject.name,
       name: this.blockName,
-      avgStyleLength: this.avgStyleLength,
+      styleLength: this.styleLength,
       state: this.state.postalCode,
       station: this.station,
       date: this.date,
@@ -306,7 +306,7 @@ export default class appStore {
     this.setBlockId("");
     this.subject = {};
     this.setBlockName("");
-    this.setAvgStyleLength("");
+    this.setStyleLength("");
     this.setDate(new Date());
     this.setFirstSprayDate("");
     this.setSecondSprayDate("");
@@ -336,6 +336,7 @@ export default class appStore {
     //   this.convertDateToHourlyDate(res);
     // });
     this.blocks.push(block);
+    console.log(block);
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
     this.resetFields();
     this.isLoading = false;
@@ -359,7 +360,7 @@ export default class appStore {
     this.setBlockId(b.id);
     this.setSubject(b.variety);
     this.setBlockName(b.name);
-    this.setAvgStyleLength(b.avgStyleLength);
+    this.setStyleLength(b.styleLength);
     this.setState(b.state);
     this.setStation(b.station.id);
     this.setDate(b.date);

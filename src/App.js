@@ -6,7 +6,7 @@ import "./index.css";
 import { MatchMediaProvider } from "mobx-react-matchmedia";
 
 import DropDown from "components/DropDown";
-import AvgStyleLength from "components/AvgStyleLength";
+import StyleLength from "components/StyleLength";
 import BlockName from "components/BlockName";
 import DatePicker from "components/DatePicker";
 import AddUpdateButton from "components/AddUpdateButton";
@@ -85,7 +85,7 @@ class App extends Component {
                 object={subject}
                 setOption={setSubject}
               />
-              <AvgStyleLength />
+              <StyleLength />
               <DropDown
                 label={"States"}
                 list={states}
