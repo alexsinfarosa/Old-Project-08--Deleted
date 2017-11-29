@@ -19,11 +19,6 @@ class StyleLength extends Component {
     return `${prefix}${result}${list[1] ? `.${list[1]}` : ""}`;
   };
 
-  onChange = value => {
-    // console.log(value);
-    this.props.store.app.setStyleLength(value);
-  };
-
   render() {
     const { isEditing, styleLength } = this.props.store.app;
 
@@ -51,7 +46,7 @@ class StyleLength extends Component {
             style={{
               width: "100%"
             }}
-            onChange={this.onChange}
+            onChange={value => this.props.onChange(value)}
             placeholder="Insert Style Length"
             min={6}
             max={12}

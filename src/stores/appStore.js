@@ -100,7 +100,14 @@ export default class appStore {
   };
 
   @observable styleLengths = [];
-  @action addStyleLength = d => this.styleLength.push(d);
+  @action
+  addStyleLength = d => {
+    const obj = {};
+    obj["i"] = this.styleLengths.length + 1;
+    obj["date"] = Date.now();
+    obj["styleLength"] = this.styleLength;
+    this.styleLengths.push(obj);
+  };
 
   // States -------------------------------------------------------------------
   @observable states = [];
@@ -337,13 +344,8 @@ export default class appStore {
   addBlock = async () => {
     this.isLoading = true;
     this.blockId = Math.random().toString();
-
     const block = { ...this.block };
-    // await fetchACISData(this.station, this.date).then(res => {
-    //   this.convertDateToHourlyDate(res);
-    // });
     this.blocks.push(block);
-    console.log(block);
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
     this.resetFields();
     this.isLoading = false;

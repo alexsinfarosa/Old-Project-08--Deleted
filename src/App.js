@@ -55,7 +55,8 @@ class App extends Component {
       setStation,
       isMap,
       currentStateStations,
-      isSelectedBlock
+      isSelectedBlock,
+      setStyleLength
       // blocks,
       // areRequiredFieldsSet
     } = this.props.store.app;
@@ -85,7 +86,7 @@ class App extends Component {
                 object={subject}
                 setOption={setSubject}
               />
-              <StyleLength />
+              <StyleLength onChange={setStyleLength} />
               <DropDown
                 label={"States"}
                 list={states}
