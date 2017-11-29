@@ -46,7 +46,7 @@ class BlocksDropdown extends Component {
           autoFocus
           value={getBlock ? getBlock.name : undefined}
           placeholder="Select Block"
-          style={{ width: "100%" }}
+          style={{ width: "100%", fontSize: "1.2em" }}
           onChange={option => {
             setSelectedBlock(option);
           }}
