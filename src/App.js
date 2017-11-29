@@ -22,7 +22,7 @@ const { Content, Sider } = Layout;
 
 @inject("store")
 @observer
-class App2 extends Component {
+class App extends Component {
   state = {
     collapsed: false
   };
@@ -104,23 +104,25 @@ class App2 extends Component {
                 setDate={setDate}
               />
               {isEditing && (
-                <div>
-                  <DatePicker
-                    label={"First Spray Date"}
-                    value={firstSprayDate}
-                    setDate={setFirstSprayDate}
-                  />
-                  <DatePicker
-                    label={"Second Spray Date"}
-                    value={secondSprayDate}
-                    setDate={setSecondSprayDate}
-                  />
-                  <DatePicker
-                    label={"Third Spray Date"}
-                    value={thirdSprayDate}
-                    setDate={setThirdSprayDate}
-                  />
-                </div>
+                <DatePicker
+                  label={"First Spray Date"}
+                  value={firstSprayDate}
+                  setDate={setFirstSprayDate}
+                />
+              )}
+              {isEditing && (
+                <DatePicker
+                  label={"Second Spray Date"}
+                  value={secondSprayDate}
+                  setDate={setSecondSprayDate}
+                />
+              )}
+              {isEditing && (
+                <DatePicker
+                  label={"Third Spray Date"}
+                  value={thirdSprayDate}
+                  setDate={setThirdSprayDate}
+                />
               )}
 
               <AddUpdateButton />
@@ -173,4 +175,4 @@ class App2 extends Component {
   }
 }
 
-export default App2;
+export default App;

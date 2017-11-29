@@ -293,7 +293,7 @@ export default class appStore {
       name: this.blockName,
       avgStyleLength: this.avgStyleLength,
       state: this.state.postalCode,
-      station: this.station.name,
+      station: this.station.id,
       date: this.date,
       firstSpray: this.firstSprayDate,
       secondSpray: this.secondSprayDate,

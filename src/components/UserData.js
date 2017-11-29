@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-// import { toJS } from "mobx";
+import { toJS } from "mobx";
 
 import format from "date-fns/format";
 
@@ -25,11 +25,14 @@ class UserData extends Component {
   render() {
     const {
       getBlock,
+      selectedBlock,
       editBlock,
       deleteBlock,
       isEditing,
       isLoading
     } = this.props.store.app;
+
+    console.log(toJS(selectedBlock));
 
     // columns ----------------------------------------------------------
     const columns = [
@@ -98,7 +101,6 @@ class UserData extends Component {
             <a
               onClick={() => {
                 editBlock(record, index);
-                this.setState({ record });
               }}
             >
               Edit
@@ -137,7 +139,7 @@ class UserData extends Component {
               dataSource={[getBlock]}
               columns={columns}
               // expandedRowRender={record => <GrowthTable record={record} />}
-              scroll={{ x: 900 }}
+              scroll={{ x: 800 }}
             />
           </MRow>
         </Row>
