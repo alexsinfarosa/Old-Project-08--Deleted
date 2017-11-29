@@ -7,53 +7,38 @@ import format from "date-fns/format";
 // styled components
 import { Block, MRow } from "styles";
 
+import StyleLengthsModal from "components/StyleLengthsModal";
+
 // antd
-import { Row, Table, Steps, Popconfirm, message, Modal, Icon } from "antd";
+import {
+  Row,
+  Col,
+  Table,
+  Steps,
+  Popconfirm,
+  message,
+  Icon,
+  Button
+} from "antd";
 const Step = Steps.Step;
 
 @inject("store")
 @observer
 class UserData extends Component {
-  state = {
-    record: {},
-    visible: false
-  };
-
-  showModal = () => {
-    this.setState({
-      visible: true
-    });
-  };
-  handleOk = e => {
-    console.log(e);
-    this.setState({
-      visible: false
-    });
-  };
-  handleCancel = e => {
-    console.log(e);
-    this.setState({
-      visible: false
-    });
-  };
-
   render() {
     const {
       getBlock,
       editBlock,
       deleteBlock,
       isEditing,
-      isLoading
+      isLoading,
+      showModal
     } = this.props.store.app;
 
     const confirm = (record, index) => {
       message.success(`Block ${record.name} has been deleted`);
       deleteBlock(record, index);
     };
-
-    // const styleLengthsList = styleLengths.map((length, i) => {
-    //   return <li key={i}>{length}</li>;
-    // });
 
     // columns ----------------------------------------------------------
     const columns = [
@@ -66,20 +51,7 @@ class UserData extends Component {
         title: "Avg. Style Length",
         dataIndex: "styleLength",
         key: "styleLength",
-        render: text => (
-          <Row type="flex" align="middle">
-            <span style={{ marginRight: 6 }}>{`${text}`}</span>
-            <Icon type="info-circle" onClick={this.showModal} />
-            <Modal
-              title="List of Average Style Length"
-              visible={this.state.visible}
-              onOk={this.handleOk}
-              onCancel={this.handleCancel}
-            >
-              ciccio
-            </Modal>
-          </Row>
-        )
+        render: text => <StyleLengthsModal text={text} />
       },
       {
         title: "Start Date",
@@ -147,10 +119,17 @@ class UserData extends Component {
     return (
       <Block>
         <Row>
-          <MRow>
-            <h3>
-              {getBlock.station.name}, {getBlock.state}
-            </h3>
+          <MRow type="flex" justify="space-between">
+            <Col>
+              <h3>
+                {getBlock.station.name}, {getBlock.state}
+              </h3>
+            </Col>
+            <Col>
+              <Button onClick={() => showModal()}>
+                <Icon type="plus" />Style Length
+              </Button>
+            </Col>
           </MRow>
 
           <MRow>

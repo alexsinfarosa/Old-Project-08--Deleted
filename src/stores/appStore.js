@@ -55,6 +55,10 @@ export default class appStore {
   }
   @action toggleMap = () => (this.isMap = !this.isMap);
 
+  @observable isModal = false;
+  @action showModal = () => (this.isModal = true);
+  @action hideModal = () => (this.isModal = false);
+
   // BlockName ----------------------------------------------------------------
   @observable blockName = "";
   @action
@@ -94,6 +98,9 @@ export default class appStore {
   setStyleLength = d => {
     this.styleLength = d;
   };
+
+  @observable styleLengths = [];
+  @action addStyleLength = d => this.styleLength.push(d);
 
   // States -------------------------------------------------------------------
   @observable states = [];
