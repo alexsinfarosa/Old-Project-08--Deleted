@@ -267,7 +267,7 @@ export default class appStore {
   }
   @computed
   get isSelectedBlock() {
-    if (this.blocks.length > 0) {
+    if (Object.keys(this.selectedBlock).length !== 0) {
       return true;
     }
     return false;
@@ -276,6 +276,10 @@ export default class appStore {
   setSelectedBlock = d => {
     const obj = this.blocks.find(block => block.name === d);
     this.selectedBlock = obj;
+  };
+  @action
+  clearSelectedBlock = () => {
+    this.selectedBlock = {};
   };
 
   @observable blockId = "";
@@ -340,6 +344,7 @@ export default class appStore {
 
   @action
   deleteBlock = (block, index) => {
+    this.clearSelectedBlock();
     this.blocks.splice(index, 1);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
