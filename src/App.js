@@ -57,7 +57,6 @@ class App extends Component {
       currentStateStations,
       isSelectedBlock,
       setStyleLength
-      // blocks,
       // areRequiredFieldsSet
     } = this.props.store.app;
 

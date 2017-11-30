@@ -1,6 +1,6 @@
 import { observable, action, when, computed } from "mobx";
 import axios from "axios";
-// import { toJS } from "mobx";
+
 import format from "date-fns/format";
 import isAfter from "date-fns/is_after";
 import isBefore from "date-fns/is_before";
@@ -41,13 +41,11 @@ export default class appStore {
     );
   }
 
-  // Sidebar ---------------------------------------------------------
   @observable isSidebarCollapsed = false;
   @action setSidebar = d => (this.isSidebarCollapsed = d);
   @action
   toggleSidebar = () => (this.isSidebarCollapsed = !this.isSidebarCollapsed);
 
-  //   Map ----------------------------------------------------------------
   @observable
   isMap = JSON.parse(localStorage.getItem("state")) === null ? true : false;
   @action setIsMap = d => (this.isMap = d);
@@ -57,10 +55,10 @@ export default class appStore {
   }
   @action toggleMap = () => (this.isMap = !this.isMap);
 
-  //   Modal ---------------------------------------------------------------
   @observable isModal = false;
   @action
   showModal = () => {
+    this.setStyleLengths(this.selectedBlock.styleLengths);
     this.isModal = true;
   };
   @action hideModal = () => (this.isModal = false);
@@ -92,49 +90,45 @@ export default class appStore {
   @observable subject = {};
 
   @action
-  setSubject = name => {
-    this.subject = this.subjects.find(subject => subject.name === name);
+  setSubject = d => {
+    const obj = this.subjects.find(subject => subject.name === d);
+    this.subject = { ...obj };
     localStorage.setItem(`pollenTubeVariety`, JSON.stringify(this.subject));
   };
 
-  // Style Length -----------------------------------------------------
+  // Average Style Length -----------------------------------------------------
   @observable styleLength = null;
   @action
   setStyleLength = d => {
     this.styleLength = d;
   };
-
   @computed
   get avgStyleLength() {
-    if (Object.keys(this.selectedBlock).length !== 0) {
+    if (this.styleLengths.length !== 0) {
       return (
-        this.selectedBlock.styleLengths
-          .map(val => val.styleLength)
-          .reduce((p, c) => p + c, 0) / this.selectedBlock.styleLengths.length
+        this.styleLengths.reduce((a, b) => a + b) / this.styleLengths.length
       );
     }
-    return this.styleLength;
+    return 0;
   }
 
   @observable styleLengths = [];
   @action setStyleLengths = d => (this.styleLengths = d);
   @action clearStyleLengths = () => (this.styleLengths = []);
   @action
-  addStyleLength = () => {
-    let block = { ...this.selectedBlock };
-    block.styleLengths.push({
-      idx: this.styleLengths.length + 1,
-      date: Date.now(),
-      styleLength: this.styleLength
-    });
-    const idx = this.blocks.findIndex(b => b.id === block.id);
+  addStyleLength = d => {
+    const obj = {};
+    obj["i"] = this.styleLengths.length + 1;
+    obj["date"] = Date.now();
+    obj["styleLength"] = this.styleLength;
+    this.styleLengths.push(obj);
+    const block = this.blocks.find(b => b.id === this.selectedBlock.id);
+    const idx = this.blocks.findIndex(b => b.id === this.selectedBlock.id);
     this.blocks.splice(idx, 1, block);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
-    this.resetFields();
-    this.isEditing = false;
-    this.disableIsStyleLength(false);
-    this.setSelectedBlock(block.id);
+    this.clearSelectedBlock();
+    this.setStyleLength(null);
   };
 
   // States -------------------------------------------------------------------
@@ -256,58 +250,86 @@ export default class appStore {
   @observable thirdSprayDate = "";
   @action setThirdSprayDate = d => (this.thirdSprayDate = d);
 
+  // Load Grid Data ------------------------------------------------------------
+  // @observable gridData = [];
+  // @action updateGridData = d => (this.gridData = d);
+
+  // @action
+  // loadGridData = (sdate = this.date, edate = this.date) => {
+  //   if (this.areRequiredFieldsSet) {
+  //     this.isLoading = true;
+
+  //     let loc = "-75.7,42.5";
+  //     if (this.state.name !== "All States") {
+  //       loc = `${this.station.lon},${this.station.lat}`;
+  //     }
+
+  //     const params = {
+  //       loc: loc,
+  //       sdate: format(sdate, "YYYY-MM-DD"),
+  //       edate: format(edate, "YYYY-MM-DD"),
+  //       grid: 3,
+  //       elems: [{ name: "avgt" }]
+  //     };
+
+  //     // console.log(params);
+
+  //     return axios
+  //       .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
+  //       .then(res => {
+  //         // console.log(res.data.data);
+  //         this.updateGridData(res.data.data);
+  //         this.isLoading = false;
+  //       })
+  //       .catch(err => {
+  //         console.log("Failed to load grid data", err);
+  //       });
+  //   }
+  //   return [];
+  // };
+
   // User Data (Table of blocks) ------------------------------------------------
   @observable
   blocks = JSON.parse(localStorage.getItem("pollenTubeBlocks")) || [];
-
   @action setBlocks = d => (this.blocks = d);
 
   @observable selectedBlock = {};
-
-  @action clearSelectedBlock = () => (this.selectedBlock = {});
-
-  @action
-  setSelectedBlock = id => {
-    this.selectedBlock = this.blocks.find(block => block.id === id);
-  };
-
+  @computed
+  get getBlock() {
+    if (Object.keys(this.selectedBlock).length === 0) {
+      return {};
+    }
+    return this.blocks.find(block => block.id === this.selectedBlock.id);
+  }
   @computed
   get isSelectedBlock() {
-    if (this.selectedBlock) {
-      if (Object.keys(this.selectedBlock).length !== 0) {
-        return true;
-      }
-      return false;
+    if (Object.keys(this.selectedBlock).length !== 0) {
+      return true;
     }
+    return false;
   }
-
-  resetFields = () => {
-    this.setBlockName("");
-    this.subject = {};
-    this.clearSelectedBlock();
-    this.setStyleLength(null);
-    this.clearStyleLengths();
-    this.setDate(new Date());
-    this.setFirstSprayDate("");
-    this.setSecondSprayDate("");
-    this.setThirdSprayDate("");
+  @action
+  setSelectedBlock = d => {
+    const obj = this.blocks.find(block => block.name === d);
+    this.selectedBlock = obj;
+  };
+  @action
+  clearSelectedBlock = () => {
+    this.selectedBlock = {};
   };
 
-  @action
-  addBlock = () => {
-    const obj = {
-      idx: this.styleLengths.length + 1,
-      date: Date.now(),
-      styleLength: this.styleLength
-    };
-    this.styleLengths.push(obj);
-    const block = {
-      id: Math.random().toString(),
+  @observable blockId = "";
+  @action setBlockId = d => (this.blockId = d);
+
+  @computed
+  get block() {
+    return {
+      id: this.blockId,
       name: this.blockName,
-      variety: this.subject,
+      variety: this.subject.name,
       styleLengths: this.styleLengths,
       avgStyleLength: this.avgStyleLength,
-      state: this.state,
+      state: this.state.postalCode,
       station: this.station,
       date: this.date,
       firstSpray: this.firstSprayDate,
@@ -315,72 +337,86 @@ export default class appStore {
       thirdSpray: this.thirdSprayDate,
       isEditing: false
     };
+  }
+
+  resetFields = () => {
+    this.setBlockId("");
+    this.subject = {};
+    this.setBlockName("");
+    this.setStyleLength("");
+    this.clearStyleLengths();
+    this.setDate(new Date());
+    this.setFirstSprayDate("");
+    this.setSecondSprayDate("");
+    this.setThirdSprayDate("");
+    this.blocks.map(b => (b.isEditing = false));
+  };
+
+  // convertDateToHourlyDate = res => {
+  //   let data = [];
+  //   let obj = {};
+  //   res.forEach(day => {
+  //     day[1].forEach((hour, i) => {
+  //       obj[`${day[0]} ${i + 1}:00`] = hour;
+  //     });
+  //     data.push(obj);
+  //   });
+  //   return data;
+  // };
+
+  @action
+  addBlock = async () => {
+    this.isLoading = true;
+    this.blockId = Math.random().toString();
+    const block = { ...this.block };
+    console.log(block);
+    block.styleLengths.push(this.styleLength);
     this.blocks.push(block);
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
     this.resetFields();
+    this.isLoading = false;
   };
 
   @action
-  deleteBlock = index => {
-    let blocks = [...this.blocks];
-    blocks.splice(index, 1);
-    this.setBlocks(blocks);
-    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(blocks));
-    this.resetFields();
+  deleteBlock = (block, index) => {
+    this.clearSelectedBlock();
+    this.blocks.splice(index, 1);
+    this.setBlocks(this.blocks);
+    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
   };
 
   @observable isEditing = false;
 
-  @observable isStyleLength = false;
-  @action disableIsStyleLength = d => (this.isStyleLength = d);
-
   @action
-  editBlock = obj => {
+  editBlock = (b, index) => {
     this.isEditing = true;
-    this.disableIsStyleLength(true);
-    this.selectedBlock = obj;
-    const block = { ...this.selectedBlock };
-    block["isEditing"] = true;
-    this.setStyleLength(this.avgStyleLength);
-    this.setSubject(block.variety.name);
-    this.setBlockName(block.name);
-    this.setState(block.state);
-    this.setStation(block.station.id);
-    this.setDate(block.date);
-    this.setFirstSprayDate(block.firstSpray);
-    this.setSecondSprayDate(block.secondSpray);
-    this.setThirdSprayDate(block.thirdSpray);
+    this.blocks.map(b => (b.isEditing = false));
+    this.blocks[index].isEditing = true;
+    this.setBlockId(b.id);
+    this.setSubject(b.variety);
+    this.setBlockName(b.name);
+    // this.setStyleLength(b.styleLength);
+    this.setState(b.state);
+    this.setStation(b.station.id);
+    this.setDate(b.date);
+    this.setFirstSprayDate(b.firstSpray);
+    this.setSecondSprayDate(b.secondSpray);
+    this.setThirdSprayDate(b.thirdSpray);
   };
 
   @action
   updateBlock = () => {
-    let block = { ...this.selectedBlock };
-    block["name"] = this.blockName;
-    block["variety"] = this.subject;
-    block["styleLengths"] = this.styleLengths;
-    block["avgStyleLength"] = this.avgStyleLength;
-    block["state"] = this.state;
-    block["station"] = this.station;
-    block["date"] = this.date;
-    block["firstSpray"] = this.firstSprayDate;
-    block["secondSpray"] = this.secondSprayDate;
-    block["thirdSpray"] = this.thirdSprayDate;
-    block["isEditing"] = false;
-
-    const idx = this.blocks.findIndex(b => b.id === block.id);
-    this.blocks.splice(idx, 1, block);
+    const idx = this.blocks.findIndex(b => b.id === this.blockId);
+    this.blocks.splice(idx, 1, this.block);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
     this.resetFields();
     this.isEditing = false;
-    this.disableIsStyleLength(false);
-    this.setSelectedBlock(block.id);
   };
 
   @action
   cancelBlock = () => {
     this.resetFields();
-    this.disableIsStyleLength(false);
     this.isEditing = false;
   };
 

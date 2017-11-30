@@ -20,7 +20,12 @@ class StyleLength extends Component {
   };
 
   render() {
-    const { isEditing, styleLength } = this.props.store.app;
+    const {
+      isEditing,
+      styleLength,
+      isStyleLength,
+      selectedBlock
+    } = this.props.store.app;
 
     const title = styleLength ? (
       <span style={{ minWidth: "32px", minHeight: "37px" }}>
@@ -47,12 +52,17 @@ class StyleLength extends Component {
               width: "100%"
             }}
             onChange={value => this.props.onChange(value)}
-            placeholder="Insert Style Length"
+            placeholder={
+              isStyleLength
+                ? selectedBlock.avgStyleLength
+                : `Insert Style Length`
+            }
             min={6}
             max={12}
             step={0.01}
             precision={2}
             value={styleLength}
+            disabled={isStyleLength}
           />
         </Tooltip>
       </Col>

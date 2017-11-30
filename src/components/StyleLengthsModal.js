@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 // import { toJS } from "mobx";
-import { Row, Icon, Modal, Table } from "antd";
+import { Row, Modal, Table } from "antd";
 import StyleLength from "components/StyleLength";
 
 import format from "date-fns/format";
@@ -9,23 +9,31 @@ import format from "date-fns/format";
 @inject("store")
 @observer
 class StyleLengthsModal extends Component {
+  delay = t => {
+    return new Promise(res => {
+      setTimeout(res, t);
+    });
+  };
+
   render() {
     const {
-      styleLengths,
       isModal,
-      showModal,
       hideModal,
       addStyleLength,
       isLoading,
-      setStyleLength
+      setStyleLength,
+      selectedBlock
     } = this.props.store.app;
+
+    const data = selectedBlock.styleLengths;
+
     const { text } = this.props;
-    // styleLengths.map(x => console.log(toJS(x)));
+
     const columns = [
       {
         title: "Measurement #",
-        dataIndex: "i",
-        key: "i"
+        dataIndex: "idx",
+        key: "idx"
       },
       {
         title: "Date",
@@ -46,11 +54,11 @@ class StyleLengthsModal extends Component {
       <Row type="flex" align="middle">
         <span style={{ marginRight: 6 }}>{`${text}`}</span>
         <Modal
-          title="List of Average Style Length"
+          title="Style Length List"
           visible={isModal}
           onOk={() => {
             addStyleLength();
-            hideModal();
+            this.delay(1000).then(res => hideModal(res));
           }}
           onCancel={() => hideModal()}
         >
@@ -58,7 +66,7 @@ class StyleLengthsModal extends Component {
           <Table
             rowKey={record => record.i}
             loading={isLoading}
-            dataSource={styleLengths.length > 0 ? styleLengths : [{}]}
+            dataSource={data.length > 0 ? data.slice() : []}
             columns={columns}
             size="middle"
             pagination={false}

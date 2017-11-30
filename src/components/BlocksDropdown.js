@@ -7,11 +7,11 @@ import { Row, Col, Select, Badge } from "antd";
 @observer
 class BlocksDropdown extends Component {
   render() {
-    const { blocks, getBlock, setSelectedBlock } = this.props.store.app;
+    const { blocks, selectedBlock, setSelectedBlock } = this.props.store.app;
 
     const optionList = blocks.map((el, i) => {
       return (
-        <Select.Option key={el.id} value={el.name}>
+        <Select.Option key={el.id} value={el.id}>
           {el.name}
         </Select.Option>
       );
@@ -44,11 +44,11 @@ class BlocksDropdown extends Component {
           name="blocks"
           size="large"
           autoFocus
-          value={getBlock ? getBlock.name : undefined}
+          value={selectedBlock ? selectedBlock.name : undefined}
           placeholder="Select Block"
           style={{ width: "100%", fontSize: "1.2em" }}
-          onChange={option => {
-            setSelectedBlock(option);
+          onChange={id => {
+            setSelectedBlock(id);
           }}
         >
           {optionList}

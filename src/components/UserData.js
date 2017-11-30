@@ -27,12 +27,12 @@ const Step = Steps.Step;
 class UserData extends Component {
   render() {
     const {
-      getBlock,
       editBlock,
       deleteBlock,
       isEditing,
       isLoading,
-      showModal
+      showModal,
+      selectedBlock
     } = this.props.store.app;
 
     const confirm = (record, index) => {
@@ -44,13 +44,13 @@ class UserData extends Component {
     const columns = [
       {
         title: "Variety",
-        dataIndex: "variety",
+        dataIndex: "variety.name",
         key: "variety"
       },
       {
         title: "Avg. Style Length",
-        dataIndex: "styleLength",
-        key: "styleLength",
+        dataIndex: "avgStyleLength",
+        key: "avgStyleLength",
         render: text => <StyleLengthsModal text={text} />
       },
       {
@@ -101,7 +101,7 @@ class UserData extends Component {
             <span className="ant-divider" />
             <a
               onClick={() => {
-                editBlock(record, index);
+                editBlock(record);
               }}
             >
               Edit
@@ -122,7 +122,7 @@ class UserData extends Component {
           <MRow type="flex" justify="space-between">
             <Col>
               <h3>
-                {getBlock.station.name}, {getBlock.state}
+                {selectedBlock.station.name}, {selectedBlock.state.postalCode}
               </h3>
             </Col>
             <Col>
@@ -141,7 +141,7 @@ class UserData extends Component {
               size="middle"
               pagination={false}
               rowKey={record => record.id}
-              dataSource={[getBlock]}
+              dataSource={[selectedBlock]}
               columns={columns}
               scroll={{ x: 800 }}
             />
