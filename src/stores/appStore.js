@@ -297,7 +297,7 @@ export default class appStore {
 
   @action setBlocks = d => (this.blocks = d);
 
-  @observable selectedBlock = {};
+  @observable selectedBlock = this.blocks.length !== 0 ? this.blocks[0] : {};
 
   @action clearSelectedBlock = () => (this.selectedBlock = {});
 
