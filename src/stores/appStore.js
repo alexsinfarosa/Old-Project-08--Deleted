@@ -128,7 +128,8 @@ export default class appStore {
     block.styleLengths.push({
       idx: block.styleLengths.length + 1,
       date: Date.now(),
-      styleLength: this.styleLength
+      styleLength: this.styleLength,
+      isEdit: false
     });
     block["avgStyleLength"] = this.avgStyleLength;
     const idx = this.blocks.findIndex(b => b.id === block.id);
@@ -139,6 +140,38 @@ export default class appStore {
 
     this.disableIsStyleLength(false);
     this.setSelectedBlock(block.id);
+    delay(1300).then(res => this.hideModal(res));
+  };
+
+  @action
+  editStyleLength = record => {
+    this.selectedBlock.isEditing = true;
+    this.selectedBlock.styleLengths.map(obj => {
+      if (obj.date === record.date) {
+        return (obj.isEdit = true);
+      }
+      return (obj.isEdit = false);
+    });
+    this.setStyleLength(record.styleLength);
+  };
+
+  @action
+  updateStyleLength = () => {
+    const length = this.selectedBlock.styleLengths.filter(
+      l => l.isEdit === true
+    )[0];
+    const idx = this.selectedBlock.styleLengths.findIndex(
+      l => l.date === length.date
+    );
+    this.selectedBlock.styleLengths[idx].styleLength = this.styleLength;
+    const blockIdx = this.blocks.findIndex(b => b.id === this.selectedBlock.id);
+    this.selectedBlock.isEditing = false;
+    this.selectedBlock.styleLengths[idx].isEdit = false;
+    this.blocks.splice(blockIdx, 1, this.selectedBlock);
+    this.setBlocks(this.blocks);
+    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
+    this.resetFields();
+    this.setSelectedBlock(this.selectedBlock.id);
     delay(1300).then(res => this.hideModal(res));
   };
 

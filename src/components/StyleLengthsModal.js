@@ -17,30 +17,33 @@ class StyleLengthsModal extends Component {
       isLoading,
       setStyleLength,
       selectedBlock,
-      styleLength
+      styleLength,
+      editStyleLength,
+      updateStyleLength
     } = this.props.store.app;
 
     const { text } = this.props;
     const data = selectedBlock.styleLengths;
 
-    const error = () => {
+    // messages
+    const emptyStyleLength = () => {
       message.error("Please, insert style length");
     };
 
     const columns = [
       {
-        title: "",
+        title: "#",
         dataIndex: "idx",
         key: "idx",
-        width: 100,
-        sorter: (a, b) => a.idx - b.idx,
-        sortOrder: "descend"
+        width: "20%",
+        sorter: (a, b) => a.idx - b.idx
+        // sortOrder: "descend"
       },
       {
         title: "Date",
         dataIndex: "date",
         key: "date",
-        width: 200,
+        width: "30%",
         render: (text, record) => (
           <span>{format(text, "MMM DD YYYY HH:mm")}</span>
         )
@@ -49,8 +52,18 @@ class StyleLengthsModal extends Component {
         title: "Style Length (mm)",
         dataIndex: "styleLength",
         key: "styleLength",
-        width: 200,
+        width: "30%",
         render: (text, record) => <span>{text}</span>
+      },
+      {
+        title: "Actions",
+        dataIndex: "actions",
+        width: "20%",
+        render: (text, record, index) => (
+          <span>
+            <a onClick={() => editStyleLength(record, index)}>Edit</a>
+          </span>
+        )
       }
     ];
 
@@ -61,13 +74,16 @@ class StyleLengthsModal extends Component {
           title="Style Length List"
           visible={isModal}
           onOk={() => {
-            styleLength ? addStyleLength() : error();
+            styleLength
+              ? selectedBlock.isEditing ? updateStyleLength() : addStyleLength()
+              : emptyStyleLength();
           }}
           onCancel={() => hideModal()}
         >
           <StyleLength onChange={setStyleLength} />
           <Table
-            rowKey={record => record.i}
+            rowClassName={record => (record.isEdit ? "selected" : null)}
+            rowKey={record => record.date}
             loading={isLoading}
             dataSource={data.length > 0 ? data.slice() : []}
             columns={columns}
@@ -78,7 +94,7 @@ class StyleLengthsModal extends Component {
           <Row
             type="flex"
             justify="end"
-            style={{ marginTop: 16, marginRight: 158 }}
+            style={{ marginTop: 16, marginRight: 205 }}
           >
             <b>Average: {text}</b>
           </Row>

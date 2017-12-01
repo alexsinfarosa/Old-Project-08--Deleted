@@ -5,20 +5,6 @@ import { Col, Tooltip, InputNumber } from "antd";
 @inject("store")
 @observer
 class StyleLength extends Component {
-  formatNumber = value => {
-    value += "";
-    const list = value.split(".");
-    const prefix = list[0].charAt(0) === "-" ? "-" : "";
-    let num = prefix ? list[0].slice(1) : list[0];
-    let result = "";
-    while (num.length > 3) {
-      result = `,${num.slice(-3)}${result}`;
-      num = num.slice(0, num.length - 3);
-    }
-    if (num) result = num + result;
-    return `${prefix}${result}${list[1] ? `.${list[1]}` : ""}`;
-  };
-
   render() {
     const {
       isEditing,
@@ -28,9 +14,7 @@ class StyleLength extends Component {
     } = this.props.store.app;
 
     const title = styleLength ? (
-      <span style={{ minWidth: "32px", minHeight: "37px" }}>
-        {styleLength !== "-" ? this.formatNumber(styleLength) : "-"}
-      </span>
+      <span style={{ minWidth: "32px", minHeight: "37px" }}>{styleLength}</span>
     ) : (
       "Range: 6mm to 12mm"
     );
