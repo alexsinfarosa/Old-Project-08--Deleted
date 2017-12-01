@@ -51,7 +51,7 @@ class UserData extends Component {
         title: "Avg. Style Length",
         dataIndex: "avgStyleLength",
         key: "avgStyleLength",
-        render: text => <StyleLengthsModal text={text} />
+        render: text => <StyleLengthsModal text={text.toPrecision(4)} />
       },
       {
         title: "Start Date",

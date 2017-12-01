@@ -7,6 +7,7 @@ import isBefore from "date-fns/is_before";
 
 // utils
 import { fetchACISData } from "fetchACISData";
+import { delay } from "utils";
 
 export default class appStore {
   constructor(fetch) {
@@ -107,12 +108,14 @@ export default class appStore {
   @computed
   get avgStyleLength() {
     if (Object.keys(this.selectedBlock).length !== 0) {
+      console.log("selected block is not empty");
       return (
         this.selectedBlock.styleLengths
           .map(val => val.styleLength)
           .reduce((p, c) => p + c, 0) / this.selectedBlock.styleLengths.length
       );
     }
+    console.log("selected block is emtpy");
     return this.styleLength;
   }
 
@@ -123,18 +126,20 @@ export default class appStore {
   addStyleLength = () => {
     let block = { ...this.selectedBlock };
     block.styleLengths.push({
-      idx: this.styleLengths.length + 1,
+      idx: block.styleLengths.length + 1,
       date: Date.now(),
       styleLength: this.styleLength
     });
+    block["avgStyleLength"] = this.avgStyleLength;
     const idx = this.blocks.findIndex(b => b.id === block.id);
     this.blocks.splice(idx, 1, block);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
     this.resetFields();
-    this.isEditing = false;
+
     this.disableIsStyleLength(false);
     this.setSelectedBlock(block.id);
+    delay(1300).then(res => this.hideModal(res));
   };
 
   // States -------------------------------------------------------------------
@@ -296,7 +301,7 @@ export default class appStore {
   @action
   addBlock = () => {
     const obj = {
-      idx: this.styleLengths.length + 1,
+      idx: 1,
       date: Date.now(),
       styleLength: this.styleLength
     };

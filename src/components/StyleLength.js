@@ -60,7 +60,7 @@ class StyleLength extends Component {
             min={6}
             max={12}
             step={0.01}
-            precision={2}
+            precision={3}
             value={styleLength}
             disabled={isStyleLength}
           />

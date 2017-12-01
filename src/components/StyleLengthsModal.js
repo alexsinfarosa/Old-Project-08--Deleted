@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 // import { toJS } from "mobx";
-import { Row, Modal, Table } from "antd";
+import { Row, Modal, Table, message } from "antd";
 import StyleLength from "components/StyleLength";
 
 import format from "date-fns/format";
@@ -9,12 +9,6 @@ import format from "date-fns/format";
 @inject("store")
 @observer
 class StyleLengthsModal extends Component {
-  delay = t => {
-    return new Promise(res => {
-      setTimeout(res, t);
-    });
-  };
-
   render() {
     const {
       isModal,
@@ -22,43 +16,52 @@ class StyleLengthsModal extends Component {
       addStyleLength,
       isLoading,
       setStyleLength,
-      selectedBlock
+      selectedBlock,
+      styleLength
     } = this.props.store.app;
 
+    const { text } = this.props;
     const data = selectedBlock.styleLengths;
 
-    const { text } = this.props;
+    const error = () => {
+      message.error("Please, insert style length");
+    };
 
     const columns = [
       {
-        title: "Measurement #",
+        title: "",
         dataIndex: "idx",
-        key: "idx"
+        key: "idx",
+        width: 100,
+        sorter: (a, b) => a.idx - b.idx,
+        sortOrder: "descend"
       },
       {
         title: "Date",
         dataIndex: "date",
         key: "date",
+        width: 200,
         render: (text, record) => (
           <span>{format(text, "MMM DD YYYY HH:mm")}</span>
         )
       },
       {
-        title: "Style Length",
+        title: "Style Length (mm)",
         dataIndex: "styleLength",
-        key: "styleLength"
+        key: "styleLength",
+        width: 200,
+        render: (text, record) => <span>{text}</span>
       }
     ];
 
     return (
       <Row type="flex" align="middle">
-        <span style={{ marginRight: 6 }}>{`${text}`}</span>
+        <span>{`${text}`}</span>
         <Modal
           title="Style Length List"
           visible={isModal}
           onOk={() => {
-            addStyleLength();
-            this.delay(1000).then(res => hideModal(res));
+            styleLength ? addStyleLength() : error();
           }}
           onCancel={() => hideModal()}
         >
@@ -70,7 +73,15 @@ class StyleLengthsModal extends Component {
             columns={columns}
             size="middle"
             pagination={false}
+            scroll={{ y: 600, x: "100%" }}
           />
+          <Row
+            type="flex"
+            justify="end"
+            style={{ marginTop: 16, marginRight: 158 }}
+          >
+            <b>Average: {text}</b>
+          </Row>
         </Modal>
       </Row>
     );

@@ -160,3 +160,9 @@ export const aboveEqualToValue = (data, value) => {
     return false;
   });
 };
+
+export const delay = t => {
+  return new Promise(res => {
+    setTimeout(res, t);
+  });
+};
