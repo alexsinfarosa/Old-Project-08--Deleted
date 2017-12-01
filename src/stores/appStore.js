@@ -108,14 +108,12 @@ export default class appStore {
   @computed
   get avgStyleLength() {
     if (Object.keys(this.selectedBlock).length !== 0) {
-      console.log("selected block is not empty");
       return (
         this.selectedBlock.styleLengths
           .map(val => val.styleLength)
           .reduce((p, c) => p + c, 0) / this.selectedBlock.styleLengths.length
       );
     }
-    console.log("selected block is emtpy");
     return this.styleLength;
   }
 
@@ -137,7 +135,6 @@ export default class appStore {
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
     this.resetFields();
-
     this.disableIsStyleLength(false);
     this.setSelectedBlock(block.id);
     delay(1300).then(res => this.hideModal(res));
@@ -170,7 +167,7 @@ export default class appStore {
     this.blocks.splice(blockIdx, 1, this.selectedBlock);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
-    this.resetFields();
+    this.setStyleLength(null);
     this.setSelectedBlock(this.selectedBlock.id);
     delay(1300).then(res => this.hideModal(res));
   };
@@ -356,6 +353,7 @@ export default class appStore {
     this.blocks.push(block);
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
     this.resetFields();
+    this.setSelectedBlock(block.id);
   };
 
   @action
@@ -395,7 +393,6 @@ export default class appStore {
     let block = { ...this.selectedBlock };
     block["name"] = this.blockName;
     block["variety"] = this.subject;
-    block["styleLengths"] = this.styleLengths;
     block["avgStyleLength"] = this.avgStyleLength;
     block["state"] = this.state;
     block["station"] = this.station;

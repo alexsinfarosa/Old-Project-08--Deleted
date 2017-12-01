@@ -57,12 +57,7 @@ class App extends Component {
       currentStateStations,
       isSelectedBlock,
       setStyleLength
-      // areRequiredFieldsSet
     } = this.props.store.app;
-
-    // blocks.map(b => console.log(b));
-    // console.log(areRequiredFieldsSet);
-    // currentStateStations.map(s => console.log(s));
 
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
