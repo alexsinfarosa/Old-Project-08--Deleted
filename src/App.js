@@ -17,6 +17,8 @@ import USMap from "components/USMap";
 import BlocksDropdown from "components/BlocksDropdown";
 import UserData from "components/UserData";
 
+// import logo from "assets/cornell-logo.svg";
+
 import { Row, Col, Layout, Menu, Icon } from "antd";
 const { Content, Sider } = Layout;
 
