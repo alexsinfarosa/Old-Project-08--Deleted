@@ -7,7 +7,7 @@ import { Row, Col, Select, Badge } from "antd";
 @observer
 class DropDown extends Component {
   render() {
-    const { isEditing } = this.props.store.app;
+    const { isEditingBlock } = this.props.store.app;
     const { list, object, setOption, label } = this.props;
 
     const isStation = label === "Station";
@@ -45,7 +45,7 @@ class DropDown extends Component {
     return (
       <Col
         style={{
-          background: isEditing ? "#FDF7D0" : null,
+          background: isEditingBlock ? "#FDF7D0" : null,
           margin: "16px 0"
         }}
       >

@@ -11,13 +11,13 @@ class AddUpdateButton extends Component {
       addBlock,
       updateBlock,
       cancelBlock,
-      isEditing,
+      isEditingBlock,
       selectedBlock
     } = this.props.store.app;
 
     return (
       <Col style={{ margin: "32px 0" }}>
-        {!isEditing ? (
+        {!isEditingBlock ? (
           <Row>
             <Col>
               <Button

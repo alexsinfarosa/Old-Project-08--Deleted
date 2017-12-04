@@ -7,7 +7,7 @@ import { Col, Tooltip, InputNumber } from "antd";
 class StyleLength extends Component {
   render() {
     const {
-      isEditing,
+      isEditMode,
       styleLength,
       isStyleLength,
       selectedBlock
@@ -21,7 +21,7 @@ class StyleLength extends Component {
 
     return (
       <Col
-        style={{ background: isEditing ? "#FDF7D0" : null, margin: "16px 0" }}
+        style={{ background: isEditMode ? "#FDF7D0" : null, margin: "16px 0" }}
       >
         <p style={{ lineHeight: "1.5" }}>Style Length (mm):</p>
         <Tooltip

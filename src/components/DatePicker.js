@@ -14,14 +14,14 @@ export default class Datepicker extends Component {
   };
 
   render() {
-    const { isEditing } = this.props.store.app;
+    const { isEditingBlock } = this.props.store.app;
     const { label, value, setDate } = this.props;
 
     return (
       <Col
         style={{
-          background: isEditing ? "#FDF7D0" : null,
-          borderRadius: isEditing ? "6px" : null,
+          background: isEditingBlock ? "#FDF7D0" : null,
+          borderRadius: isEditingBlock ? "6px" : null,
           margin: "16px 0"
         }}
       >

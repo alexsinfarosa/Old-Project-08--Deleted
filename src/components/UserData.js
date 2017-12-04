@@ -10,16 +10,7 @@ import { Block, MRow } from "styles";
 import StyleLengthsModal from "components/StyleLengthsModal";
 
 // antd
-import {
-  Row,
-  Col,
-  Table,
-  Steps,
-  Popconfirm,
-  message,
-  Icon,
-  Button
-} from "antd";
+import { Row, Col, Table, Steps, Popconfirm, message, Button } from "antd";
 const Step = Steps.Step;
 
 @inject("store")
@@ -29,7 +20,6 @@ class UserData extends Component {
     const {
       editBlock,
       deleteBlock,
-      isEditing,
       isLoading,
       showModal,
       selectedBlock
@@ -112,10 +102,6 @@ class UserData extends Component {
     ];
     //  end columns ------------------------------------------------------
 
-    const isRowSelected = record => {
-      if (record.isEditing && isEditing) return "selected";
-    };
-
     return (
       <Block>
         <Row>
@@ -126,16 +112,14 @@ class UserData extends Component {
               </h3>
             </Col>
             <Col>
-              <Button onClick={() => showModal()}>
-                <Icon type="plus" />Style Length
-              </Button>
+              <Button onClick={() => showModal()}>Style Length</Button>
             </Col>
           </MRow>
 
           <MRow>
             <Table
               loading={isLoading}
-              rowClassName={record => isRowSelected(record)}
+              rowClassName={record => (record.isEditing ? "selected" : null)}
               expandIconColumnIndex={0}
               expandIconAsCell={false}
               size="middle"

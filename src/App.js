@@ -38,7 +38,7 @@ class App extends Component {
   render() {
     const {
       breakpoints,
-      isEditing,
+      isEditingBlock,
       firstSprayDate,
       setFirstSprayDate,
       secondSprayDate,
@@ -58,7 +58,8 @@ class App extends Component {
       isMap,
       currentStateStations,
       isSelectedBlock,
-      setStyleLength
+      setStyleLength,
+      isUserData
     } = this.props.store.app;
 
     return (
@@ -101,7 +102,7 @@ class App extends Component {
                 value={date}
                 setDate={setDate}
               />
-              {isEditing && (
+              {isEditingBlock && (
                 <DatePicker
                   date={date}
                   label={"First Spray Date"}
@@ -109,7 +110,7 @@ class App extends Component {
                   setDate={setFirstSprayDate}
                 />
               )}
-              {isEditing && (
+              {isEditingBlock && (
                 <DatePicker
                   date={firstSprayDate}
                   label={"Second Spray Date"}
@@ -117,7 +118,7 @@ class App extends Component {
                   setDate={setSecondSprayDate}
                 />
               )}
-              {isEditing && (
+              {isEditingBlock && (
                 <DatePicker
                   date={secondSprayDate}
                   label={"Third Spray Date"}
@@ -165,8 +166,12 @@ class App extends Component {
             <Content style={{ margin: "24px 16px" }}>
               <Row style={{ maxWidth: "1200px", margin: "0 auto" }}>
                 {isMap && <USMap />}
-                <BlocksDropdown />
-                {isSelectedBlock && <UserData />}
+                {isUserData && (
+                  <div>
+                    <BlocksDropdown />
+                    {isSelectedBlock && <UserData />}
+                  </div>
+                )}
               </Row>
             </Content>
           </Layout>

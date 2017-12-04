@@ -19,7 +19,8 @@ class StyleLengthsModal extends Component {
       selectedBlock,
       styleLength,
       editStyleLength,
-      updateStyleLength
+      updateStyleLength,
+      isEditMode
     } = this.props.store.app;
 
     const { text } = this.props;
@@ -73,14 +74,19 @@ class StyleLengthsModal extends Component {
         <Modal
           title="Style Length List"
           visible={isModal}
+          okText={isEditMode ? "UPDATE" : "ADD"}
           onOk={() => {
             styleLength
-              ? selectedBlock.isEditing ? updateStyleLength() : addStyleLength()
+              ? isEditMode ? updateStyleLength() : addStyleLength()
               : emptyStyleLength();
           }}
-          onCancel={() => hideModal()}
+          onCancel={() => {
+            selectedBlock.styleLengths.map(obj => (obj.isEdit = false));
+            setStyleLength(null);
+            hideModal();
+          }}
         >
-          <StyleLength onChange={setStyleLength} />
+          <StyleLength onChange={setStyleLength} isEditMode={isEditMode} />
           <Table
             rowClassName={record => (record.isEdit ? "selected" : null)}
             rowKey={record => record.date}

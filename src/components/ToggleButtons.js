@@ -12,12 +12,12 @@ class ToggleButtons extends Component {
   };
 
   // toggles PCETable component
-  toggleBlocks = () => {
-    this.props.store.app.toggleBlocks();
+  toggleUserData = () => {
+    this.props.store.app.toggleUserData();
   };
 
   render() {
-    const { isMap, isBlocks } = this.props.store.app;
+    const { isMap, isUserData } = this.props.store.app;
 
     return (
       <Col style={{ margin: "32px 0" }}>
@@ -36,10 +36,10 @@ class ToggleButtons extends Component {
           <Col span={11}>
             <Button
               style={{ width: "100%" }}
-              type={isBlocks ? "primary" : ""}
+              type={isUserData ? "primary" : ""}
               size="large"
               icon="layout"
-              onClick={this.toggleBlocks}
+              onClick={this.toggleUserData}
             >
               Blocks
             </Button>

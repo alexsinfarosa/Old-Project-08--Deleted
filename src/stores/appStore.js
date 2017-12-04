@@ -73,6 +73,10 @@ export default class appStore {
     this.blockName = d;
   };
 
+  // User Data ----------------------------------------------------------------
+  @observable isUserData = true;
+  @action toggleUserData = d => (this.isUserData = !this.isUserData);
+
   // Subject ------------------------------------------------------------------
   @observable subjects = [];
   @action updateSubjects = d => (this.subjects = d);
@@ -107,7 +111,7 @@ export default class appStore {
 
   @computed
   get avgStyleLength() {
-    if (Object.keys(this.selectedBlock).length !== 0) {
+    if (this.selectedBlock) {
       return (
         this.selectedBlock.styleLengths
           .map(val => val.styleLength)
@@ -122,7 +126,7 @@ export default class appStore {
   @action clearStyleLengths = () => (this.styleLengths = []);
   @action
   addStyleLength = () => {
-    let block = { ...this.selectedBlock };
+    let block = this.selectedBlock;
     block.styleLengths.push({
       idx: block.styleLengths.length + 1,
       date: Date.now(),
@@ -142,7 +146,7 @@ export default class appStore {
 
   @action
   editStyleLength = record => {
-    this.selectedBlock.isEditing = true;
+    // this.selectedBlock.isEditing = true;
     this.selectedBlock.styleLengths.map(obj => {
       if (obj.date === record.date) {
         return (obj.isEdit = true);
@@ -154,23 +158,29 @@ export default class appStore {
 
   @action
   updateStyleLength = () => {
-    const length = this.selectedBlock.styleLengths.filter(
-      l => l.isEdit === true
-    )[0];
-    const idx = this.selectedBlock.styleLengths.findIndex(
-      l => l.date === length.date
-    );
-    this.selectedBlock.styleLengths[idx].styleLength = this.styleLength;
-    const blockIdx = this.blocks.findIndex(b => b.id === this.selectedBlock.id);
-    this.selectedBlock.isEditing = false;
-    this.selectedBlock.styleLengths[idx].isEdit = false;
-    this.blocks.splice(blockIdx, 1, this.selectedBlock);
+    const block = this.selectedBlock;
+    const length = block.styleLengths.filter(l => l.isEdit === true)[0];
+    const idx = block.styleLengths.findIndex(l => l.date === length.date);
+    block.styleLengths[idx].styleLength = this.styleLength;
+    const blockIdx = this.blocks.findIndex(b => b.id === block.id);
+    block.isEditing = false;
+    block.styleLengths[idx].isEdit = false;
+    this.blocks.splice(blockIdx, 1, block);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
     this.setStyleLength(null);
-    this.setSelectedBlock(this.selectedBlock.id);
+    this.setSelectedBlock(block.id);
     delay(1300).then(res => this.hideModal(res));
   };
+
+  @computed
+  get isEditMode() {
+    if (this.selectedBlock) {
+      const styleIsTrue = d => d.isEdit === true;
+      return this.selectedBlock.styleLengths.some(styleIsTrue);
+    }
+    return false;
+  }
 
   // States -------------------------------------------------------------------
   @observable states = [];
@@ -297,9 +307,9 @@ export default class appStore {
 
   @action setBlocks = d => (this.blocks = d);
 
-  @observable selectedBlock = this.blocks.length !== 0 ? this.blocks[0] : {};
+  @observable selectedBlock = this.blocks.length !== 0 ? this.blocks[0] : null;
 
-  @action clearSelectedBlock = () => (this.selectedBlock = {});
+  @action clearSelectedBlock = () => (this.selectedBlock = null);
 
   @action
   setSelectedBlock = id => {
@@ -308,18 +318,13 @@ export default class appStore {
 
   @computed
   get isSelectedBlock() {
-    if (this.selectedBlock) {
-      if (Object.keys(this.selectedBlock).length !== 0) {
-        return true;
-      }
-      return false;
-    }
+    return this.selectedBlock ? true : false;
   }
 
   resetFields = () => {
     this.setBlockName("");
     this.subject = {};
-    this.clearSelectedBlock();
+    // this.clearSelectedBlock();
     this.setStyleLength(null);
     this.clearStyleLengths();
     this.setDate(new Date());
@@ -363,19 +368,25 @@ export default class appStore {
     this.setBlocks(blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(blocks));
     this.resetFields();
+    this.clearSelectedBlock();
   };
 
-  @observable isEditing = false;
-
+  @computed
+  get isEditingBlock() {
+    if (this.selectedBlock) {
+      return this.selectedBlock.isEditing;
+    }
+    return false;
+  }
   @observable isStyleLength = false;
   @action disableIsStyleLength = d => (this.isStyleLength = d);
 
   @action
   editBlock = obj => {
-    this.isEditing = true;
+    // this.isEditing = true;
     this.disableIsStyleLength(true);
     this.selectedBlock = obj;
-    const block = { ...this.selectedBlock };
+    const block = this.selectedBlock;
     block["isEditing"] = true;
     this.setStyleLength(this.avgStyleLength);
     this.setSubject(block.variety.name);
@@ -390,7 +401,7 @@ export default class appStore {
 
   @action
   updateBlock = () => {
-    let block = { ...this.selectedBlock };
+    let block = this.selectedBlock;
     block["name"] = this.blockName;
     block["variety"] = this.subject;
     block["avgStyleLength"] = this.avgStyleLength;
@@ -409,14 +420,16 @@ export default class appStore {
     this.resetFields();
     this.isEditing = false;
     this.disableIsStyleLength(false);
-    this.setSelectedBlock(block.id);
+    // this.setSelectedBlock(block.id);
   };
 
   @action
   cancelBlock = () => {
+    this.selectedBlock.isEditing = false;
     this.resetFields();
+    // this.isEditing = false;
     this.disableIsStyleLength(false);
-    this.isEditing = false;
+    // this.setSelectedBlock(this.selectedBlock.id);
   };
 
   // Hourly station data ------------------------------------------------------
