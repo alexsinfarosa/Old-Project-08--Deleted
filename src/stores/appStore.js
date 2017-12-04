@@ -38,7 +38,8 @@ export default class appStore {
       this.blockName.length >= 2 &&
       Object.keys(this.subject).length !== 0 &&
       this.styleLength !== null &&
-      Object.keys(this.station).length !== 0
+      Object.keys(this.station).length !== 0 &&
+      this.date
     );
   }
 
@@ -270,7 +271,7 @@ export default class appStore {
   };
 
   // Dates---------------------------------------------------------------------
-  @observable date = new Date();
+  @observable date = null;
   @action setDate = d => (this.date = d);
   @computed
   get currentYear() {
@@ -331,6 +332,7 @@ export default class appStore {
     this.setFirstSprayDate("");
     this.setSecondSprayDate("");
     this.setThirdSprayDate("");
+    this.setDate(null);
   };
 
   @action

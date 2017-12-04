@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 // import { toJS } from "mobx";
 import format from "date-fns/format";
-import max from "date-fns/max";
 
 // styled components
 import { Block, MRow } from "styles";
@@ -37,7 +36,8 @@ class UserData extends Component {
     const third = format(thirdSpray, "x");
     const dates = [first, second, third];
     const max = Math.max(...dates);
-    const current = dates.findIndex(date => date === max.toString());
+    let current = 0;
+    current = dates.findIndex(date => date === max.toString());
 
     // columns ----------------------------------------------------------
     const columns = [
