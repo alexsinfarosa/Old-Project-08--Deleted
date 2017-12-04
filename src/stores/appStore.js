@@ -294,11 +294,11 @@ export default class appStore {
       isBefore(this.date, this.seasonEndDate)
     );
   }
-  @observable firstSprayDate = "";
+  @observable firstSprayDate = null;
   @action setFirstSprayDate = d => (this.firstSprayDate = d);
-  @observable secondSprayDate = "";
+  @observable secondSprayDate = null;
   @action setSecondSprayDate = d => (this.secondSprayDate = d);
-  @observable thirdSprayDate = "";
+  @observable thirdSprayDate = null;
   @action setThirdSprayDate = d => (this.thirdSprayDate = d);
 
   // User Data (Table of blocks) ------------------------------------------------
@@ -355,6 +355,7 @@ export default class appStore {
       thirdSpray: this.thirdSprayDate,
       isEditing: false
     };
+
     this.blocks.push(block);
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
     this.resetFields();
@@ -408,9 +409,12 @@ export default class appStore {
     block["state"] = this.state;
     block["station"] = this.station;
     block["date"] = this.date;
-    block["firstSpray"] = this.firstSprayDate;
-    block["secondSpray"] = this.secondSprayDate;
-    block["thirdSpray"] = this.thirdSprayDate;
+    block["firstSpray"] =
+      this.firstSprayDate === "" ? null : this.firstSprayDate;
+    block["secondSpray"] =
+      this.secondSprayDate === "" ? null : this.secondSprayDate;
+    block["thirdSpray"] =
+      this.thirdSprayDate === "" ? null : this.thirdSprayDate;
     block["isEditing"] = false;
 
     const idx = this.blocks.findIndex(b => b.id === block.id);

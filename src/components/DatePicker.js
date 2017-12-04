@@ -36,6 +36,7 @@ export default class Datepicker extends Component {
           disabledDate={this.disabledStartDate}
           showToday={true}
           onChange={(date, dateString) => {
+            // console.log(date, dateString);
             setDate(date);
           }}
         />

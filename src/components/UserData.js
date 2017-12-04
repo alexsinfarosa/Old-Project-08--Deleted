@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 // import { toJS } from "mobx";
-
 import format from "date-fns/format";
+import max from "date-fns/max";
 
 // styled components
 import { Block, MRow } from "styles";
@@ -29,6 +29,15 @@ class UserData extends Component {
       message.success(`Block ${record.name} has been deleted`);
       deleteBlock(record, index);
     };
+
+    // to set the number on the STEP component
+    const { firstSpray, secondSpray, thirdSpray } = selectedBlock;
+    const first = format(firstSpray, "x");
+    const second = format(secondSpray, "x");
+    const third = format(thirdSpray, "x");
+    const dates = [first, second, third];
+    const max = Math.max(...dates);
+    const current = dates.findIndex(date => date === max.toString());
 
     // columns ----------------------------------------------------------
     const columns = [
@@ -57,18 +66,30 @@ class UserData extends Component {
         key: "firstSpray",
         render: (text, record) =>
           text ? (
-            <Steps direction="vertical" size="small">
+            <Steps direction="vertical" size="small" current={current}>
               <Step
                 title="1st"
-                description={format(text, "MMM DD YYYY HH:00")}
+                description={
+                  record.firstSpray
+                    ? format(record.firstSpray, "MMM DD YYYY HH:00")
+                    : null
+                }
               />
               <Step
                 title="2nd"
-                description={format(text, "MMM DD YYYY HH:00")}
+                description={
+                  record.secondSpray
+                    ? format(record.secondSpray, "MMM DD YYYY HH:00")
+                    : null
+                }
               />
               <Step
                 title="3rd"
-                description={format(text, "MMM DD YYYY HH:00")}
+                description={
+                  record.thirdSpray
+                    ? format(record.thirdSpray, "MMM DD YYYY HH:00")
+                    : null
+                }
               />
             </Steps>
           ) : null
