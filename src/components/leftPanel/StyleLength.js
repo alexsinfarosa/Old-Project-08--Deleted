@@ -12,7 +12,8 @@ class StyleLength extends Component {
     const {
       styleLength,
       setStyleLength,
-      isEditingBlock
+      isEditingBlock,
+      block
     } = this.props.store.app;
 
     return (
@@ -24,7 +25,6 @@ class StyleLength extends Component {
           style={{ fontSize: "14px" }}
         >
           <InputNumber
-            id={isEditingBlock ? "edit" : null}
             style={{ width: "100%", fontSize: 12 }}
             onChange={setStyleLength}
             placeholder={`Insert average style length (mm)`}
@@ -33,6 +33,7 @@ class StyleLength extends Component {
             step={0.01}
             precision={4}
             value={styleLength}
+            disabled={block.isEdit}
           />
         </Tooltip>
       </MBCol>

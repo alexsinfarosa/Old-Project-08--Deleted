@@ -315,7 +315,7 @@ export default class appStore {
 
     this.block = {
       id: Math.random().toString(),
-      name: `${this.blockName} - ${this.currentYear}`,
+      name: `${this.blockName}`,
       variety: this.subject,
       styleLengths: this.styleLengths,
       avgStyleLength: this.avgStyleLength,
@@ -351,7 +351,7 @@ export default class appStore {
   @action
   editBlock = block => {
     this.block = block;
-    this.setBlockName(`${block.name} - ${this.currentYear}`);
+    this.setBlockName(`${block.name}`);
     this.setSubject(block.variety.name);
     this.setStyleLength(block.avgStyleLength);
     this.setState(block.state.name);
