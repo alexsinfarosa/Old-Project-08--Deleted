@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Icon, Row } from "antd";
+import { Icon, Row, Col } from "antd";
 
 export const MenuFold = styled(Icon)`
   font-size: 1.1rem;
@@ -37,4 +37,10 @@ export const Block = styled.div`
   padding: 16px 8px;
 `;
 
-export const MRow = styled(Row)`margin-bottom: 16px;`;
+export const MBRow = styled(Row)`
+  margin-bottom: 16px;
+`;
+
+export const MBCol = styled(Col)`
+  margin-bottom: 32px;
+`;

@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Col, Input } from "antd";
+import { Input } from "antd";
+
+// styled components
+import { MBCol } from "styles";
 
 @inject("store")
 @observer
@@ -9,25 +12,21 @@ export default class BlockName extends Component {
     const { blockName, isEditingBlock, setBlockName } = this.props.store.app;
 
     return (
-      <Col
-        style={{
-          background: isEditingBlock ? "#FDF7D0" : null,
-          margin: "16px 0"
-        }}
-      >
-        <p style={{ lineHeight: "1.5" }}>Block Name:</p>
+      <MBCol>
         <Input
-          size="large"
+          autoFocus
           style={{ width: "100%" }}
-          placeholder="Insert Block Name"
+          id={isEditingBlock ? "edit" : null}
+          placeholder="Insert block name"
           onChange={e => setBlockName(e.target.value)}
           onBlur={() =>
             setBlockName(
               blockName.charAt(0).toUpperCase() + blockName.slice(1).trim()
-            )}
+            )
+          }
           value={blockName}
         />
-      </Col>
+      </MBCol>
     );
   }
 }

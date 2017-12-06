@@ -1,17 +1,21 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 
+// antd
 import { Row, Col, Button } from "antd";
+
+//  styled components
+import { MBCol } from "styles";
 
 @inject("store")
 @observer
-class ToggleButtons extends Component {
+export default class MapBlocksButtons extends Component {
   // toggles USMap component
   toggleMap = () => {
     this.props.store.app.toggleMap();
   };
 
-  // toggles PCETable component
+  // toggles user data component
   toggleUserData = () => {
     this.props.store.app.toggleUserData();
   };
@@ -20,13 +24,12 @@ class ToggleButtons extends Component {
     const { isMap, isUserData } = this.props.store.app;
 
     return (
-      <Col style={{ margin: "32px 0" }}>
+      <MBCol>
         <Row type="flex" justify="space-between">
           <Col span={11}>
             <Button
               style={{ width: "100%" }}
               type={isMap ? "primary" : ""}
-              size="large"
               icon="environment-o"
               onClick={this.toggleMap}
             >
@@ -37,7 +40,6 @@ class ToggleButtons extends Component {
             <Button
               style={{ width: "100%" }}
               type={isUserData ? "primary" : ""}
-              size="large"
               icon="layout"
               onClick={this.toggleUserData}
             >
@@ -45,9 +47,7 @@ class ToggleButtons extends Component {
             </Button>
           </Col>
         </Row>
-      </Col>
+      </MBCol>
     );
   }
 }
-
-export default ToggleButtons;

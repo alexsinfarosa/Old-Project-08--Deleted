@@ -38,8 +38,7 @@ export default class appStore {
       this.blockName.length >= 2 &&
       Object.keys(this.subject).length !== 0 &&
       this.styleLength !== null &&
-      Object.keys(this.station).length !== 0 &&
-      this.date
+      Object.keys(this.station).length !== 0
     );
   }
 

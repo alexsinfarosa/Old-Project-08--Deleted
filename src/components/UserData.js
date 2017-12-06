@@ -132,9 +132,6 @@ class UserData extends Component {
                 {selectedBlock.station.name}, {selectedBlock.state.postalCode}
               </h3>
             </Col>
-            <Col>
-              <Button onClick={() => showModal()}>Style Length</Button>
-            </Col>
           </MRow>
 
           <MRow>

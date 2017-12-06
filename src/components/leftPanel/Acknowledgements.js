@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Col, Modal, Button } from "antd";
+import { Modal, Button } from "antd";
+
+//  styled components
+import { MBCol } from "styles";
 
 @inject("store")
 @observer
@@ -11,10 +14,9 @@ class Acknowledgements extends Component {
 
   render() {
     return (
-      <Col style={{ margin: "32px 0" }}>
+      <MBCol>
         <Button
           style={{ width: "100%" }}
-          size="large"
           type="default"
           icon="info-circle-o"
           onClick={() => this.setState({ isVisible: true })}
@@ -55,7 +57,7 @@ class Acknowledgements extends Component {
             </li>
           </ul>
         </Modal>
-      </Col>
+      </MBCol>
     );
   }
 }

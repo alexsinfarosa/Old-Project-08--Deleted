@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Row, Col, Button, message } from "antd";
+import { Col, Row, Button, message } from "antd";
+
+// styled components
+import { MBCol } from "styles";
 
 @inject("store")
 @observer
-class AddUpdateButton extends Component {
+export default class NewUpdateBlockButton extends Component {
   render() {
     const {
       areRequiredFieldsSet,
@@ -16,21 +19,22 @@ class AddUpdateButton extends Component {
     } = this.props.store.app;
 
     return (
-      <Col style={{ margin: "32px 0" }}>
+      <MBCol>
         {!isEditingBlock ? (
           <Row>
             <Col>
               <Button
-                type="default"
+                type="primary"
                 style={{ width: "100%" }}
-                size="large"
                 onClick={() => {
                   addBlock();
                   message.success("New block has been created!");
                 }}
                 disabled={areRequiredFieldsSet ? false : true}
               >
-                New Block
+                {areRequiredFieldsSet
+                  ? "CREATE BLOCK"
+                  : "Fill up all fields above"}
               </Button>
             </Col>
           </Row>
@@ -39,16 +43,14 @@ class AddUpdateButton extends Component {
             <Col span={11}>
               <Button
                 style={{ width: "100%", background: "#FDF7D0" }}
-                size="large"
                 onClick={() => cancelBlock()}
               >
-                Cancel
+                CANCEL
               </Button>
             </Col>
             <Col span={11}>
               <Button
                 style={{ width: "100%", background: "#FDF7D0" }}
-                size="large"
                 onClick={() => {
                   updateBlock();
                   message.success(
@@ -56,13 +58,12 @@ class AddUpdateButton extends Component {
                   );
                 }}
               >
-                Update
+                UPDATE
               </Button>
             </Col>
           </Row>
         )}
-      </Col>
+      </MBCol>
     );
   }
 }
-export default AddUpdateButton;

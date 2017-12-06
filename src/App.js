@@ -5,22 +5,18 @@ import "./index.css";
 
 import { MatchMediaProvider } from "mobx-react-matchmedia";
 
-import DropDown from "components/DropDown";
-import StyleLength from "components/StyleLength";
-import BlockName from "components/BlockName";
-import DatePicker from "components/DatePicker";
-import AddUpdateButton from "components/AddUpdateButton";
-import Acknowledgements from "components/Acknowledgements";
-import ToggleButtons from "components/ToggleButtons";
+import BlockName from "components/leftPanel/BlockName";
+import Variety from "components/leftPanel/Variety";
+import StyleLength from "components/leftPanel/StyleLength";
+import State from "components/leftPanel/State";
+import Station from "components/leftPanel/Station";
+// import StartDate from "components/leftPanel/StartDate";
+import NewUpdateBlockButton from "components/leftPanel/NewUpdateBlockButton";
+import MapBlocksButtons from "components/leftPanel/MapBlocksButtons";
+import Acknowledgements from "components/leftPanel/Acknowledgements";
 
-import USMap from "components/USMap";
-import BlocksDropdown from "components/BlocksDropdown";
-import UserData from "components/UserData";
-
-// import logo from "assets/cornell-logo.svg";
-
-import { Row, Col, Layout, Menu, Icon } from "antd";
-const { Content, Sider } = Layout;
+import { Layout, Icon, Divider } from "antd";
+const { Content, Sider, Header } = Layout;
 
 @inject("store")
 @observer
@@ -36,143 +32,75 @@ class App extends Component {
   };
 
   render() {
-    const {
-      breakpoints,
-      isEditingBlock,
-      firstSprayDate,
-      setFirstSprayDate,
-      secondSprayDate,
-      setSecondSprayDate,
-      thirdSprayDate,
-      setThirdSprayDate,
-      date,
-      setDate,
-      subjects,
-      subject,
-      setSubject,
-      state,
-      states,
-      setState,
-      station,
-      setStation,
-      isMap,
-      currentStateStations,
-      isSelectedBlock,
-      setStyleLength,
-      isUserData
-    } = this.props.store.app;
+    const { breakpoints } = this.props.store.app;
 
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
-        <Layout style={{ minHeight: "100vh" }}>
+        <Layout>
           <Sider
-            style={{ background: "white" }}
+            style={{
+              background: "#FFF"
+            }}
+            breakpoint="xs"
             width={250}
             trigger={null}
             collapsible
             collapsed={this.state.collapsed}
+            onCollapse={(collapsed, type) => this.setState({ collapsed })}
             collapsedWidth={0}
           >
-            <div className="logo">Cornell University</div>
+            <h1 className="logo">Cornell University</h1>
 
-            <Menu style={{ margin: "0 16px", border: "none" }}>
+            <div style={{ margin: "0 16px", border: "none" }}>
               <BlockName />
-              <DropDown
-                label={"Variety"}
-                list={subjects}
-                object={subject}
-                setOption={setSubject}
-              />
-              <StyleLength onChange={setStyleLength} />
-              <DropDown
-                label={"States"}
-                list={states}
-                object={state}
-                setOption={setState}
-              />
-              <DropDown
-                label={"Station"}
-                list={currentStateStations}
-                object={station}
-                setOption={setStation}
-              />
-              <DatePicker
-                date={date}
-                label={"Model Start Date"}
-                value={date}
-                setDate={setDate}
-              />
-              {isEditingBlock && (
-                <DatePicker
-                  date={date}
-                  label={"First Spray Date"}
-                  value={firstSprayDate}
-                  setDate={setFirstSprayDate}
-                />
-              )}
-              {isEditingBlock && (
-                <DatePicker
-                  date={firstSprayDate}
-                  label={"Second Spray Date"}
-                  value={secondSprayDate}
-                  setDate={setSecondSprayDate}
-                />
-              )}
-              {isEditingBlock && (
-                <DatePicker
-                  date={secondSprayDate}
-                  label={"Third Spray Date"}
-                  value={thirdSprayDate}
-                  setDate={setThirdSprayDate}
-                />
-              )}
+              <Variety />
+              <StyleLength />
+              <State />
+              <Station />
+              <NewUpdateBlockButton />
 
-              <AddUpdateButton />
-              <ToggleButtons />
+              <Divider>
+                <small>Components</small>
+              </Divider>
+
+              <MapBlocksButtons />
               <Acknowledgements />
-            </Menu>
+            </div>
           </Sider>
 
           <Layout>
-            <Row
-              type="flex"
-              justify="space-between"
+            <Header
               style={{
-                background: "white",
-                alignItems: "center",
-                paddingRight: 16,
-                height: 48
+                background: "#fff",
+                padding: "0 16px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "baseline"
               }}
             >
-              <Col>
-                <Icon
-                  style={{ fontSize: breakpoints.xs ? 14 : 18 }}
-                  className="trigger"
-                  type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
-                  onClick={this.toggle}
-                />
-              </Col>
-              <Col>
-                {breakpoints.xs ? (
-                  <h3>VA Tech Pollen Tube Growth Model</h3>
-                ) : (
-                  <h2>VA Tech Pollen Tube Growth Model</h2>
-                )}
-              </Col>
+              <Icon
+                style={{ fontSize: breakpoints.xs ? 14 : 16 }}
+                className="trigger"
+                type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
+                onClick={this.toggle}
+              />
 
-              <Col>{breakpoints.xs ? <h3>NEWA</h3> : <h2>NEWA</h2>}</Col>
-            </Row>
+              {breakpoints.xs ? (
+                <h4>Tech Pollen Tube Growth Model by Virginia Tech</h4>
+              ) : (
+                <h3>Tech Pollen Tube Growth Model by Virginia Tech</h3>
+              )}
 
-            <Content style={{ margin: "24px 16px" }}>
-              <Row style={{ maxWidth: "1200px", margin: "0 auto" }}>
-                {isMap && <USMap />}
-                {isUserData && (
-                  <div>
-                    <BlocksDropdown />
-                    {isSelectedBlock && <UserData />}
-                  </div>
-                )}
-              </Row>
+              {breakpoints.xs ? <h4>NEWA</h4> : <h3>NEWA</h3>}
+            </Header>
+
+            <Content style={{ margin: "24px 16px 0", minHeight: "100vh" }}>
+              <div style={{ padding: 24, background: "#fff", minHeight: 360 }}>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum ex
+                omnis cumque nisi ducimus eius nobis tempora nihil ut optio
+                velit minima nulla adipisci quibusdam tenetur, ad quasi dolores
+                obcaecati!
+              </div>
             </Content>
           </Layout>
         </Layout>

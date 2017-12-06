@@ -14,10 +14,6 @@ body {
   background: #f7f7f7;
 }
 
-.selected {
-  background: #fdf7d0;
-}
-
 .trigger {
   font-size: 18px;
   line-height: 64px;
@@ -38,4 +34,8 @@ body {
   align-items: center;
   color: #a52c25;
   font-size: 14px;
+}
+
+#edit {
+  background: #fdf7d0;
 }
