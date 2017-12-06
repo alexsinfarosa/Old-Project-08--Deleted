@@ -350,6 +350,7 @@ export default class appStore {
 
   @action
   editBlock = block => {
+    this.block = block;
     this.setBlockName(`${block.name} - ${this.currentYear}`);
     this.setSubject(block.variety.name);
     this.setStyleLength(block.avgStyleLength);
@@ -364,6 +365,19 @@ export default class appStore {
 
   @action
   updateBlock = () => {
+    this.addStyleLength();
+
+    this.block["name"] = this.blockName;
+    this.block["variety"] = this.subject;
+    this.block["avgStyleLength"] = this.avgStyleLength;
+    this.block["state"] = this.state;
+    this.block["station"] = this.station;
+    this.block["date"] = this.date;
+    this.block["firstSpray"] = this.firstSprayDate;
+    this.block["secondSpray"] = this.secondSprayDate;
+    this.block["thirdSpray"] = this.thirdSprayDate;
+    this.block["isEdit"] = false;
+
     const idx = this.blocks.findIndex(b => b.id === this.block.id);
     this.blocks.splice(idx, 1, this.block);
     this.setBlocks(this.blocks);

@@ -15,7 +15,7 @@ export default class NewUpdateBlockButton extends Component {
       updateBlock,
       cancelBlock,
       isEditingBlock,
-      selectedBlock
+      block
     } = this.props.store.app;
 
     return (
@@ -34,7 +34,7 @@ export default class NewUpdateBlockButton extends Component {
               >
                 {areRequiredFieldsSet
                   ? "CREATE BLOCK"
-                  : "Fill up all fields above"}
+                  : "Fill up all above fields"}
               </Button>
             </Col>
           </Row>
@@ -53,9 +53,7 @@ export default class NewUpdateBlockButton extends Component {
                 style={{ width: "100%", background: "#FDF7D0" }}
                 onClick={() => {
                   updateBlock();
-                  message.success(
-                    `Block ${selectedBlock.name} has been updated!`
-                  );
+                  message.success(`Block ${block.name} has been updated!`);
                 }}
               >
                 UPDATE
