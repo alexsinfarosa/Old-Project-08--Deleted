@@ -283,6 +283,9 @@ export default class appStore {
   @action setThirdSprayDate = d => (this.thirdSprayDate = d);
 
   // User Data (Table of blocks) ------------------------------------------------
+  @observable isUserData = true;
+  @action toggleUserData = d => (this.isUserData = !this.isUserData);
+
   @observable
   blocks = JSON.parse(localStorage.getItem("pollenTubeBlocks")) || [];
   @action setBlocks = d => (this.blocks = d);

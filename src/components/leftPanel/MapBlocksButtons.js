@@ -10,16 +10,6 @@ import { MBCol } from "styles";
 @inject("store")
 @observer
 export default class MapBlocksButtons extends Component {
-  // toggles USMap component
-  toggleMap = () => {
-    this.props.store.app.toggleMap();
-  };
-
-  // toggles user data component
-  toggleUserData = () => {
-    this.props.store.app.toggleUserData();
-  };
-
   render() {
     const { isMap, isUserData } = this.props.store.app;
 
@@ -31,7 +21,7 @@ export default class MapBlocksButtons extends Component {
               style={{ width: "100%" }}
               type={isMap ? "primary" : ""}
               icon="environment-o"
-              onClick={this.toggleMap}
+              onClick={this.props.store.app.toggleMap}
             >
               Map
             </Button>
@@ -41,7 +31,7 @@ export default class MapBlocksButtons extends Component {
               style={{ width: "100%" }}
               type={isUserData ? "primary" : ""}
               icon="layout"
-              onClick={this.toggleUserData}
+              onClick={this.props.store.app.toggleUserData}
             >
               Blocks
             </Button>

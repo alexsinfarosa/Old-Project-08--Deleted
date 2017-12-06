@@ -53,7 +53,7 @@ export default class NewUpdateBlockButton extends Component {
                 style={{ width: "100%", background: "#FDF7D0" }}
                 onClick={() => {
                   updateBlock();
-                  message.success(`Block ${block.name} has been updated!`);
+                  message.success(`${block.name} block has been updated!`);
                 }}
               >
                 UPDATE

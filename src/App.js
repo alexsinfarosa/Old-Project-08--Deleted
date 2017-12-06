@@ -37,7 +37,12 @@ class App extends Component {
   };
 
   render() {
-    const { breakpoints, isMap, isBlockSelected } = this.props.store.app;
+    const {
+      breakpoints,
+      isMap,
+      isBlockSelected,
+      isUserData
+    } = this.props.store.app;
 
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
@@ -103,9 +108,12 @@ class App extends Component {
             <Content style={{ margin: "24px 16px 0", minHeight: "100vh" }}>
               <div style={{ minHeight: 360 }}>
                 {isMap && <USMap />}
-
-                <BlocksDropdown />
-                {isBlockSelected && <UserData />}
+                {isUserData && (
+                  <div>
+                    <BlocksDropdown />
+                    {isBlockSelected && <UserData />}
+                  </div>
+                )}
               </div>
             </Content>
           </Layout>

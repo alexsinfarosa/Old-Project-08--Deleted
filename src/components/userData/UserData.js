@@ -22,7 +22,7 @@ class UserData extends Component {
     console.log(toJS(block));
 
     const confirm = (record, index) => {
-      message.success(`Block ${record.name} has been deleted`);
+      message.success(`${record.name} block has been deleted!`);
       deleteBlock(record, index);
     };
 
