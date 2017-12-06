@@ -37,7 +37,6 @@ class BlocksDropdown extends Component {
         </Row>
 
         <Select
-          name="blocks"
           size="large"
           autoFocus
           value={block ? block.name : undefined}

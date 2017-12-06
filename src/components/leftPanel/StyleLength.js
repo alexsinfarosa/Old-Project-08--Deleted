@@ -9,7 +9,11 @@ import { MBCol } from "styles";
 @observer
 class StyleLength extends Component {
   render() {
-    const { styleLength, setStyleLength } = this.props.store.app;
+    const {
+      styleLength,
+      setStyleLength,
+      isEditingBlock
+    } = this.props.store.app;
 
     return (
       <MBCol>
@@ -20,6 +24,7 @@ class StyleLength extends Component {
           style={{ fontSize: "14px" }}
         >
           <InputNumber
+            id={isEditingBlock ? "edit" : null}
             style={{ width: "100%", fontSize: 12 }}
             onChange={setStyleLength}
             placeholder={`Insert average style length (mm)`}

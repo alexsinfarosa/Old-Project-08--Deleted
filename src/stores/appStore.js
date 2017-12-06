@@ -183,17 +183,17 @@ export default class appStore {
   };
 
   @action
-  setState = d => {
+  setState = name => {
     this.station = {};
-    const obj = this.states.find(state => state.name === d);
-    this.state = { ...obj };
+    const state = this.states.find(state => state.name === name);
+    this.state = state;
     this.setIsMap(true);
     localStorage.setItem("state", JSON.stringify(this.state));
   };
 
   @action
-  setStateFromMap = d => {
-    this.state = this.states.find(state => state.postalCode === d);
+  setStateFromMap = state => {
+    this.state = state;
     localStorage.setItem("state", JSON.stringify(this.state));
   };
 
@@ -233,12 +233,10 @@ export default class appStore {
 
   @action
   setStation = id => {
-    const obj = this.stations.find(station => station.id === id);
-    this.station = { ...this.station, ...obj };
-    const state = this.states.find(
-      state => state.postalCode === this.station.state
-    );
-    this.setStateFromMap(state.postalCode);
+    const station = this.stations.find(station => station.id === id);
+    const state = this.states.find(state => state.postalCode === station.state);
+    this.station = station;
+    this.setStateFromMap(state);
     this.setIsMap(false);
     localStorage.setItem("station", JSON.stringify(this.station));
   };
@@ -341,6 +339,36 @@ export default class appStore {
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
     this.resetFields();
     this.block = {};
+  };
+
+  @computed
+  get isEditingBlock() {
+    if (Object.keys(this.block).length !== 0) {
+      return this.block.isEdit;
+    }
+  }
+
+  @action
+  editBlock = block => {
+    this.setBlockName(`${block.name} - ${this.currentYear}`);
+    this.setSubject(block.variety.name);
+    this.setStyleLength(block.avgStyleLength);
+    this.setState(block.state.name);
+    this.setStation(block.station.id);
+    this.setDate(block.date);
+    this.setFirstSprayDate(block.firstSprayDate);
+    this.setSecondSprayDate(block.secondSprayDate);
+    this.setThirdSprayDate(block.thirdSprayDate);
+    this.block["isEdit"] = true;
+  };
+
+  @action
+  updateBlock = () => {
+    const idx = this.blocks.findIndex(b => b.id === this.block.id);
+    this.blocks.splice(idx, 1, this.block);
+    this.setBlocks(this.blocks);
+    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
+    this.resetFields();
   };
 
   @action
