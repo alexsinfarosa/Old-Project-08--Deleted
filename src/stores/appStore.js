@@ -4,10 +4,10 @@ import axios from "axios";
 import format from "date-fns/format";
 import isAfter from "date-fns/is_after";
 import isBefore from "date-fns/is_before";
+import getYear from "date-fns/get_year";
 
 // utils
 import { fetchACISData } from "fetchACISData";
-import { delay } from "utils";
 
 export default class appStore {
   constructor(fetch) {
@@ -35,7 +35,7 @@ export default class appStore {
   @computed
   get areRequiredFieldsSet() {
     return (
-      this.blockName.length >= 2 &&
+      this.blockName.length >= 3 &&
       Object.keys(this.subject).length !== 0 &&
       this.styleLength !== null &&
       Object.keys(this.station).length !== 0
@@ -52,30 +52,20 @@ export default class appStore {
   @observable
   isMap = JSON.parse(localStorage.getItem("state")) === null ? true : false;
   @action setIsMap = d => (this.isMap = d);
-  @computed
-  get viewMap() {
-    return this.isMap ? true : this.station.name === undefined ? true : false;
-  }
+  // @computed
+  // get viewMap() {
+  //   return this.isMap ? true : this.station.name === undefined ? true : false;
+  // }
   @action toggleMap = () => (this.isMap = !this.isMap);
 
   //   Modal ---------------------------------------------------------------
   @observable isModal = false;
-  @action
-  showModal = () => {
-    this.isModal = true;
-  };
+  @action showModal = () => (this.isModal = true);
   @action hideModal = () => (this.isModal = false);
 
   // BlockName ----------------------------------------------------------------
   @observable blockName = "";
-  @action
-  setBlockName = d => {
-    this.blockName = d;
-  };
-
-  // User Data ----------------------------------------------------------------
-  @observable isUserData = true;
-  @action toggleUserData = d => (this.isUserData = !this.isUserData);
+  @action setBlockName = d => (this.blockName = d);
 
   // Subject ------------------------------------------------------------------
   @observable subjects = [];
@@ -103,84 +93,68 @@ export default class appStore {
   };
 
   // Style Length -----------------------------------------------------
+  @observable styleLengths = [];
+  @action setStyleLengths = d => (this.styleLengths = d);
   @observable styleLength = null;
-  @action
-  setStyleLength = d => {
-    this.styleLength = d;
-  };
+  @action setStyleLength = d => (this.styleLength = d);
 
   @computed
   get avgStyleLength() {
-    if (this.selectedBlock) {
+    if (this.styleLengths.length !== 0) {
       return (
-        this.selectedBlock.styleLengths
-          .map(val => val.styleLength)
-          .reduce((p, c) => p + c, 0) / this.selectedBlock.styleLengths.length
+        this.styleLengths
+          .map(obj => obj.styleLength)
+          .reduce((p, c) => p + c, 0) / this.styleLengths.length
       );
     }
-    return this.styleLength;
   }
 
-  @observable styleLengths = [];
-  @action setStyleLengths = d => (this.styleLengths = d);
-  @action clearStyleLengths = () => (this.styleLengths = []);
   @action
   addStyleLength = () => {
-    let block = this.selectedBlock;
-    block.styleLengths.push({
-      idx: block.styleLengths.length + 1,
-      date: Date.now(),
+    const styleLengthObj = {
+      idx: this.styleLengths.length + 1,
       styleLength: this.styleLength,
       isEdit: false
-    });
-    block["avgStyleLength"] = this.avgStyleLength;
-    const idx = this.blocks.findIndex(b => b.id === block.id);
-    this.blocks.splice(idx, 1, block);
-    this.setBlocks(this.blocks);
-    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
-    this.resetFields();
-    this.disableIsStyleLength(false);
-    this.setSelectedBlock(block.id);
-    delay(1300).then(res => this.hideModal(res));
+    };
+    this.styleLengths.push(styleLengthObj);
   };
 
-  @action
-  editStyleLength = record => {
-    // this.selectedBlock.isEditing = true;
-    this.selectedBlock.styleLengths.map(obj => {
-      if (obj.date === record.date) {
-        return (obj.isEdit = true);
-      }
-      return (obj.isEdit = false);
-    });
-    this.setStyleLength(record.styleLength);
-  };
+  // @action
+  // editStyleLength = record => {
+  //   this.selectedBlock.styleLengths.map(obj => {
+  //     if (obj.date === record.date) {
+  //       return (obj.isEdit = true);
+  //     }
+  //     return (obj.isEdit = false);
+  //   });
+  //   this.setStyleLength(record.styleLength);
+  // };
 
-  @action
-  updateStyleLength = () => {
-    const block = this.selectedBlock;
-    const length = block.styleLengths.filter(l => l.isEdit === true)[0];
-    const idx = block.styleLengths.findIndex(l => l.date === length.date);
-    block.styleLengths[idx].styleLength = this.styleLength;
-    const blockIdx = this.blocks.findIndex(b => b.id === block.id);
-    block.isEditing = false;
-    block.styleLengths[idx].isEdit = false;
-    this.blocks.splice(blockIdx, 1, block);
-    this.setBlocks(this.blocks);
-    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
-    this.setStyleLength(null);
-    this.setSelectedBlock(block.id);
-    delay(1300).then(res => this.hideModal(res));
-  };
+  // @action
+  // updateStyleLength = () => {
+  //   const block = this.selectedBlock;
+  //   const length = block.styleLengths.filter(l => l.isEdit === true)[0];
+  //   const idx = block.styleLengths.findIndex(l => l.date === length.date);
+  //   block.styleLengths[idx].styleLength = this.styleLength;
+  //   const blockIdx = this.blocks.findIndex(b => b.id === block.id);
+  //   block.isEdit = false;
+  //   block.styleLengths[idx].isEdit = false;
+  //   this.blocks.splice(blockIdx, 1, block);
+  //   this.setBlocks(this.blocks);
+  //   localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
+  //   this.setStyleLength(null);
+  //   this.setSelectedBlock(block.id);
+  //   delay(1300).then(res => this.hideModal(res));
+  // };
 
-  @computed
-  get isEditMode() {
-    if (this.selectedBlock) {
-      const styleIsTrue = d => d.isEdit === true;
-      return this.selectedBlock.styleLengths.some(styleIsTrue);
-    }
-    return false;
-  }
+  // @computed
+  // get isEditMode() {
+  //   if (this.selectedBlock) {
+  //     const styleIsTrue = d => d.isEdit === true;
+  //     return this.selectedBlock.styleLengths.some(styleIsTrue);
+  //   }
+  //   return false;
+  // }
 
   // States -------------------------------------------------------------------
   @observable states = [];
@@ -270,81 +244,80 @@ export default class appStore {
   };
 
   // Dates---------------------------------------------------------------------
-  @observable date = null;
+  @observable date;
   @action setDate = d => (this.date = d);
   @computed
   get currentYear() {
-    return format(this.date, "YYYY");
+    if (this.date) {
+      return format(this.date, "YYYY");
+    }
+    return getYear(new Date());
   }
 
   @computed
   get seasonStartDate() {
-    return `${this.currentYear}-03-01`;
+    if (this.date) {
+      return `${this.currentYear}-03-01`;
+    }
   }
 
   @computed
   get seasonEndDate() {
-    return `${this.currentYear}-07-30`;
+    if (this.date) {
+      return `${this.currentYear}-07-30`;
+    }
   }
 
   @computed
   get isSeason() {
-    return (
-      isAfter(this.date, this.seasonStartDate) &&
-      isBefore(this.date, this.seasonEndDate)
-    );
+    if (this.date) {
+      return (
+        isAfter(this.date, this.seasonStartDate) &&
+        isBefore(this.date, this.seasonEndDate)
+      );
+    }
   }
-  @observable firstSprayDate = null;
+  @observable firstSprayDate;
   @action setFirstSprayDate = d => (this.firstSprayDate = d);
-  @observable secondSprayDate = null;
+  @observable secondSprayDate;
   @action setSecondSprayDate = d => (this.secondSprayDate = d);
-  @observable thirdSprayDate = null;
+  @observable thirdSprayDate;
   @action setThirdSprayDate = d => (this.thirdSprayDate = d);
 
   // User Data (Table of blocks) ------------------------------------------------
   @observable
   blocks = JSON.parse(localStorage.getItem("pollenTubeBlocks")) || [];
-
   @action setBlocks = d => (this.blocks = d);
-
-  @observable selectedBlock = this.blocks.length !== 0 ? this.blocks[0] : null;
-
-  @action clearSelectedBlock = () => (this.selectedBlock = null);
-
+  @observable block = {};
   @action
-  setSelectedBlock = id => {
-    this.selectedBlock = this.blocks.find(block => block.id === id);
+  setBlock = id => {
+    this.block = this.blocks.find(block => block.id === id);
   };
 
   @computed
-  get isSelectedBlock() {
-    return this.selectedBlock ? true : false;
+  get isBlockSelected() {
+    return Object.keys(this.block).length !== 0;
   }
 
+  @action
   resetFields = () => {
     this.setBlockName("");
     this.subject = {};
-    // this.clearSelectedBlock();
     this.setStyleLength(null);
-    this.clearStyleLengths();
-    this.setDate(new Date());
-    this.setFirstSprayDate("");
-    this.setSecondSprayDate("");
-    this.setThirdSprayDate("");
-    this.setDate(null);
+    this.setStyleLengths([]);
+    this.setDate(undefined);
+    this.setFirstSprayDate(undefined);
+    this.setSecondSprayDate(undefined);
+    this.setThirdSprayDate(undefined);
   };
 
   @action
-  addBlock = () => {
-    const obj = {
-      idx: 1,
-      date: Date.now(),
-      styleLength: this.styleLength
-    };
-    this.styleLengths.push(obj);
-    const block = {
+  addBlock = d => {
+    this.addStyleLength();
+
+    this.block = {
       id: Math.random().toString(),
-      name: this.blockName,
+      name: `${this.blockName} - ${this.currentYear}`,
       variety: this.subject,
       styleLengths: this.styleLengths,
       avgStyleLength: this.avgStyleLength,
@@ -354,87 +327,26 @@ export default class appStore {
       firstSpray: this.firstSprayDate,
       secondSpray: this.secondSprayDate,
       thirdSpray: this.thirdSprayDate,
-      isEditing: false
+      isEdit: false
     };
-
-    this.blocks.push(block);
+    this.blocks.push(this.block);
+    this.resetFields();
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
-    this.resetFields();
-    this.setSelectedBlock(block.id);
   };
 
   @action
-  deleteBlock = index => {
-    let blocks = [...this.blocks];
-    blocks.splice(index, 1);
-    this.setBlocks(blocks);
-    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(blocks));
-    this.resetFields();
-    this.clearSelectedBlock();
-  };
-
-  @computed
-  get isEditingBlock() {
-    if (this.selectedBlock) {
-      return this.selectedBlock.isEditing;
-    }
-    return false;
-  }
-  @observable isStyleLength = false;
-  @action disableIsStyleLength = d => (this.isStyleLength = d);
-
-  @action
-  editBlock = obj => {
-    // this.isEditing = true;
-    this.disableIsStyleLength(true);
-    this.selectedBlock = obj;
-    const block = this.selectedBlock;
-    block["isEditing"] = true;
-    this.setStyleLength(this.avgStyleLength);
-    this.setSubject(block.variety.name);
-    this.setBlockName(block.name);
-    this.setState(block.state);
-    this.setStation(block.station.id);
-    this.setDate(block.date);
-    this.setFirstSprayDate(block.firstSpray);
-    this.setSecondSprayDate(block.secondSpray);
-    this.setThirdSprayDate(block.thirdSpray);
-  };
-
-  @action
-  updateBlock = () => {
-    let block = this.selectedBlock;
-    block["name"] = this.blockName;
-    block["variety"] = this.subject;
-    block["avgStyleLength"] = this.avgStyleLength;
-    block["state"] = this.state;
-    block["station"] = this.station;
-    block["date"] = this.date;
-    block["firstSpray"] =
-      this.firstSprayDate === "" ? null : this.firstSprayDate;
-    block["secondSpray"] =
-      this.secondSprayDate === "" ? null : this.secondSprayDate;
-    block["thirdSpray"] =
-      this.thirdSprayDate === "" ? null : this.thirdSprayDate;
-    block["isEditing"] = false;
-
-    const idx = this.blocks.findIndex(b => b.id === block.id);
-    this.blocks.splice(idx, 1, block);
+  deleteBlock = (record, index) => {
+    this.blocks.splice(index, 1);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
     this.resetFields();
-    this.isEditing = false;
-    this.disableIsStyleLength(false);
-    // this.setSelectedBlock(block.id);
+    this.block = {};
   };
 
   @action
   cancelBlock = () => {
-    this.selectedBlock.isEditing = false;
+    this.block.isEdit = false;
     this.resetFields();
-    // this.isEditing = false;
-    this.disableIsStyleLength(false);
-    // this.setSelectedBlock(this.selectedBlock.id);
   };
 
   // Hourly station data ------------------------------------------------------

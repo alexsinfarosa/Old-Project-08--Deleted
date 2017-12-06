@@ -9,11 +9,7 @@ import { MBCol } from "styles";
 @observer
 class StyleLength extends Component {
   render() {
-    const {
-      styleLength,
-      isEditingBlock,
-      setStyleLength
-    } = this.props.store.app;
+    const { styleLength, setStyleLength } = this.props.store.app;
 
     return (
       <MBCol>
@@ -28,10 +24,10 @@ class StyleLength extends Component {
             onChange={setStyleLength}
             placeholder={`Insert average style length (mm)`}
             min={6}
+            max={12}
             step={0.01}
             precision={4}
             value={styleLength}
-            disabled={isEditingBlock}
           />
         </Tooltip>
       </MBCol>

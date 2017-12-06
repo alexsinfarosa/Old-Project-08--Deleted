@@ -5,15 +5,20 @@ import "./index.css";
 
 import { MatchMediaProvider } from "mobx-react-matchmedia";
 
+// Left menu
 import BlockName from "components/leftPanel/BlockName";
 import Variety from "components/leftPanel/Variety";
 import StyleLength from "components/leftPanel/StyleLength";
 import State from "components/leftPanel/State";
 import Station from "components/leftPanel/Station";
-// import StartDate from "components/leftPanel/StartDate";
 import NewUpdateBlockButton from "components/leftPanel/NewUpdateBlockButton";
 import MapBlocksButtons from "components/leftPanel/MapBlocksButtons";
 import Acknowledgements from "components/leftPanel/Acknowledgements";
+
+// Main content
+import USMap from "components/USMap";
+import BlocksDropdown from "components/userData/BlocksDropdown";
+import UserData from "components/userData/UserData";
 
 import { Layout, Icon, Divider } from "antd";
 const { Content, Sider, Header } = Layout;
@@ -32,7 +37,7 @@ class App extends Component {
   };
 
   render() {
-    const { breakpoints } = this.props.store.app;
+    const { breakpoints, isMap, isBlockSelected } = this.props.store.app;
 
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
@@ -57,6 +62,7 @@ class App extends Component {
               <StyleLength />
               <State />
               <Station />
+
               <NewUpdateBlockButton />
 
               <Divider>
@@ -95,11 +101,11 @@ class App extends Component {
             </Header>
 
             <Content style={{ margin: "24px 16px 0", minHeight: "100vh" }}>
-              <div style={{ padding: 24, background: "#fff", minHeight: 360 }}>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum ex
-                omnis cumque nisi ducimus eius nobis tempora nihil ut optio
-                velit minima nulla adipisci quibusdam tenetur, ad quasi dolores
-                obcaecati!
+              <div style={{ minHeight: 360 }}>
+                {isMap && <USMap />}
+
+                <BlocksDropdown />
+                {isBlockSelected && <UserData />}
               </div>
             </Content>
           </Layout>

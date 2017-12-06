@@ -1,28 +1,25 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-// import { toJS } from "mobx";
+import { toJS } from "mobx";
 import format from "date-fns/format";
 
 // styled components
-import { Block, MRow } from "styles";
+import { Block, MBRow } from "styles";
 
-import StyleLengthsModal from "components/StyleLengthsModal";
+import StyleLengthsModal from "components/userData/StyleLengthsModal";
+import StartDate from "components/leftPanel/StartDate";
 
 // antd
-import { Row, Col, Table, Steps, Popconfirm, message, Button } from "antd";
+import { Row, Col, Table, Steps, Popconfirm, message } from "antd";
 const Step = Steps.Step;
 
 @inject("store")
 @observer
 class UserData extends Component {
   render() {
-    const {
-      editBlock,
-      deleteBlock,
-      isLoading,
-      showModal,
-      selectedBlock
-    } = this.props.store.app;
+    const { editBlock, deleteBlock, isLoading, block } = this.props.store.app;
+
+    console.log(toJS(block));
 
     const confirm = (record, index) => {
       message.success(`Block ${record.name} has been deleted`);
@@ -30,7 +27,7 @@ class UserData extends Component {
     };
 
     // to set the number on the STEP component
-    const { firstSpray, secondSpray, thirdSpray } = selectedBlock;
+    const { firstSpray, secondSpray, thirdSpray } = block;
     const first = format(firstSpray, "x");
     const second = format(secondSpray, "x");
     const third = format(thirdSpray, "x");
@@ -51,14 +48,6 @@ class UserData extends Component {
         dataIndex: "avgStyleLength",
         key: "avgStyleLength",
         render: text => <StyleLengthsModal text={text.toPrecision(4)} />
-      },
-      {
-        title: "Start Date",
-        dataIndex: "date",
-        key: "date",
-        render: (text, record) => (
-          <span>{format(text, "MMM DD YYYY HH:00")}</span>
-        )
       },
       {
         title: "Spray Dates",
@@ -126,15 +115,19 @@ class UserData extends Component {
     return (
       <Block>
         <Row>
-          <MRow type="flex" justify="space-between">
+          <MBRow type="flex" justify="space-between">
             <Col>
               <h3>
-                {selectedBlock.station.name}, {selectedBlock.state.postalCode}
+                {block.station.name}, {block.state.postalCode}
               </h3>
             </Col>
-          </MRow>
+            <Col style={{ display: "flex", alignItems: "baseline" }}>
+              <p style={{ marginRight: 5 }}>Model Start Date: </p>
+              <StartDate />
+            </Col>
+          </MBRow>
 
-          <MRow>
+          <MBRow>
             <Table
               loading={isLoading}
               rowClassName={record => (record.isEditing ? "selected" : null)}
@@ -143,11 +136,11 @@ class UserData extends Component {
               size="middle"
               pagination={false}
               rowKey={record => record.id}
-              dataSource={[selectedBlock]}
+              dataSource={[block]}
               columns={columns}
               scroll={{ x: 800 }}
             />
-          </MRow>
+          </MBRow>
         </Row>
       </Block>
     );

@@ -2,11 +2,8 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 
 // antd
-import { DatePicker } from "antd";
+import { Col, DatePicker } from "antd";
 import moment from "moment";
-
-// styled components
-import { MBCol } from "styles";
 
 @inject("store")
 @observer
@@ -18,14 +15,14 @@ export default class StartDate extends Component {
   };
 
   render() {
-    const { isEditingBlock, date, setDate } = this.props.store.app;
+    const { date, setDate } = this.props.store.app;
 
     return (
-      <MBCol>
+      <Col>
         <DatePicker
           showTime
-          style={{ width: "100%" }}
-          value={date}
+          style={{ width: 180 }}
+          value={date ? moment(date) : undefined}
           allowClear={false}
           format="MMM D YYYY, HH:mm"
           placeholder="Select date and time"
@@ -33,7 +30,7 @@ export default class StartDate extends Component {
           showToday={true}
           onChange={(date, dateString) => setDate(date)}
         />
-      </MBCol>
+      </Col>
     );
   }
 }
