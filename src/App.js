@@ -85,7 +85,7 @@ class App extends Component {
             </div>
           </Sider>
 
-          <Layout>
+          <Layout style={{ minHeight: "100vh" }}>
             <Header
               style={{
                 background: "#fff",
@@ -111,7 +111,7 @@ class App extends Component {
               {breakpoints.xs ? <h4>NEWA</h4> : <h3>NEWA</h3>}
             </Header>
 
-            <Content style={{ margin: "24px 16px 0", minHeight: "100vh" }}>
+            <Content style={{ margin: "24px 16px 0" }}>
               <div style={{ minHeight: 360 }}>
                 {isMap && <USMap />}
                 {isUserData && (
