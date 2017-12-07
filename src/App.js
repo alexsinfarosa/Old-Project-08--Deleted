@@ -5,15 +5,11 @@ import "./index.css";
 
 import { MatchMediaProvider } from "mobx-react-matchmedia";
 
-// Left menu
-import BlockName from "components/leftPanel/BlockName";
-import Variety from "components/leftPanel/Variety";
-import StyleLength from "components/leftPanel/StyleLength";
-import State from "components/leftPanel/State";
-import Station from "components/leftPanel/Station";
-import NewUpdateBlockButton from "components/leftPanel/NewUpdateBlockButton";
-import MapBlocksButtons from "components/leftPanel/MapBlocksButtons";
-import Acknowledgements from "components/leftPanel/Acknowledgements";
+// styled components
+import { Header } from "styles";
+
+// Navigation
+import Navigation from "components/Navigation";
 
 // Main content
 import USMap from "components/USMap";
@@ -22,9 +18,10 @@ import UserData from "components/userData/UserData";
 
 // Modal
 import StyleLengthModal from "modals/StyleLengthModal";
+import NewBlockModal from "modals/NewBlockModal";
 
-import { Layout, Icon, Divider } from "antd";
-const { Content, Sider, Header } = Layout;
+import { Row, Layout, Icon, Divider, Button, message, Popconfirm } from "antd";
+const { Content } = Layout;
 
 @inject("store")
 @observer
@@ -45,85 +42,39 @@ class App extends Component {
       isMap,
       isBlockSelected,
       isUserData,
-      styleLengths
+      showNewBlockModal,
+      deleteBlock,
+      block
     } = this.props.store.app;
 
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
-        <Layout>
-          <Sider
-            style={{
-              background: "#FFF"
-            }}
-            breakpoint="xs"
-            width={250}
-            trigger={null}
-            collapsible
-            collapsed={this.state.collapsed}
-            onCollapse={(collapsed, type) => this.setState({ collapsed })}
-            collapsedWidth={0}
-          >
-            <h1 className="logo">Cornell University</h1>
+        <Layout style={{ minHeight: "100vh" }}>
+          <Header>
+            {breakpoints.xs ? (
+              <h4>Tech Pollen Tube Growth Model by Virginia Tech</h4>
+            ) : (
+              <h3>Tech Pollen Tube Growth Model by Virginia Tech</h3>
+            )}
 
-            <div style={{ margin: "0 16px", border: "none" }}>
-              <BlockName />
-              <Variety />
+            <Navigation />
 
-              <StyleLength multipleStyleLengths={styleLengths.length > 1} />
+            {breakpoints.xs ? <h4>NEWA</h4> : <h3>NEWA</h3>}
+          </Header>
 
-              <State />
-              <Station />
-
-              <NewUpdateBlockButton />
-
-              <Divider>
-                <small>Components</small>
-              </Divider>
-
-              <MapBlocksButtons />
-              <Acknowledgements />
-            </div>
-          </Sider>
-
-          <Layout style={{ minHeight: "100vh" }}>
-            <Header
-              style={{
-                background: "#fff",
-                padding: "0 16px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "baseline"
-              }}
-            >
-              <Icon
-                style={{ fontSize: breakpoints.xs ? 14 : 16 }}
-                className="trigger"
-                type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
-                onClick={this.toggle}
-              />
-
-              {breakpoints.xs ? (
-                <h4>Tech Pollen Tube Growth Model by Virginia Tech</h4>
-              ) : (
-                <h3>Tech Pollen Tube Growth Model by Virginia Tech</h3>
+          <Content style={{ margin: "24px 16px 0" }}>
+            <div style={{ minHeight: 360 }}>
+              {isMap && <USMap />}
+              {isUserData && (
+                <div>
+                  <BlocksDropdown />
+                  {isBlockSelected && <UserData />}
+                </div>
               )}
-
-              {breakpoints.xs ? <h4>NEWA</h4> : <h3>NEWA</h3>}
-            </Header>
-
-            <Content style={{ margin: "24px 16px 0" }}>
-              <div style={{ minHeight: 360 }}>
-                {isMap && <USMap />}
-                {isUserData && (
-                  <div>
-                    <BlocksDropdown />
-                    {isBlockSelected && <UserData />}
-                  </div>
-                )}
-                <StyleLengthModal />
-              </div>
-            </Content>
-          </Layout>
+              <StyleLengthModal />
+              <NewBlockModal />
+            </div>
+          </Content>
         </Layout>
       </MatchMediaProvider>
     );

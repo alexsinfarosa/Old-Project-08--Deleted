@@ -12,13 +12,10 @@ class StyleLength extends Component {
     const {
       styleLength,
       setStyleLength,
-      block,
-      showModal,
-      addStyleLength,
-      isBlockSelected
+      addStyleLength
     } = this.props.store.app;
 
-    const { modal } = this.props;
+    const { radioValue } = this.props;
 
     return (
       <MBCol style={{ display: "flex" }}>
@@ -29,46 +26,25 @@ class StyleLength extends Component {
           style={{ fontSize: "14px" }}
         >
           <InputNumber
-            style={{ width: "100%", fontSize: 13 }}
+            style={{ width: "100%" }}
             onChange={setStyleLength}
             placeholder={
-              modal
-                ? `Insert style length`
-                : isBlockSelected
-                  ? `${block.avgStyleLength.toPrecision(4)} mm`
-                  : `Insert avg. style length`
+              radioValue === "avg"
+                ? `Insert average style length (mm)`
+                : `Insert style length (mm)`
             }
             min={6}
             max={12}
             step={0.01}
             precision={3}
             value={styleLength}
-            disabled={
-              isBlockSelected || block.isEdit || this.props.multipleStyleLengths
-            }
           />
         </Tooltip>
 
-        {modal && (
+        {radioValue === "calculate" && (
           <Button disabled={!styleLength} onClick={addStyleLength}>
-            Add Style Length
+            Add
           </Button>
-        )}
-
-        {!modal && (
-          <Tooltip
-            trigger={["hover"]}
-            title={"Calculate Average Style Length"}
-            placement="topLeft"
-            style={{ fontSize: "14px" }}
-          >
-            <Button
-              icon="calculator"
-              style={{ fontSize: 20 }}
-              onClick={showModal}
-              disabled={isBlockSelected || styleLength}
-            />
-          </Tooltip>
         )}
       </MBCol>
     );

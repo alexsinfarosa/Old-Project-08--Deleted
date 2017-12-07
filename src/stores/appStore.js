@@ -58,10 +58,14 @@ export default class appStore {
   // }
   @action toggleMap = () => (this.isMap = !this.isMap);
 
-  //   Modal ---------------------------------------------------------------
+  //   Modals ---------------------------------------------------------------
   @observable isModal = false;
   @action showModal = () => (this.isModal = true);
   @action hideModal = () => (this.isModal = false);
+
+  @observable isNewBlockModal = false;
+  @action showNewBlockModal = () => (this.isNewBlockModal = true);
+  @action hideNewBlockModal = () => (this.isNewBlockModal = false);
 
   // BlockName ----------------------------------------------------------------
   @observable blockName = "";
@@ -309,11 +313,13 @@ export default class appStore {
     this.blocks.push(this.block);
     this.resetFields();
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
+    this.hideNewBlockModal();
   };
 
   @action
-  deleteBlock = (record, index) => {
-    this.blocks.splice(index, 1);
+  deleteBlock = () => {
+    const idx = this.blocks.findIndex(b => b.id === this.block.id);
+    this.blocks.splice(idx, 1);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
     this.resetFields();

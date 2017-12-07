@@ -9,19 +9,14 @@ import { Block, MBRow } from "styles";
 import StartDate from "components/leftPanel/StartDate";
 
 // antd
-import { Row, Col, Table, Steps, Popconfirm, message } from "antd";
+import { Row, Col, Table, Steps } from "antd";
 const Step = Steps.Step;
 
 @inject("store")
 @observer
 class UserData extends Component {
   render() {
-    const { editBlock, deleteBlock, isLoading, block } = this.props.store.app;
-
-    const confirm = (record, index) => {
-      message.success(`${record.name} block has been deleted!`);
-      deleteBlock(record, index);
-    };
+    const { isLoading, block } = this.props.store.app;
 
     // to set the number on the STEP component
     const { firstSpray, secondSpray, thirdSpray } = block;
@@ -79,32 +74,6 @@ class UserData extends Component {
               />
             </Steps>
           ) : null
-      },
-      {
-        title: "Actions",
-        dataIndex: "actions",
-        render: (text, record, index) => (
-          <span>
-            <Popconfirm
-              key={index}
-              onConfirm={() => confirm(record, index)}
-              title="Are you sure？"
-              okText="Yes"
-              cancelText="No"
-            >
-              <a>Delete</a>
-            </Popconfirm>
-
-            <span className="ant-divider" />
-            <a
-              onClick={() => {
-                editBlock(record);
-              }}
-            >
-              Edit
-            </a>
-          </span>
-        )
       }
     ];
     //  end columns ------------------------------------------------------
