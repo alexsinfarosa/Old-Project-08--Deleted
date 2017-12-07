@@ -14,8 +14,8 @@ class StyleLength extends Component {
       setStyleLength,
       block,
       showModal,
-      isModal,
-      addStyleLength
+      addStyleLength,
+      isBlockSelected
     } = this.props.store.app;
 
     const { modal } = this.props;
@@ -32,18 +32,28 @@ class StyleLength extends Component {
             style={{ width: "100%", fontSize: 13 }}
             onChange={setStyleLength}
             placeholder={
-              modal ? `Insert style length` : `Insert avg. style length`
+              modal
+                ? `Insert style length`
+                : isBlockSelected
+                  ? `${block.avgStyleLength.toPrecision(4)} mm`
+                  : `Insert avg. style length`
             }
             min={6}
             max={12}
             step={0.01}
-            precision={4}
+            precision={3}
             value={styleLength}
-            disabled={block.isEdit}
+            disabled={
+              isBlockSelected || block.isEdit || this.props.multipleStyleLengths
+            }
           />
         </Tooltip>
 
-        {modal && <Button onClick={addStyleLength}>ADD</Button>}
+        {modal && (
+          <Button disabled={!styleLength} onClick={addStyleLength}>
+            Add Style Length
+          </Button>
+        )}
 
         {!modal && (
           <Tooltip
@@ -54,8 +64,9 @@ class StyleLength extends Component {
           >
             <Button
               icon="calculator"
-              style={{ fontSize: 20, marginLeft: 1 }}
+              style={{ fontSize: 20 }}
               onClick={showModal}
+              disabled={isBlockSelected || styleLength}
             />
           </Tooltip>
         )}

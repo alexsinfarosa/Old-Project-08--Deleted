@@ -111,12 +111,24 @@ export default class appStore {
 
   @action
   addStyleLength = () => {
+    let highiestIdx = 0;
+    if (this.styleLengths.length !== 0) {
+      const tempArr = this.styleLengths.map(obj => obj.idx);
+      highiestIdx = Math.max(...tempArr);
+    }
+
     const styleLengthObj = {
-      idx: this.styleLengths.length + 1,
+      idx: highiestIdx + 1,
       styleLength: this.styleLength,
       isEdit: false
     };
     this.styleLengths.push(styleLengthObj);
+  };
+
+  @action
+  removeStyleLength = (record, idx) => {
+    this.styleLengths.splice(idx, 1);
+    this.setStyleLengths(this.styleLengths);
   };
 
   // States -------------------------------------------------------------------
@@ -255,6 +267,7 @@ export default class appStore {
   @observable block = {};
   @action
   setBlock = id => {
+    this.resetFields();
     this.block = this.blocks.find(block => block.id === id);
   };
 

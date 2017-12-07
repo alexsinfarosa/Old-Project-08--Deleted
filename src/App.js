@@ -44,7 +44,8 @@ class App extends Component {
       breakpoints,
       isMap,
       isBlockSelected,
-      isUserData
+      isUserData,
+      styleLengths
     } = this.props.store.app;
 
     return (
@@ -67,7 +68,9 @@ class App extends Component {
             <div style={{ margin: "0 16px", border: "none" }}>
               <BlockName />
               <Variety />
-              <StyleLength />
+
+              <StyleLength multipleStyleLengths={styleLengths.length > 1} />
+
               <State />
               <Station />
 

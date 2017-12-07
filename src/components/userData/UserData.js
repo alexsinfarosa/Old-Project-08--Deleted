@@ -6,7 +6,6 @@ import format from "date-fns/format";
 // styled components
 import { Block, MBRow } from "styles";
 
-import StyleLengthsModal from "components/userData/StyleLengthsModal";
 import StartDate from "components/leftPanel/StartDate";
 
 // antd
@@ -45,7 +44,7 @@ class UserData extends Component {
         title: "Avg. Style Length",
         dataIndex: "avgStyleLength",
         key: "avgStyleLength",
-        render: text => <StyleLengthsModal text={text.toPrecision(4)} />
+        render: text => <span>{text.toPrecision(4)}</span>
       },
       {
         title: "Spray Dates",

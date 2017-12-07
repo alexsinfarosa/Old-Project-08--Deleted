@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { toJS } from "mobx";
-import { Row, Modal, Table, message, Divider } from "antd";
+// import { toJS } from "mobx";
+import { Row, Modal, Table, Divider } from "antd";
 import StyleLength from "components/leftPanel/StyleLength";
 
-import format from "date-fns/format";
+// import format from "date-fns/format";
 
 @inject("store")
 @observer
@@ -13,23 +13,12 @@ class StyleLengthModal extends Component {
     const {
       isModal,
       hideModal,
-      addStyleLength,
       isLoading,
       setStyleLength,
-      block,
-      styleLength,
-      editStyleLength,
-      updateStyleLength,
+      removeStyleLength,
       styleLengths,
       avgStyleLength
     } = this.props.store.app;
-
-    console.log(toJS(block));
-
-    // messages
-    const emptyStyleLength = () => {
-      message.error("Please, insert style length");
-    };
 
     const averageStyleLength = () => {
       return avgStyleLength ? `${avgStyleLength.toPrecision(4)} (mm)` : "";
@@ -58,7 +47,7 @@ class StyleLengthModal extends Component {
         render: (text, record, index) => (
           <div>
             <span>
-              <a onClick={() => console.log(record, index)}>Delete</a>
+              <a onClick={() => removeStyleLength(record, index)}>Delete</a>
             </span>
             <Divider type="vertical" />
             <span>
@@ -71,7 +60,6 @@ class StyleLengthModal extends Component {
 
     return (
       <Row type="flex" align="middle">
-        <span>{`${styleLength}`}</span>
         <Modal
           title={`Average Style Length: ${averageStyleLength()}`}
           visible={isModal}
