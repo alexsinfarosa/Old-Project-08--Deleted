@@ -9,7 +9,16 @@ import { MBCol } from "styles";
 @observer
 class StyleLength extends Component {
   render() {
-    const { styleLength, setStyleLength, block } = this.props.store.app;
+    const {
+      styleLength,
+      setStyleLength,
+      block,
+      showModal,
+      isModal,
+      addStyleLength
+    } = this.props.store.app;
+
+    const { modal } = this.props;
 
     return (
       <MBCol style={{ display: "flex" }}>
@@ -22,7 +31,9 @@ class StyleLength extends Component {
           <InputNumber
             style={{ width: "100%", fontSize: 13 }}
             onChange={setStyleLength}
-            placeholder={`Insert avg. style length`}
+            placeholder={
+              modal ? `Insert style length` : `Insert avg. style length`
+            }
             min={6}
             max={12}
             step={0.01}
@@ -32,14 +43,22 @@ class StyleLength extends Component {
           />
         </Tooltip>
 
-        <Tooltip
-          trigger={["hover"]}
-          title={"Calculate Average Style Length"}
-          placement="topLeft"
-          style={{ fontSize: "14px" }}
-        >
-          <Button icon="calculator" style={{ fontSize: 20, marginLeft: 1 }} />
-        </Tooltip>
+        {modal && <Button onClick={addStyleLength}>ADD</Button>}
+
+        {!modal && (
+          <Tooltip
+            trigger={["hover"]}
+            title={"Calculate Average Style Length"}
+            placement="topLeft"
+            style={{ fontSize: "14px" }}
+          >
+            <Button
+              icon="calculator"
+              style={{ fontSize: 20, marginLeft: 1 }}
+              onClick={showModal}
+            />
+          </Tooltip>
+        )}
       </MBCol>
     );
   }

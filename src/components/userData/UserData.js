@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { toJS } from "mobx";
+// import { toJS } from "mobx";
 import format from "date-fns/format";
 
 // styled components
@@ -18,8 +18,6 @@ const Step = Steps.Step;
 class UserData extends Component {
   render() {
     const { editBlock, deleteBlock, isLoading, block } = this.props.store.app;
-
-    console.log(toJS(block));
 
     const confirm = (record, index) => {
       message.success(`${record.name} block has been deleted!`);

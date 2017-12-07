@@ -20,6 +20,9 @@ import USMap from "components/USMap";
 import BlocksDropdown from "components/userData/BlocksDropdown";
 import UserData from "components/userData/UserData";
 
+// Modal
+import StyleLengthModal from "modals/StyleLengthModal";
+
 import { Layout, Icon, Divider } from "antd";
 const { Content, Sider, Header } = Layout;
 
@@ -114,6 +117,7 @@ class App extends Component {
                     {isBlockSelected && <UserData />}
                   </div>
                 )}
+                <StyleLengthModal />
               </div>
             </Content>
           </Layout>
