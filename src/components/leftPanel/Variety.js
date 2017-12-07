@@ -24,10 +24,9 @@ export default class Variety extends Component {
       );
     });
     return (
-      <MBCol>
+      <MBCol id={isEditingBlock ? "edit" : null}>
         <Select
           style={{ width: "100%" }}
-          id={isEditingBlock ? "edit" : null}
           value={subject.name}
           placeholder={`Select apple variety`}
           onChange={name => setSubject(name)}

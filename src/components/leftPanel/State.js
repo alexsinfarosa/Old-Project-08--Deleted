@@ -19,10 +19,9 @@ export default class State extends Component {
       );
     });
     return (
-      <MBCol>
+      <MBCol id={isEditingBlock ? "edit" : null}>
         <Select
           style={{ width: "100%" }}
-          id={isEditingBlock ? "edit" : null}
           value={state.name}
           placeholder={`Select state`}
           onChange={name => setState(name)}

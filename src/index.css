@@ -37,14 +37,9 @@ body {
 }
 
 #edit {
-  background: #fdf7d0;
-}
-
-.ant-select-selection.ant-select-selection--single.edit2 {
   background: #fdf7d0 !important;
 }
 
-/* .ant-select-selection.ant-select-selection--single {
-  color: red !important;
-  background: #2f78ff !important;
-} */
+#edit .ant-select-selection--single {
+  background: #fdf7d0 !important;
+}

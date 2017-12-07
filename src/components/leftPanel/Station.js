@@ -24,10 +24,9 @@ export default class Station extends Component {
       );
     });
     return (
-      <MBCol>
+      <MBCol id={isEditingBlock ? "edit" : null}>
         <Select
           style={{ width: "100%" }}
-          id={isEditingBlock ? "edit" : null}
           value={station.name}
           placeholder={`Select station (${currentStateStations.length})`}
           onChange={id => setStation(id)}
