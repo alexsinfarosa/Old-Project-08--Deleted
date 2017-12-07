@@ -119,43 +119,6 @@ export default class appStore {
     this.styleLengths.push(styleLengthObj);
   };
 
-  // @action
-  // editStyleLength = record => {
-  //   this.selectedBlock.styleLengths.map(obj => {
-  //     if (obj.date === record.date) {
-  //       return (obj.isEdit = true);
-  //     }
-  //     return (obj.isEdit = false);
-  //   });
-  //   this.setStyleLength(record.styleLength);
-  // };
-
-  // @action
-  // updateStyleLength = () => {
-  //   const block = this.selectedBlock;
-  //   const length = block.styleLengths.filter(l => l.isEdit === true)[0];
-  //   const idx = block.styleLengths.findIndex(l => l.date === length.date);
-  //   block.styleLengths[idx].styleLength = this.styleLength;
-  //   const blockIdx = this.blocks.findIndex(b => b.id === block.id);
-  //   block.isEdit = false;
-  //   block.styleLengths[idx].isEdit = false;
-  //   this.blocks.splice(blockIdx, 1, block);
-  //   this.setBlocks(this.blocks);
-  //   localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
-  //   this.setStyleLength(null);
-  //   this.setSelectedBlock(block.id);
-  //   delay(1300).then(res => this.hideModal(res));
-  // };
-
-  // @computed
-  // get isEditMode() {
-  //   if (this.selectedBlock) {
-  //     const styleIsTrue = d => d.isEdit === true;
-  //     return this.selectedBlock.styleLengths.some(styleIsTrue);
-  //   }
-  //   return false;
-  // }
-
   // States -------------------------------------------------------------------
   @observable states = [];
   @action updateStates = d => (this.states = d);

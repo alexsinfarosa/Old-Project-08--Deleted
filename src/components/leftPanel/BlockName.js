@@ -14,7 +14,6 @@ export default class BlockName extends Component {
     return (
       <MBCol>
         <Input
-          autoFocus
           style={{ width: "100%" }}
           id={isEditingBlock ? "edit" : null}
           placeholder="Insert block name"
