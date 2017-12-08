@@ -6,7 +6,7 @@ import format from "date-fns/format";
 // styled components
 import { Block, MBRow } from "styles";
 
-import DatePicker from "components/DatePicker";
+import StartDate from "components/StartDate";
 
 // antd
 import { Row, Col, Table, Steps } from "antd";
@@ -89,7 +89,7 @@ class UserData extends Component {
             </Col>
             <Col style={{ display: "flex", alignItems: "baseline" }}>
               <p style={{ marginRight: 5 }}>Model Start Date: </p>
-              <DatePicker type="start" date={date} setDate={setDate} />
+              <StartDate />
             </Col>
           </MBRow>
 

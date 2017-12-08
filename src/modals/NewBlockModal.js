@@ -9,7 +9,7 @@ import StyleLength from "components/StyleLength";
 import State from "components/State";
 import Station from "components/Station";
 
-import DatePicker from "components/DatePicker";
+import SprayDate from "components/SprayDate";
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -149,17 +149,17 @@ class NewBlockModal extends Component {
 
             {block.isEdit && (
               <div>
-                <DatePicker
+                <SprayDate
                   type="first spray"
                   date={firstSprayDate}
                   setDate={setFirstSprayDate}
                 />
-                <DatePicker
+                <SprayDate
                   type="second spray"
                   date={secondSprayDate}
                   setDate={setSecondSprayDate}
                 />
-                <DatePicker
+                <SprayDate
                   type="third spray"
                   date={thirdSprayDate}
                   setDate={setThirdSprayDate}
