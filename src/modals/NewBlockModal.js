@@ -131,10 +131,7 @@ class NewBlockModal extends Component {
                 </RadioButton>
               </RadioGroup>
             )}
-            <StyleLength
-              radioValue={this.state.value}
-              isDisabled={block.isEdit}
-            />
+            <StyleLength radioValue={this.state.value} />
 
             {this.state.value === "calculate" &&
               !block.isEdit && (

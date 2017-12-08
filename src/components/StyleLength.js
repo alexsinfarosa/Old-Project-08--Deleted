@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Tooltip, InputNumber, Button } from "antd";
+import { Row, Col, Tooltip, InputNumber, Button } from "antd";
 
 // styled components
 import { MBCol } from "styles";
@@ -13,45 +13,54 @@ class StyleLength extends Component {
       styleLength,
       setStyleLength,
       addStyleLength,
-      isEditingBlock
+      isEditingBlock,
+      block
     } = this.props.store.app;
 
     const { radioValue } = this.props;
 
     return (
-      <MBCol>
-        <Tooltip
-          trigger={["focus"]}
-          title={"Range: 6mm to 12mm"}
-          placement="topLeft"
-          style={{ fontSize: "14px" }}
-        >
-          {isEditingBlock && "Average Style Length:"}
-          <InputNumber
-            style={{ width: "100%" }}
-            // id={isEditingBlock ? "edit" : null}
-            onChange={setStyleLength}
-            placeholder={
-              radioValue === "avg"
-                ? `Insert average style length (mm)`
-                : `Insert style length (mm)`
-            }
-            min={6}
-            max={12}
-            step={0.01}
-            precision={3}
-            value={styleLength}
-            disabled={isEditingBlock}
-          />
-        </Tooltip>
+      <Row type="flex" style={{ marginBottom: 32 }} justify="space-between">
+        <Col span={radioValue === "avg" || isEditingBlock ? 24 : 20}>
+          <Tooltip
+            trigger={["focus"]}
+            title={"Range: 6mm to 12mm"}
+            placement="topLeft"
+            style={{ fontSize: "14px" }}
+          >
+            {isEditingBlock && "Average Style Length:"}
+            <InputNumber
+              style={{ width: "100%" }}
+              // id={isEditingBlock ? "edit" : null}
+              onChange={setStyleLength}
+              placeholder={
+                radioValue === "avg"
+                  ? `Insert average style length (mm)`
+                  : `Insert style length (mm)`
+              }
+              min={6}
+              max={12}
+              step={0.01}
+              precision={3}
+              value={styleLength}
+              disabled={block.isEdit}
+            />
+          </Tooltip>
+        </Col>
 
         {radioValue === "calculate" &&
           !isEditingBlock && (
-            <Button disabled={!styleLength} onClick={addStyleLength}>
-              Add
-            </Button>
+            <Col span={4}>
+              <Button
+                style={{ width: "100%" }}
+                disabled={!styleLength}
+                onClick={addStyleLength}
+              >
+                Add
+              </Button>
+            </Col>
           )}
-      </MBCol>
+      </Row>
     );
   }
 }
