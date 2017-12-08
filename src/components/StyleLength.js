@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { Row, Col, Tooltip, InputNumber, Button } from "antd";
 
-// styled components
-import { MBCol } from "styles";
-
 @inject("store")
 @observer
 class StyleLength extends Component {

@@ -16,7 +16,7 @@ const Step = Steps.Step;
 @observer
 class UserData extends Component {
   render() {
-    const { isLoading, block, date, setDate } = this.props.store.app;
+    const { isLoading, block } = this.props.store.app;
     console.log(toJS(block));
 
     // to set the number on the STEP component

@@ -6,7 +6,7 @@ import "./index.css";
 import { MatchMediaProvider } from "mobx-react-matchmedia";
 
 // styled components
-import { Header, NewaIcon } from "styles";
+import { Header } from "styles";
 
 // Navigation
 import Navigation from "components/Navigation";

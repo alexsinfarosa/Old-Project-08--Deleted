@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 
 // antd
-import { Col, DatePicker as AntdDatePicker } from "antd";
+import { DatePicker as AntdDatePicker } from "antd";
 import moment from "moment";
 
 // utils
 import { roundDate } from "utils";
 
+// styled components
 import { MBCol } from "styles";
 
 @inject("store")
@@ -24,7 +25,7 @@ export default class DatePicker extends Component {
   };
 
   render() {
-    const { updateBlock, isEditingBlock } = this.props.store.app;
+    const { isEditingBlock } = this.props.store.app;
     const { type, date, setDate } = this.props;
 
     return (

@@ -22,7 +22,7 @@ export default class StartDate extends Component {
   };
 
   render() {
-    const { date, setDate, updateBlock, isEditingBlock } = this.props.store.app;
+    const { date, setDate } = this.props.store.app;
 
     return (
       <Col>
