@@ -137,6 +137,12 @@ export default class appStore {
     this.setStyleLengths(this.styleLengths);
   };
 
+  @action
+  editStyleLength = (record, idx) => {
+    this.setStyleLength(record.styleLength);
+    this.styleLengths[idx].isEdit = true;
+  };
+
   // States -------------------------------------------------------------------
   @observable states = [];
   @action updateStates = d => (this.states = d);

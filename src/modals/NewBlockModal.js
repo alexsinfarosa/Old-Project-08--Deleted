@@ -44,7 +44,8 @@ class NewBlockModal extends Component {
       thirdSprayDate,
       setFirstSprayDate,
       setSecondSprayDate,
-      setThirdSprayDate
+      setThirdSprayDate,
+      editStyleLength
     } = this.props.store.app;
 
     const columns = [
@@ -74,7 +75,7 @@ class NewBlockModal extends Component {
             </span>
             <Divider type="vertical" />
             <span>
-              <a onClick={() => console.log(record, index)}>Edit</a>
+              <a onClick={() => editStyleLength(record, index)}>Edit</a>
             </span>
           </div>
         )
