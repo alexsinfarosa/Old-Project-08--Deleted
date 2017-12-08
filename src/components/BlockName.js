@@ -9,13 +9,14 @@ import { MBCol } from "styles";
 @observer
 export default class BlockName extends Component {
   render() {
-    const { blockName, isEditingBlock, setBlockName } = this.props.store.app;
+    const { blockName, setBlockName, isEditingBlock } = this.props.store.app;
 
     return (
       <MBCol>
+        {isEditingBlock && "Block name:"}
         <Input
           style={{ width: "100%" }}
-          id={isEditingBlock ? "edit" : null}
+          // id={isEditingBlock ? "edit" : null}
           placeholder="Insert block name"
           onChange={e => setBlockName(e.target.value)}
           onBlur={() =>

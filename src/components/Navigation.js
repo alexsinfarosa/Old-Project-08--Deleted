@@ -1,19 +1,17 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Row, Button, Popconfirm, message } from "antd";
+import { Button, Popconfirm } from "antd";
 
 @inject("store")
 @observer
 class Navigation extends Component {
   render() {
     const {
-      breakpoints,
-      isMap,
-      isBlockSelected,
-      isUserData,
       showNewBlockModal,
+      editBlock,
       deleteBlock,
-      block
+      block,
+      resetFields
     } = this.props.store.app;
 
     const isBlock = d => {
@@ -29,21 +27,26 @@ class Navigation extends Component {
         }}
       >
         {isBlock() && (
-          <Button ghost icon="edit" onClick={showNewBlockModal}>
+          <Button ghost icon="edit" onClick={editBlock}>
             Edit Block
           </Button>
         )}
 
-        <Button ghost icon="plus" onClick={showNewBlockModal}>
+        <Button
+          ghost
+          icon="plus"
+          onClick={() => {
+            resetFields();
+            this.props.store.app.block = {};
+            showNewBlockModal();
+          }}
+        >
           New Block
         </Button>
 
         {isBlock() && (
           <Popconfirm
-            onConfirm={() => {
-              message.success(`${block.name} block has been deleted!`);
-              deleteBlock();
-            }}
+            onConfirm={deleteBlock}
             title="Are you sure？"
             okText="Yes"
             cancelText="No"

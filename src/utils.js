@@ -1,12 +1,18 @@
+import moment from "moment";
+
 // PRE FETCHING ---------------------------------------------------------
 export const matchIconsToStations = (protocol, station, state) => {
   const { network } = station;
   const { postalCode } = state;
 
   const newa = `${protocol}//newa2.nrcc.cornell.edu/gifs/newa_small.png`;
-  const newaGray = `${protocol}//newa2.nrcc.cornell.edu/gifs/newa_smallGray.png`;
+  const newaGray = `${
+    protocol
+  }//newa2.nrcc.cornell.edu/gifs/newa_smallGray.png`;
   const airport = `${protocol}//newa2.nrcc.cornell.edu/gifs/airport.png`;
-  const airportGray = `${protocol}//newa2.nrcc.cornell.edu/gifs/airportGray.png`;
+  const airportGray = `${
+    protocol
+  }//newa2.nrcc.cornell.edu/gifs/airportGray.png`;
   const culog = `${protocol}//newa2.nrcc.cornell.edu/gifs/culog.png`;
   const culogGray = `${protocol}//newa2.nrcc.cornell.edu/gifs/culogGray.png`;
 
@@ -165,4 +171,8 @@ export const delay = t => {
   return new Promise(res => {
     setTimeout(res, t);
   });
+};
+
+export const roundDate = (date, duration, method) => {
+  return moment(Math[method](+date / +duration) * +duration);
 };

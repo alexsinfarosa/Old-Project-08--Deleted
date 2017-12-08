@@ -6,6 +6,8 @@ import isAfter from "date-fns/is_after";
 import isBefore from "date-fns/is_before";
 import getYear from "date-fns/get_year";
 
+import { message } from "antd";
+
 // utils
 import { fetchACISData } from "fetchACISData";
 
@@ -314,6 +316,7 @@ export default class appStore {
     this.resetFields();
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
     this.hideNewBlockModal();
+    message.success(`${this.block.name} block has been created!`);
   };
 
   @action
@@ -322,6 +325,7 @@ export default class appStore {
     this.blocks.splice(idx, 1);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
+    message.success(`${this.block.name} block has been deleted!`);
     this.resetFields();
     this.block = {};
   };
@@ -334,17 +338,17 @@ export default class appStore {
   }
 
   @action
-  editBlock = block => {
-    this.block = block;
-    this.setBlockName(`${block.name}`);
-    this.setSubject(block.variety.name);
-    this.setStyleLength(block.avgStyleLength);
-    this.setState(block.state.name);
-    this.setStation(block.station.id);
-    this.setDate(block.date);
-    this.setFirstSprayDate(block.firstSprayDate);
-    this.setSecondSprayDate(block.secondSprayDate);
-    this.setThirdSprayDate(block.thirdSprayDate);
+  editBlock = () => {
+    this.showNewBlockModal();
+    this.setBlockName(`${this.block.name}`);
+    this.setSubject(this.block.variety.name);
+    this.setStyleLength(this.block.avgStyleLength);
+    this.setState(this.block.state.name);
+    this.setStation(this.block.station.id);
+    this.setDate(this.block.date);
+    this.setFirstSprayDate(this.block.firstSpray);
+    this.setSecondSprayDate(this.block.secondSpray);
+    this.setThirdSprayDate(this.block.thirdSpray);
     this.block["isEdit"] = true;
   };
 
@@ -354,7 +358,7 @@ export default class appStore {
 
     this.block["name"] = this.blockName;
     this.block["variety"] = this.subject;
-    this.block["avgStyleLength"] = this.avgStyleLength;
+    // this.block["avgStyleLength"] = this.avgStyleLength;
     this.block["state"] = this.state;
     this.block["station"] = this.station;
     this.block["date"] = this.date;
@@ -368,6 +372,8 @@ export default class appStore {
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
     this.resetFields();
+    this.hideNewBlockModal();
+    message.success(`${this.block.name} block has been updated!`);
   };
 
   @action

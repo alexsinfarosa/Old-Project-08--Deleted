@@ -12,21 +12,24 @@ class StyleLength extends Component {
     const {
       styleLength,
       setStyleLength,
-      addStyleLength
+      addStyleLength,
+      isEditingBlock
     } = this.props.store.app;
 
     const { radioValue } = this.props;
 
     return (
-      <MBCol style={{ display: "flex" }}>
+      <MBCol>
         <Tooltip
           trigger={["focus"]}
           title={"Range: 6mm to 12mm"}
           placement="topLeft"
           style={{ fontSize: "14px" }}
         >
+          {isEditingBlock && "Average Style Length:"}
           <InputNumber
             style={{ width: "100%" }}
+            // id={isEditingBlock ? "edit" : null}
             onChange={setStyleLength}
             placeholder={
               radioValue === "avg"
@@ -38,14 +41,16 @@ class StyleLength extends Component {
             step={0.01}
             precision={3}
             value={styleLength}
+            disabled={isEditingBlock}
           />
         </Tooltip>
 
-        {radioValue === "calculate" && (
-          <Button disabled={!styleLength} onClick={addStyleLength}>
-            Add
-          </Button>
-        )}
+        {radioValue === "calculate" &&
+          !isEditingBlock && (
+            <Button disabled={!styleLength} onClick={addStyleLength}>
+              Add
+            </Button>
+          )}
       </MBCol>
     );
   }

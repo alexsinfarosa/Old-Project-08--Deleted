@@ -11,7 +11,7 @@ module.exports = function override(config, env) {
   );
   // change importing css to less
   config = rewireLess.withLoaderOptions({
-    // modifyVars: { "@primary-color": "#515D73" }
+    // modifyVars: { "@primary-color": "#7FA79E" }
   })(config, env);
 
   // use the MobX rewire

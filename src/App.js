@@ -6,7 +6,7 @@ import "./index.css";
 import { MatchMediaProvider } from "mobx-react-matchmedia";
 
 // styled components
-import { Header } from "styles";
+import { Header, NewaIcon } from "styles";
 
 // Navigation
 import Navigation from "components/Navigation";
@@ -20,7 +20,10 @@ import UserData from "components/userData/UserData";
 import StyleLengthModal from "modals/StyleLengthModal";
 import NewBlockModal from "modals/NewBlockModal";
 
-import { Row, Layout, Icon, Divider, Button, message, Popconfirm } from "antd";
+// Logos
+// import NEWALogo from "assets/newa_logo.svg";
+
+import { Layout } from "antd";
 const { Content } = Layout;
 
 @inject("store")
@@ -41,25 +44,21 @@ class App extends Component {
       breakpoints,
       isMap,
       isBlockSelected,
-      isUserData,
-      showNewBlockModal,
-      deleteBlock,
-      block
+      isUserData
     } = this.props.store.app;
 
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
         <Layout style={{ minHeight: "100vh" }}>
           <Header>
-            {breakpoints.xs ? (
-              <h4>Tech Pollen Tube Growth Model by Virginia Tech</h4>
-            ) : (
-              <h3>Tech Pollen Tube Growth Model by Virginia Tech</h3>
-            )}
-
+            <div>
+              Tech Pollen Tube Growth Model{" "}
+              <small>
+                <i>by Virginia Tech</i>
+              </small>
+            </div>
             <Navigation />
-
-            {breakpoints.xs ? <h4>NEWA</h4> : <h3>NEWA</h3>}
+            <div>NEWA</div>
           </Header>
 
           <Content style={{ margin: "24px 16px 0" }}>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Icon, Row, Col } from "antd";
+import { Row, Col } from "antd";
 
 export const Header = styled.section`
   display: flex;
@@ -7,7 +7,30 @@ export const Header = styled.section`
   align-items: center;
   height: 85px;
   padding: 16px;
-  background: #8ecec1;
+  background: #8ec9f2;
+  & > div {
+    color: white;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+  }
+  @media (max-width: 481px) {
+    flex-direction: column;
+    & > div {
+      color: white;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    & > img {
+      display: none;
+    }
+  }
+`;
+
+export const NewaIcon = styled.img`
+  fill: white !important;
+  font-size: 1rem;
+  height: 30px;
 `;
 
 export const Block = styled.div`

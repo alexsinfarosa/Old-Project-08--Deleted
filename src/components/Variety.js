@@ -7,11 +7,16 @@ import { MBCol } from "styles";
 
 @inject("store")
 @observer
-export default class State extends Component {
+export default class Variety extends Component {
   render() {
-    const { states, state, setState, isEditingBlock } = this.props.store.app;
+    const {
+      subjects,
+      subject,
+      setSubject,
+      isEditingBlock
+    } = this.props.store.app;
 
-    const optionList = states.map(el => {
+    const optionList = subjects.map(el => {
       return (
         <Select.Option key={el.id} value={el.name}>
           {el.name}
@@ -19,12 +24,13 @@ export default class State extends Component {
       );
     });
     return (
-      <MBCol id={isEditingBlock ? "edit" : null}>
+      <MBCol>
+        {isEditingBlock && "Apple variety:"}
         <Select
           style={{ width: "100%" }}
-          value={state.name}
-          placeholder={`Select state`}
-          onChange={name => setState(name)}
+          value={subject.name}
+          placeholder={`Select apple variety`}
+          onChange={name => setSubject(name)}
         >
           {optionList}
         </Select>

@@ -3,12 +3,13 @@ import { inject, observer } from "mobx-react";
 // import { toJS } from "mobx";
 import { Row, Col, Modal, Divider, Radio, Table } from "antd";
 
-// Left menu
-import BlockName from "components/leftPanel/BlockName";
-import Variety from "components/leftPanel/Variety";
-import StyleLength from "components/leftPanel/StyleLength";
-import State from "components/leftPanel/State";
-import Station from "components/leftPanel/Station";
+import BlockName from "components/BlockName";
+import Variety from "components/Variety";
+import StyleLength from "components/StyleLength";
+import State from "components/State";
+import Station from "components/Station";
+
+import DatePicker from "components/DatePicker";
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -34,7 +35,16 @@ class NewBlockModal extends Component {
       styleLengths,
       isLoading,
       removeStyleLength,
-      addBlock
+      addBlock,
+      updateBlock,
+      block,
+      isEditingBlock,
+      firstSprayDate,
+      secondSprayDate,
+      thirdSprayDate,
+      setFirstSprayDate,
+      setSecondSprayDate,
+      setThirdSprayDate
     } = this.props.store.app;
 
     const columns = [
@@ -75,10 +85,20 @@ class NewBlockModal extends Component {
       <Row type="flex" align="middle">
         <Modal
           width={450}
-          title="New Block"
+          closable={false}
+          maskClosable={false}
+          title={isEditingBlock ? `Edit Selected Block` : `New Block`}
           visible={isNewBlockModal}
-          okText={areRequiredFieldsSet ? "CREATE BLOCK" : "Fill up all fields"}
-          onOk={areRequiredFieldsSet ? addBlock : null}
+          okText={
+            areRequiredFieldsSet
+              ? isEditingBlock ? "UPDATE BLOCK" : "CREATE BLOCK"
+              : "Fill up all fields"
+          }
+          onOk={
+            areRequiredFieldsSet
+              ? isEditingBlock ? updateBlock : addBlock
+              : null
+          }
           onCancel={hideNewBlockModal}
         >
           <Col>
@@ -86,42 +106,68 @@ class NewBlockModal extends Component {
             <Variety />
             <State />
             <Station />
-            <RadioGroup
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: 32
-              }}
-              onChange={this.onChange}
-              defaultValue="avg"
-            >
-              <RadioButton
-                checked={this.state.value === "avg"}
-                disabled={styleLengths.length > 1}
-                value="avg"
+            {!block.isEdit && (
+              <RadioGroup
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: 32
+                }}
+                onChange={this.onChange}
+                defaultValue="avg"
               >
-                Average style length
-              </RadioButton>
-              <RadioButton
-                checked={this.state.value === "calculate"}
-                value="calculate"
-              >
-                Calculate average
-              </RadioButton>
-            </RadioGroup>
-            <StyleLength radioValue={this.state.value} />
+                <RadioButton
+                  checked={this.state.value === "avg"}
+                  disabled={styleLengths.length > 1}
+                  value="avg"
+                >
+                  Average style length
+                </RadioButton>
+                <RadioButton
+                  checked={this.state.value === "calculate"}
+                  value="calculate"
+                >
+                  Calculate average
+                </RadioButton>
+              </RadioGroup>
+            )}
+            <StyleLength
+              radioValue={this.state.value}
+              isDisabled={block.isEdit}
+            />
 
-            {this.state.value === "calculate" && (
-              <Table
-                rowClassName={record => (record.isEdit ? "selected" : null)}
-                rowKey={record => record.idx}
-                loading={isLoading}
-                dataSource={styleLengths.slice()}
-                columns={columns}
-                size="middle"
-                pagination={false}
-                scroll={{ y: 400, x: "100%" }}
-              />
+            {this.state.value === "calculate" &&
+              !block.isEdit && (
+                <Table
+                  rowClassName={record => (record.isEdit ? "selected" : null)}
+                  rowKey={record => record.idx}
+                  loading={isLoading}
+                  dataSource={styleLengths.slice()}
+                  columns={columns}
+                  size="middle"
+                  pagination={false}
+                  scroll={{ y: 400, x: "100%" }}
+                />
+              )}
+
+            {block.isEdit && (
+              <div>
+                <DatePicker
+                  type="first spray"
+                  date={firstSprayDate}
+                  setDate={setFirstSprayDate}
+                />
+                <DatePicker
+                  type="second spray"
+                  date={secondSprayDate}
+                  setDate={setSecondSprayDate}
+                />
+                <DatePicker
+                  type="third spray"
+                  date={thirdSprayDate}
+                  setDate={setThirdSprayDate}
+                />
+              </div>
             )}
           </Col>
         </Modal>

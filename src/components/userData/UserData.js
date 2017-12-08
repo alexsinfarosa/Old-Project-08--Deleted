@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-// import { toJS } from "mobx";
+import { toJS } from "mobx";
 import format from "date-fns/format";
 
 // styled components
 import { Block, MBRow } from "styles";
 
-import StartDate from "components/leftPanel/StartDate";
+import DatePicker from "components/DatePicker";
 
 // antd
 import { Row, Col, Table, Steps } from "antd";
@@ -16,14 +16,14 @@ const Step = Steps.Step;
 @observer
 class UserData extends Component {
   render() {
-    const { isLoading, block } = this.props.store.app;
+    const { isLoading, block, date, setDate } = this.props.store.app;
+    console.log(toJS(block));
 
     // to set the number on the STEP component
     const { firstSpray, secondSpray, thirdSpray } = block;
-    const first = format(firstSpray, "x");
-    const second = format(secondSpray, "x");
-    const third = format(thirdSpray, "x");
-    const dates = [first, second, third];
+    const dates = [firstSpray, secondSpray, thirdSpray]
+      .map(date => (date === undefined ? 0 : date))
+      .map(date => format(date, "x"));
     const max = Math.max(...dates);
     let current = 0;
     current = dates.findIndex(date => date === max.toString());
@@ -89,7 +89,7 @@ class UserData extends Component {
             </Col>
             <Col style={{ display: "flex", alignItems: "baseline" }}>
               <p style={{ marginRight: 5 }}>Model Start Date: </p>
-              <StartDate />
+              <DatePicker type="start" date={date} setDate={setDate} />
             </Col>
           </MBRow>
 
