@@ -23,7 +23,9 @@ import NewBlockModal from "modals/NewBlockModal";
 // Logos
 // import NEWALogo from "assets/newa_logo.svg";
 
-import { Layout } from "antd";
+import { Layout, Row, Col } from "antd";
+import { MBRow } from "./styles";
+// import { Row } from "rebass";
 const { Content } = Layout;
 
 @inject("store")
@@ -50,16 +52,48 @@ class App extends Component {
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
         <Layout style={{ minHeight: "100vh" }}>
-          <Header>
-            <div>
-              Tech Pollen Tube Growth Model{" "}
-              <small>
-                <i>by Virginia Tech</i>
-              </small>
-            </div>
-            <Navigation />
-            <div>NEWA</div>
-          </Header>
+          <Row style={{ padding: "0 16px", background: "#8ec9f2" }}>
+            <Col
+              xs={24}
+              md={12}
+              style={{
+                padding: breakpoints.xs ? "16px 0" : "24px 0",
+                color: "white",
+                fontSize: breakpoints.xs ? "1rem" : "1.1rem",
+                textAlign: breakpoints.xs ? "center" : "left"
+              }}
+            >
+              <div>Tech Pollen Tube Growth Model</div>
+              <div style={{ marginTop: "-5px" }}>
+                <small>
+                  <i style={{ fontSize: "0.7rem" }}> BY VIRGINIA TECH</i>
+                </small>
+              </div>
+            </Col>
+            <Col
+              xs={24}
+              md={8}
+              style={{
+                padding: breakpoints.xs ? "16px 0" : "24px 0",
+                color: "white",
+                fontSize: "1.1rem"
+              }}
+            >
+              <Navigation />
+            </Col>
+            <Col
+              xs={0}
+              md={4}
+              style={{
+                padding: breakpoints.xs ? "16px 0" : "24px 0",
+                textAlign: "right",
+                color: "white",
+                fontSize: "1.1rem"
+              }}
+            >
+              NEWA
+            </Col>
+          </Row>
 
           <Content style={{ margin: "24px 16px 0" }}>
             <div style={{ minHeight: 360 }}>

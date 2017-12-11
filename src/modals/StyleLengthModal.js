@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 // import { toJS } from "mobx";
 import { Row, Modal, Table, Divider } from "antd";
-import StyleLength from "components/leftPanel/StyleLength";
+import StyleLength from "components/StyleLength";
 
 // import format from "date-fns/format";
 

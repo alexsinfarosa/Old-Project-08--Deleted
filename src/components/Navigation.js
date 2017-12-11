@@ -21,18 +21,23 @@ class Navigation extends Component {
     return (
       <div
         style={{
-          width: 400,
           display: "flex",
-          justifyContent: isBlock() ? "space-between" : "center"
+          justifyContent: "center"
         }}
       >
         {isBlock() && (
-          <Button ghost icon="edit" onClick={editBlock}>
-            Edit Block
+          <Button
+            style={{ marginRight: 16 }}
+            ghost
+            icon="edit"
+            onClick={editBlock}
+          >
+            EDIT
           </Button>
         )}
 
         <Button
+          style={{ marginRight: 16 }}
           ghost
           icon="plus"
           onClick={() => {
@@ -41,7 +46,7 @@ class Navigation extends Component {
             showNewBlockModal();
           }}
         >
-          New Block
+          ADD
         </Button>
 
         {isBlock() && (
@@ -52,7 +57,7 @@ class Navigation extends Component {
             cancelText="No"
           >
             <Button ghost icon="delete">
-              Delete Block
+              DELETE
             </Button>
           </Popconfirm>
         )}

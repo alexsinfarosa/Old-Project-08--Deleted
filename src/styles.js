@@ -19,7 +19,6 @@ export const Header = styled.section`
       color: white;
       font-size: 0.9rem;
       letter-spacing: 1px;
-      margin-bottom: 8px;
     }
     & > img {
       display: none;
