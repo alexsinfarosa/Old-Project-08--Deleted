@@ -22,14 +22,14 @@ export default class StartDate extends Component {
   };
 
   render() {
-    const { date, setDate } = this.props.store.app;
+    const { setDate, block } = this.props.store.app;
 
     return (
       <Col>
         <DatePicker
           showTime
           style={{ width: 180 }}
-          value={date ? moment(date) : undefined}
+          value={block.date ? block.date : undefined}
           allowClear={false}
           format="MMM D YYYY, HH:mm"
           placeholder={`Select date and time`}

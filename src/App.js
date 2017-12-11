@@ -6,7 +6,7 @@ import "./index.css";
 import { MatchMediaProvider } from "mobx-react-matchmedia";
 
 // styled components
-import { Header } from "styles";
+// import { Header } from "styles";
 
 // Navigation
 import Navigation from "components/Navigation";
@@ -15,6 +15,7 @@ import Navigation from "components/Navigation";
 import USMap from "components/USMap";
 import BlocksDropdown from "components/userData/BlocksDropdown";
 import UserData from "components/userData/UserData";
+// import GrowthTable from "components/GrowthTable";
 
 // Modal
 import StyleLengthModal from "modals/StyleLengthModal";
@@ -24,7 +25,7 @@ import NewBlockModal from "modals/NewBlockModal";
 // import NEWALogo from "assets/newa_logo.svg";
 
 import { Layout, Row, Col } from "antd";
-import { MBRow } from "./styles";
+// import { MBRow } from "./styles";
 // import { Row } from "rebass";
 const { Content } = Layout;
 
@@ -63,11 +64,13 @@ class App extends Component {
                 textAlign: breakpoints.xs ? "center" : "left"
               }}
             >
-              <div>Tech Pollen Tube Growth Model</div>
-              <div style={{ marginTop: "-5px" }}>
-                <small>
-                  <i style={{ fontSize: "0.7rem" }}> BY VIRGINIA TECH</i>
-                </small>
+              <div>
+                <div>Tech Pollen Tube Growth Model</div>
+                <div style={{ marginTop: "-5px" }}>
+                  <small>
+                    <i style={{ fontSize: "0.7rem" }}> BY VIRGINIA TECH</i>
+                  </small>
+                </div>
               </div>
             </Col>
             <Col

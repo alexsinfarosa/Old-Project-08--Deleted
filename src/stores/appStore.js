@@ -9,7 +9,7 @@ import getYear from "date-fns/get_year";
 import { message } from "antd";
 
 // utils
-import { fetchACISData } from "fetchACISData";
+// import { fetchACISData } from "fetchACISData";
 
 export default class appStore {
   constructor(fetch) {
@@ -17,7 +17,7 @@ export default class appStore {
     when(() => this.subjects.length === 0, () => this.loadSubjects());
     when(() => this.states.length === 0, () => this.loadStates());
     when(() => this.stations.length === 0, () => this.loadStations());
-    // when(() => this.gridData.length === 0, () => this.loadGridData());
+    // when(() => this.acisData.length === 0, () => this.acisData);
   }
 
   // Logic -----------------------------------------------------------
@@ -39,25 +39,15 @@ export default class appStore {
     return (
       this.blockName.length >= 3 &&
       Object.keys(this.subject).length !== 0 &&
-      this.styleLength !== null &&
+      Object.keys(this.state).length !== 0 &&
       Object.keys(this.station).length !== 0
     );
   }
-
-  // Sidebar ---------------------------------------------------------
-  @observable isSidebarCollapsed = false;
-  @action setSidebar = d => (this.isSidebarCollapsed = d);
-  @action
-  toggleSidebar = () => (this.isSidebarCollapsed = !this.isSidebarCollapsed);
 
   //   Map ----------------------------------------------------------------
   @observable
   isMap = JSON.parse(localStorage.getItem("state")) === null ? true : false;
   @action setIsMap = d => (this.isMap = d);
-  // @computed
-  // get viewMap() {
-  //   return this.isMap ? true : this.station.name === undefined ? true : false;
-  // }
   @action toggleMap = () => (this.isMap = !this.isMap);
 
   //   Modals ---------------------------------------------------------------
@@ -66,8 +56,23 @@ export default class appStore {
   @action hideModal = () => (this.isModal = false);
 
   @observable isNewBlockModal = false;
-  @action showNewBlockModal = () => (this.isNewBlockModal = true);
+  @action
+  showNewBlockModal = () => {
+    this.setRadioValue(null);
+    this.setBlockName("");
+    this.subject = {};
+    this.block.isEdit = false;
+    this.isNewBlockModal = true;
+  };
   @action hideNewBlockModal = () => (this.isNewBlockModal = false);
+
+  @observable isStyleLengthModal = false;
+  @action showStyleLengthModal = () => (this.isStyleLengthModal = true);
+  @action hideStyleLengthModal = () => (this.isStyleLengthModal = false);
+
+  // Radio button values
+  @observable radioValue = null;
+  @action setRadioValue = d => (this.radioValue = d);
 
   // BlockName ----------------------------------------------------------------
   @observable blockName = "";
@@ -116,7 +121,7 @@ export default class appStore {
   }
 
   @action
-  addStyleLength = () => {
+  addAvgStyleLength = () => {
     let highiestIdx = 0;
     if (this.styleLengths.length !== 0) {
       const tempArr = this.styleLengths.map(obj => obj.idx);
@@ -128,19 +133,86 @@ export default class appStore {
       styleLength: this.styleLength,
       isEdit: false
     };
+
     this.styleLengths.push(styleLengthObj);
+    this.block.styleLengths = this.styleLengths;
+    this.block.avgStyleLength = this.avgStyleLength;
+
+    const idx = this.blocks.findIndex(b => b.id === this.block.id);
+    this.blocks.splice(idx, 1, this.block);
+    this.setBlocks(this.blocks);
+    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
+    // message.success(`${this.block.name} block has been deleted!`);
+    this.styleLength = null;
+    this.styleLengths = [];
+    this.hideStyleLengthModal();
+  };
+
+  @action
+  addOneStyleLength = () => {
+    let highiestIdx = 0;
+    if (this.styleLengths.length !== 0) {
+      const tempArr = this.styleLengths.map(obj => obj.idx);
+      highiestIdx = Math.max(...tempArr);
+    }
+
+    const styleLengthObj = {
+      id: Math.random(),
+      idx: highiestIdx + 1,
+      styleLength: this.styleLength,
+      isEdit: false
+    };
+    this.styleLengths.push(styleLengthObj);
+    this.styleLength = null;
+  };
+
+  @action
+  addAllStyleLengths = () => {
+    this.block.styleLengths = this.styleLengths;
+    this.block.avgStyleLength = this.avgStyleLength;
+
+    const idx = this.blocks.findIndex(b => b.id === this.block.id);
+    this.blocks.splice(idx, 1, this.block);
+    this.setBlocks(this.blocks);
+    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
+    // message.success(`${this.block.name} block has been deleted!`);
+    this.styleLength = null;
+    this.styleLengths = [];
+    this.hideStyleLengthModal();
   };
 
   @action
   removeStyleLength = (record, idx) => {
-    this.styleLengths.splice(idx, 1);
-    this.setStyleLengths(this.styleLengths);
+    const below = this.styleLengths.slice(0, idx);
+    const above = this.styleLengths.slice(idx + 1);
+    above.map(obj => (obj.idx = obj.idx - 1));
+    const newArr = [...below, ...above];
+    this.setStyleLengths(newArr);
   };
+
+  @computed
+  get isStyleLengthEdited() {
+    return this.styleLengths.some(obj => obj.isEdit);
+  }
 
   @action
   editStyleLength = (record, idx) => {
     this.setStyleLength(record.styleLength);
     this.styleLengths[idx].isEdit = true;
+  };
+
+  @action
+  updateOneStyleLength = () => {
+    const obj = this.styleLengths.find(
+      styleLength => styleLength.isEdit === true
+    );
+    obj.styleLength = this.styleLength;
+    obj.isEdit = false;
+
+    const idx = this.styleLengths.findIndex(d => d.id === obj.id);
+    this.styleLengths.splice(idx, 1, obj);
+    this.setStyleLengths(this.styleLengths);
+    this.styleLength = null;
   };
 
   // States -------------------------------------------------------------------
@@ -231,6 +303,7 @@ export default class appStore {
   // Dates---------------------------------------------------------------------
   @observable date;
   @action setDate = d => (this.date = d);
+
   @computed
   get currentYear() {
     if (this.date) {
@@ -276,10 +349,10 @@ export default class appStore {
   @observable
   blocks = JSON.parse(localStorage.getItem("pollenTubeBlocks")) || [];
   @action setBlocks = d => (this.blocks = d);
+
   @observable block = {};
   @action
   setBlock = id => {
-    this.resetFields();
     this.block = this.blocks.find(block => block.id === id);
   };
 
@@ -292,37 +365,30 @@ export default class appStore {
   resetFields = () => {
     this.setBlockName("");
     this.subject = {};
-    this.setStyleLength(null);
-    this.setStyleLengths([]);
-    this.setDate(undefined);
-    this.setFirstSprayDate(undefined);
-    this.setSecondSprayDate(undefined);
-    this.setThirdSprayDate(undefined);
+    this.hideNewBlockModal();
   };
 
   @action
   addBlock = d => {
-    this.addStyleLength();
-
     this.block = {
       id: Math.random().toString(),
       name: `${this.blockName}`,
       variety: this.subject,
-      styleLengths: this.styleLengths,
-      avgStyleLength: this.avgStyleLength,
       state: this.state,
       station: this.station,
-      date: this.date,
-      firstSpray: this.firstSprayDate,
-      secondSpray: this.secondSprayDate,
-      thirdSpray: this.thirdSprayDate,
-      isEdit: false
+      isEdit: false,
+      styleLengths: [],
+      avgStyleLength: null,
+      date: undefined,
+      firstSpray: undefined,
+      secondSpray: undefined,
+      thirdSpray: undefined
     };
+
     this.blocks.push(this.block);
-    this.resetFields();
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
-    this.hideNewBlockModal();
     message.success(`${this.block.name} block has been created!`);
+    this.resetFields();
   };
 
   @action
@@ -360,7 +426,8 @@ export default class appStore {
 
   @action
   updateBlock = () => {
-    this.addStyleLength();
+    console.log("updateBlock");
+    // this.addStyleLength();
 
     this.block["name"] = this.blockName;
     this.block["variety"] = this.subject;
@@ -394,12 +461,14 @@ export default class appStore {
   //   return day[1] - base > 0 ? Math.round(day[1] - base) : 0;
   // };
 
-  @computed
-  get acisData() {
-    return this.areRequiredFieldsSet
-      ? fetchACISData(this.station, this.date).then(res => {
-          return res;
-        })
-      : [];
-  }
+  // @computed
+  // get acisData() {
+  //   return this.block.date;
+  //   console.log("ciccio")
+  //     ? fetchACISData(this.block.station, this.block.date).then(res => {
+  //         console.log(res);
+  //         return res;
+  //       })
+  //     : [];
+  // }
 }

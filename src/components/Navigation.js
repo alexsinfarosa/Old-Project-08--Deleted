@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Button, Popconfirm } from "antd";
+import { Button, Popconfirm, Tooltip } from "antd";
 
 @inject("store")
 @observer
@@ -10,8 +10,7 @@ class Navigation extends Component {
       showNewBlockModal,
       editBlock,
       deleteBlock,
-      block,
-      resetFields
+      block
     } = this.props.store.app;
 
     const isBlock = d => {
@@ -26,28 +25,27 @@ class Navigation extends Component {
         }}
       >
         {isBlock() && (
+          <Tooltip title="Edit block">
+            <Button
+              style={{ marginRight: 16 }}
+              ghost
+              icon="edit"
+              onClick={editBlock}
+            >
+              EDIT
+            </Button>
+          </Tooltip>
+        )}
+        <Tooltip title="Add block">
           <Button
             style={{ marginRight: 16 }}
             ghost
-            icon="edit"
-            onClick={editBlock}
+            icon="plus"
+            onClick={() => showNewBlockModal()}
           >
-            EDIT
+            ADD
           </Button>
-        )}
-
-        <Button
-          style={{ marginRight: 16 }}
-          ghost
-          icon="plus"
-          onClick={() => {
-            resetFields();
-            this.props.store.app.block = {};
-            showNewBlockModal();
-          }}
-        >
-          ADD
-        </Button>
+        </Tooltip>
 
         {isBlock() && (
           <Popconfirm
@@ -56,9 +54,11 @@ class Navigation extends Component {
             okText="Yes"
             cancelText="No"
           >
-            <Button ghost icon="delete">
-              DELETE
-            </Button>
+            <Tooltip title="Delete block">
+              <Button ghost icon="delete">
+                DELETE
+              </Button>
+            </Tooltip>
           </Popconfirm>
         )}
       </div>

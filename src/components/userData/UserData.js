@@ -6,17 +6,17 @@ import format from "date-fns/format";
 // styled components
 import { Block, MBRow } from "styles";
 
-import StartDate from "components/StartDate";
+// import StartDate from "components/StartDate";
 
 // antd
-import { Row, Col, Table, Steps } from "antd";
+import { Row, Col, Table, Steps, Button } from "antd";
 const Step = Steps.Step;
 
 @inject("store")
 @observer
 class UserData extends Component {
   render() {
-    const { isLoading, block } = this.props.store.app;
+    const { isLoading, block, showStyleLengthModal } = this.props.store.app;
     console.log(toJS(block));
 
     // to set the number on the STEP component
@@ -39,7 +39,7 @@ class UserData extends Component {
         title: "Avg. Style Length",
         dataIndex: "avgStyleLength",
         key: "avgStyleLength",
-        render: text => <span>{text.toPrecision(4)}</span>
+        render: text => <span>{text ? text.toPrecision(5) : text}</span>
       },
       {
         title: "Spray Dates",
@@ -87,9 +87,17 @@ class UserData extends Component {
                 {block.station.name}, {block.state.postalCode}
               </h3>
             </Col>
-            <Col style={{ display: "flex", alignItems: "baseline" }}>
-              <p style={{ marginRight: 5 }}>Model Start Date: </p>
-              <StartDate />
+            <Col>
+              {!block.avgStyleLength && (
+                <Button
+                  icon="calculator"
+                  style={{ marginRight: 5 }}
+                  onClick={showStyleLengthModal}
+                >
+                  Set Style Length
+                </Button>
+              )}
+              <Button icon="calendar">Set Start Date</Button>
             </Col>
           </MBRow>
 

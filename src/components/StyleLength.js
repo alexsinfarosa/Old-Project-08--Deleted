@@ -9,12 +9,13 @@ class StyleLength extends Component {
     const {
       styleLength,
       setStyleLength,
-      addStyleLength,
+      addOneStyleLength,
       isEditingBlock,
-      block
+      block,
+      isStyleLengthEdited,
+      updateOneStyleLength,
+      radioValue
     } = this.props.store.app;
-
-    const { radioValue } = this.props;
 
     return (
       <Row type="flex" style={{ marginBottom: 32 }} justify="space-between">
@@ -45,18 +46,19 @@ class StyleLength extends Component {
           </Tooltip>
         </Col>
 
-        {radioValue === "calculate" &&
-          !isEditingBlock && (
-            <Col span={4}>
-              <Button
-                style={{ width: "100%" }}
-                disabled={!styleLength}
-                onClick={addStyleLength}
-              >
-                Add
-              </Button>
-            </Col>
-          )}
+        {radioValue === "calculate" && (
+          <Col span={4}>
+            <Button
+              style={{ width: "100%" }}
+              disabled={!styleLength}
+              onClick={
+                isStyleLengthEdited ? updateOneStyleLength : addOneStyleLength
+              }
+            >
+              {isStyleLengthEdited ? "UPDATE" : "ADD"}
+            </Button>
+          </Col>
+        )}
       </Row>
     );
   }
