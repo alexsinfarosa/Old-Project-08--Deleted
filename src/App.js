@@ -97,14 +97,14 @@ class App extends Component {
           </Row>
 
           <Content style={{ margin: "24px auto", width: "90%" }}>
-            <MBRow
+            <Row
               type="flex"
               justify="space-around"
-              // style={{ border: "1px solid teal" }}
+              style={{ marginBottom: 32 }}
             >
               <Navigation />
               <ToggleIcons />
-            </MBRow>
+            </Row>
             <div style={{ minHeight: 360 }}>
               {isMap && <USMap />}
               {isUserData && (
