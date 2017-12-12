@@ -31,8 +31,10 @@ export default class StartDate extends Component {
       hideStartDateModal
     } = this.props.store.app;
 
-    isStartDateModal ? addDateToBlock() : null;
-    isStartDateModal ? hideStartDateModal() : null;
+    if (isStartDateModal) {
+      addDateToBlock();
+      hideStartDateModal();
+    }
   };
 
   render() {
@@ -51,7 +53,7 @@ export default class StartDate extends Component {
           open={isStartDateModal}
           showTime
           style={{ width: "100%" }}
-          value={block.date ? block.date : date}
+          value={block.date ? moment(block.date) : moment(date)}
           allowClear={false}
           format="MMM D YYYY, HH:mm"
           placeholder={`Select date and time`}

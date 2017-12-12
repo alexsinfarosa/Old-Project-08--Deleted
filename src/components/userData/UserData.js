@@ -57,7 +57,7 @@ class UserData extends Component {
                 title="1st"
                 description={
                   record.firstSpray
-                    ? format(record.firstSpray, "MMM DD YYYY HH:00")
+                    ? format(record.firstSpray, "MMM Do YYYY HH:00")
                     : null
                 }
               />
@@ -65,7 +65,7 @@ class UserData extends Component {
                 title="2nd"
                 description={
                   record.secondSpray
-                    ? format(record.secondSpray, "MMM DD YYYY HH:00")
+                    ? format(record.secondSpray, "MMM Do YYYY HH:00")
                     : null
                 }
               />
@@ -73,7 +73,7 @@ class UserData extends Component {
                 title="3rd"
                 description={
                   record.thirdSpray
-                    ? format(record.thirdSpray, "MMM DD YYYY HH:00")
+                    ? format(record.thirdSpray, "MMM Do YYYY HH:00")
                     : null
                 }
               />
@@ -104,7 +104,8 @@ class UserData extends Component {
               )}
               {block.date ? (
                 <p>
-                  Model Start Date: {format(block.date, "MMM Do YYYY H:00")}
+                  <b>Model Start Date:</b>{" "}
+                  {format(block.date, "MMM Do YYYY HH:00")}
                 </p>
               ) : (
                 <Button

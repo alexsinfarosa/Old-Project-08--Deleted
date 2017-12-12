@@ -67,7 +67,9 @@ class App extends Component {
               }}
             >
               <div>
-                <div>Tech Pollen Tube Growth Model</div>
+                <div style={{ letterSpacing: 1, fontSize: "1.2rem" }}>
+                  Tech Pollen Tube Growth Model
+                </div>
                 <div style={{ marginTop: "-5px" }}>
                   <small>
                     <i style={{ fontSize: "0.7rem", letterSpacing: 1 }}>
