@@ -54,7 +54,7 @@ class App extends Component {
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
         <Layout style={{ minHeight: "100vh" }}>
-          <Row style={{ padding: "0 16px", background: "#8ec9f2" }}>
+          <Row style={{ padding: "0 16px", background: "#8ec9f2", height: 90 }}>
             <Col
               xs={24}
               md={12}
@@ -62,14 +62,18 @@ class App extends Component {
                 padding: breakpoints.xs ? "16px 0" : "24px 0",
                 color: "white",
                 fontSize: breakpoints.xs ? "1rem" : "1.1rem",
-                textAlign: breakpoints.xs ? "center" : "left"
+                textAlign: breakpoints.xs ? "center" : "left",
+                height: "100%"
               }}
             >
               <div>
                 <div>Tech Pollen Tube Growth Model</div>
                 <div style={{ marginTop: "-5px" }}>
                   <small>
-                    <i style={{ fontSize: "0.7rem" }}> BY VIRGINIA TECH</i>
+                    <i style={{ fontSize: "0.7rem", letterSpacing: 1 }}>
+                      {" "}
+                      BY VIRGINIA TECH
+                    </i>
                   </small>
                 </div>
               </div>
@@ -80,7 +84,11 @@ class App extends Component {
               style={{
                 padding: breakpoints.xs ? "16px 0" : "24px 0",
                 color: "white",
-                fontSize: "1.1rem"
+                fontSize: "1.1rem",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
               }}
             >
               <Navigation />
@@ -90,9 +98,12 @@ class App extends Component {
               md={4}
               style={{
                 padding: breakpoints.xs ? "16px 0" : "24px 0",
-                textAlign: "right",
                 color: "white",
-                fontSize: "1.1rem"
+                fontSize: "1.1rem",
+                height: "100%",
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center"
               }}
             >
               NEWA

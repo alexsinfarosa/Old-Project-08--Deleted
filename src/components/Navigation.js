@@ -43,7 +43,7 @@ class Navigation extends Component {
             icon="plus"
             onClick={() => showNewBlockModal()}
           >
-            ADD
+            {isBlock() ? "ADD" : "Block"}
           </Button>
         </Tooltip>
 
