@@ -22,7 +22,7 @@ class StyleLength extends Component {
         <Col span={radioValue === "avg" || isEditingBlock ? 24 : 20}>
           <Tooltip
             trigger={["focus"]}
-            title={"Range: 0.1mm to 20mm"}
+            title={"Range: 1mm to 20mm"}
             placement="topLeft"
             style={{ fontSize: "14px" }}
           >
