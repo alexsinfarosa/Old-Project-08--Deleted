@@ -6,10 +6,11 @@ import "./index.css";
 import { MatchMediaProvider } from "mobx-react-matchmedia";
 
 // styled components
-// import { Header } from "styles";
+import { MBRow } from "styles";
 
 // Navigation
 import Navigation from "components/Navigation";
+import ToggleIcons from "components/ToggleIcons";
 
 // Main content
 import USMap from "components/USMap";
@@ -56,8 +57,7 @@ class App extends Component {
         <Layout style={{ minHeight: "100vh" }}>
           <Row style={{ padding: "0 16px", background: "#8ec9f2", height: 90 }}>
             <Col
-              xs={24}
-              md={12}
+              xs={20}
               style={{
                 padding: breakpoints.xs ? "16px 0" : "24px 0",
                 color: "white",
@@ -81,23 +81,7 @@ class App extends Component {
               </div>
             </Col>
             <Col
-              xs={24}
-              md={8}
-              style={{
-                padding: breakpoints.xs ? "16px 0" : "24px 0",
-                color: "white",
-                fontSize: "1.1rem",
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-            >
-              <Navigation />
-            </Col>
-            <Col
               xs={0}
-              md={4}
               style={{
                 padding: breakpoints.xs ? "16px 0" : "24px 0",
                 color: "white",
@@ -113,6 +97,14 @@ class App extends Component {
           </Row>
 
           <Content style={{ margin: "24px auto", width: "90%" }}>
+            <MBRow
+              type="flex"
+              justify="space-around"
+              // style={{ border: "1px solid teal" }}
+            >
+              <Navigation />
+              <ToggleIcons />
+            </MBRow>
             <div style={{ minHeight: 360 }}>
               {isMap && <USMap />}
               {isUserData && (
