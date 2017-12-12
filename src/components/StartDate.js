@@ -2,11 +2,14 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 
 // antd
-import { Col, DatePicker } from "antd";
+import { DatePicker } from "antd";
 import moment from "moment";
 
 // utils
 import { roundDate } from "utils";
+
+// styled components
+import { MBCol } from "styles";
 
 @inject("store")
 @observer
@@ -22,13 +25,14 @@ export default class StartDate extends Component {
   };
 
   render() {
-    const { setDate, block } = this.props.store.app;
+    const { setDate, block, isEditingBlock } = this.props.store.app;
 
     return (
-      <Col>
+      <MBCol>
+        {isEditingBlock && "Model Start Date:"}
         <DatePicker
           showTime
-          style={{ width: 180 }}
+          style={{ width: "100%" }}
           value={block.date ? block.date : undefined}
           allowClear={false}
           format="MMM D YYYY, HH:mm"
@@ -39,7 +43,7 @@ export default class StartDate extends Component {
             setDate(roundDate(date, moment.duration(60, "minutes"), "floor"));
           }}
         />
-      </Col>
+      </MBCol>
     );
   }
 }

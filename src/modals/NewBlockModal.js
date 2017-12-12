@@ -5,11 +5,11 @@ import { Row, Col, Modal } from "antd";
 
 import BlockName from "components/BlockName";
 import Variety from "components/Variety";
-
 import State from "components/State";
 import Station from "components/Station";
-
 import SprayDate from "components/SprayDate";
+import StyleLength from "components/StyleLength";
+import StartDate from "components/StartDate";
 
 @inject("store")
 @observer
@@ -46,9 +46,10 @@ class NewBlockModal extends Component {
             <Variety />
             <State />
             <Station />
-
             {block.isEdit && (
               <div>
+                <StyleLength />
+                <StartDate />
                 <SprayDate
                   type="first spray"
                   date={firstSprayDate}

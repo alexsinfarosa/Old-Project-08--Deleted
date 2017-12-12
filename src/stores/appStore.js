@@ -363,9 +363,15 @@ export default class appStore {
 
   @action
   resetFields = () => {
+    this.hideNewBlockModal();
     this.setBlockName("");
     this.subject = {};
-    this.hideNewBlockModal();
+    this.setStyleLength(null);
+    this.setStyleLengths([]);
+    this.setDate(undefined);
+    this.setFirstSprayDate(undefined);
+    this.setSecondSprayDate(undefined);
+    this.setThirdSprayDate(undefined);
   };
 
   @action
@@ -426,9 +432,6 @@ export default class appStore {
 
   @action
   updateBlock = () => {
-    console.log("updateBlock");
-    // this.addStyleLength();
-
     this.block["name"] = this.blockName;
     this.block["variety"] = this.subject;
     // this.block["avgStyleLength"] = this.avgStyleLength;
@@ -445,7 +448,7 @@ export default class appStore {
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
     this.resetFields();
-    this.hideNewBlockModal();
+    this.setBlock(this.block.id);
     message.success(`${this.block.name} block has been updated!`);
   };
 

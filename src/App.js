@@ -98,7 +98,7 @@ class App extends Component {
             </Col>
           </Row>
 
-          <Content style={{ margin: "24px 16px 0" }}>
+          <Content style={{ margin: "24px auto", width: "90%" }}>
             <div style={{ minHeight: 360 }}>
               {isMap && <USMap />}
               {isUserData && (
