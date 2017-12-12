@@ -16,7 +16,12 @@ const Step = Steps.Step;
 @observer
 class UserData extends Component {
   render() {
-    const { isLoading, block, showStyleLengthModal } = this.props.store.app;
+    const {
+      isLoading,
+      block,
+      showStyleLengthModal,
+      showStartDateModal
+    } = this.props.store.app;
     console.log(toJS(block));
 
     // to set the number on the STEP component
@@ -97,7 +102,19 @@ class UserData extends Component {
                   Set Style Length
                 </Button>
               )}
-              <Button icon="calendar">Set Start Date</Button>
+              {block.date ? (
+                <p>
+                  Model Start Date: {format(block.date, "MMM Do YYYY H:00")}
+                </p>
+              ) : (
+                <Button
+                  icon="calendar"
+                  onClick={showStartDateModal}
+                  disabled={!block.avgStyleLength}
+                >
+                  Set Start Date
+                </Button>
+              )}
             </Col>
           </MBRow>
 

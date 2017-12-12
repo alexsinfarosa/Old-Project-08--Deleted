@@ -13,10 +13,10 @@ import StartDate from "components/StartDate";
 
 @inject("store")
 @observer
-class NewBlockModal extends Component {
+class BlockModal extends Component {
   render() {
     const {
-      isNewBlockModal,
+      isBlockModal,
       hideNewBlockModal,
       addBlock,
       updateBlock,
@@ -34,9 +34,9 @@ class NewBlockModal extends Component {
         <Modal
           width={450}
           closable={false}
-          maskClosable={false}
+          // maskClosable={false}
           title={block.isEdit ? `Edit selected block` : `New Block`}
-          visible={isNewBlockModal}
+          visible={isBlockModal}
           okText={block.isEdit ? "UPDATE BLOCK" : "CREATE BLOCK"}
           onOk={block.isEdit ? updateBlock : addBlock}
           onCancel={hideNewBlockModal}
@@ -74,4 +74,4 @@ class NewBlockModal extends Component {
   }
 }
 
-export default NewBlockModal;
+export default BlockModal;

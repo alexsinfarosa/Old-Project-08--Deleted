@@ -19,7 +19,8 @@ import UserData from "components/userData/UserData";
 
 // Modal
 import StyleLengthModal from "modals/StyleLengthModal";
-import NewBlockModal from "modals/NewBlockModal";
+import BlockModal from "modals/BlockModal";
+import StartDateModal from "modals/StartDateModal";
 
 // Logos
 // import NEWALogo from "assets/newa_logo.svg";
@@ -107,8 +108,9 @@ class App extends Component {
                   {isBlockSelected && <UserData />}
                 </div>
               )}
+              <BlockModal />
               <StyleLengthModal />
-              <NewBlockModal />
+              <StartDateModal />
             </div>
           </Content>
         </Layout>

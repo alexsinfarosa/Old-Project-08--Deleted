@@ -55,20 +55,24 @@ export default class appStore {
   @action showModal = () => (this.isModal = true);
   @action hideModal = () => (this.isModal = false);
 
-  @observable isNewBlockModal = false;
+  @observable isBlockModal = false;
   @action
   showNewBlockModal = () => {
     this.setRadioValue(null);
     this.setBlockName("");
     this.subject = {};
     this.block.isEdit = false;
-    this.isNewBlockModal = true;
+    this.isBlockModal = true;
   };
-  @action hideNewBlockModal = () => (this.isNewBlockModal = false);
+  @action hideNewBlockModal = () => (this.isBlockModal = false);
 
   @observable isStyleLengthModal = false;
   @action showStyleLengthModal = () => (this.isStyleLengthModal = true);
   @action hideStyleLengthModal = () => (this.isStyleLengthModal = false);
+
+  @observable isStartDateModal = false;
+  @action showStartDateModal = () => (this.isStartDateModal = true);
+  @action hideStartDateModal = () => (this.isStartDateModal = false);
 
   // Radio button values
   @observable radioValue = null;
@@ -303,6 +307,16 @@ export default class appStore {
   // Dates---------------------------------------------------------------------
   @observable date;
   @action setDate = d => (this.date = d);
+
+  @action
+  addDateToBlock = d => {
+    this.block["date"] = this.date;
+    const idx = this.blocks.findIndex(b => b.id === this.block.id);
+    this.blocks.splice(idx, 1, this.block);
+    this.setBlocks(this.blocks);
+    this.setBlock(this.block.id);
+    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
+  };
 
   @computed
   get currentYear() {
