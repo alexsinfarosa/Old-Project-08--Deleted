@@ -23,8 +23,13 @@ import StyleLengthModal from "modals/StyleLengthModal";
 import BlockModal from "modals/BlockModal";
 import StartDateModal from "modals/StartDateModal";
 
+import Instructions from "components/Instructions";
+
 // Logos
 // import NEWALogo from "assets/newa_logo.svg";
+
+// Messages
+// import StyleLengthMsg from "messages/StyleLengthMsg";
 
 import { Layout, Row, Col } from "antd";
 // import { MBRow } from "./styles";
@@ -49,13 +54,14 @@ class App extends Component {
       breakpoints,
       isMap,
       isBlockSelected,
-      isUserData
+      isUserData,
+      block
     } = this.props.store.app;
 
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
         <Layout style={{ minHeight: "100vh" }}>
-          <Row style={{ padding: "0 16px", background: "#1DA57A", height: 90 }}>
+          <Row style={{ padding: "0 16px", background: "#1DA57A", height: 80 }}>
             <Col
               xs={20}
               style={{
@@ -66,18 +72,8 @@ class App extends Component {
                 height: "100%"
               }}
             >
-              <div>
-                <div style={{ letterSpacing: 1, fontSize: "1.2rem" }}>
-                  Tech Pollen Tube Growth Model
-                </div>
-                <div style={{ marginTop: "-5px" }}>
-                  <small>
-                    <i style={{ fontSize: "0.7rem", letterSpacing: 1 }}>
-                      {" "}
-                      BY VIRGINIA TECH
-                    </i>
-                  </small>
-                </div>
+              <div style={{ letterSpacing: 1, fontSize: "1.2rem" }}>
+                Pollen Tube Growth Model Developed By Virginia Tech
               </div>
             </Col>
             <Col
@@ -100,11 +96,12 @@ class App extends Component {
             <Row
               type="flex"
               justify="space-around"
-              style={{ marginBottom: 32 }}
+              style={{ marginBottom: 32, marginTop: 16 }}
             >
               <Navigation />
               <ToggleIcons />
             </Row>
+
             <div style={{ minHeight: 360 }}>
               {isMap && <USMap />}
               {isUserData && (
@@ -113,6 +110,7 @@ class App extends Component {
                   {isBlockSelected && <UserData />}
                 </div>
               )}
+
               <BlockModal />
               <StyleLengthModal />
               <StartDateModal />

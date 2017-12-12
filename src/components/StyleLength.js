@@ -22,7 +22,7 @@ class StyleLength extends Component {
         <Col span={radioValue === "avg" || isEditingBlock ? 24 : 20}>
           <Tooltip
             trigger={["focus"]}
-            title={"Range: 6mm to 12mm"}
+            title={"Range: 0.1mm to 20mm"}
             placement="topLeft"
             style={{ fontSize: "14px" }}
           >
@@ -36,8 +36,8 @@ class StyleLength extends Component {
                   ? `Insert average style length (mm)`
                   : `Insert style length (mm)`
               }
-              min={6}
-              max={12}
+              min={1}
+              max={20}
               step={0.01}
               precision={3}
               value={styleLength}

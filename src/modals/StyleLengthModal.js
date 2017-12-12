@@ -101,11 +101,7 @@ class StyleLengthModal extends Component {
           }
           visible={isStyleLengthModal}
           footer={radioValue ? <Footer /> : null}
-          //   onOk={() =>
-          //     radioValue === "avg" ? addAvgStyleLength() : addAllStyleLengths()
-          //   }
-          //   onCancel={() => hideStyleLengthModal()}
-          closable={false}
+          onCancel={() => hideStyleLengthModal()}
         >
           {!(radioValue === "avg" || radioValue === "calculate") && (
             <RadioGroup
