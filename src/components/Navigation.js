@@ -27,11 +27,7 @@ class Navigation extends Component {
                   type="primary"
                   ghost
                   style={{
-                    fontSize: "0.9rem",
-                    color: "inherit",
-                    marginRight: 16,
-                    border: "none",
-                    background: "none"
+                    marginRight: 16
                   }}
                   icon="edit"
                   onClick={editBlock}
@@ -45,11 +41,7 @@ class Navigation extends Component {
                 type="primary"
                 ghost
                 style={{
-                  fontSize: "0.9rem",
-                  color: "inherit",
-                  marginRight: 16,
-                  border: "none",
-                  background: "none"
+                  marginRight: 16
                 }}
                 icon="plus"
                 onClick={() => showNewBlockModal()}
@@ -66,18 +58,7 @@ class Navigation extends Component {
                 cancelText="No"
               >
                 <Tooltip title="Delete block">
-                  <Button
-                    type="primary"
-                    ghost
-                    icon="delete"
-                    style={{
-                      fontSize: "0.9rem",
-                      color: "inherit",
-
-                      border: "none",
-                      background: "none"
-                    }}
-                  >
+                  <Button type="primary" ghost icon="delete">
                     DELETE
                   </Button>
                 </Tooltip>

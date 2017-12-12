@@ -55,11 +55,11 @@ class App extends Component {
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
         <Layout style={{ minHeight: "100vh" }}>
-          <Row style={{ padding: "0 16px", background: "#8ec9f2", height: 90 }}>
+          <Row style={{ padding: "0 16px", background: "#1DA57A", height: 90 }}>
             <Col
               xs={20}
               style={{
-                padding: breakpoints.xs ? "16px 0" : "24px 0",
+                padding: breakpoints.xs ? "16px 0" : "24px 16px",
                 color: "white",
                 fontSize: breakpoints.xs ? "1rem" : "1.1rem",
                 textAlign: breakpoints.xs ? "center" : "left",
@@ -83,7 +83,7 @@ class App extends Component {
             <Col
               xs={0}
               style={{
-                padding: breakpoints.xs ? "16px 0" : "24px 0",
+                padding: breakpoints.xs ? "16px 0" : "24px 16px",
                 color: "white",
                 fontSize: "1.1rem",
                 height: "100%",
@@ -92,7 +92,7 @@ class App extends Component {
                 alignItems: "center"
               }}
             >
-              NEWA
+              <div style={{ letterSpacing: 1 }}>NEWA</div>
             </Col>
           </Row>
 

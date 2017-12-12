@@ -24,14 +24,10 @@ export default class ToggleIcons extends Component {
           <Col>
             <Tooltip title="Toggle Map">
               <Button
-                type="default"
+                type="primary"
                 ghost={isMap ? false : true}
                 style={{
-                  fontSize: "0.9rem",
-                  color: "inherit",
-                  marginRight: 16,
-                  border: "none",
-                  background: "none"
+                  marginRight: 16
                 }}
                 icon="environment-o"
                 onClick={toggleMap}
@@ -44,13 +40,7 @@ export default class ToggleIcons extends Component {
             <Tooltip title="Toggle User Blocks">
               <Button
                 ghost={isUserData ? false : true}
-                style={{
-                  fontSize: "0.9rem",
-                  color: "inherit",
-                  border: "none",
-                  background: "none"
-                }}
-                type="default"
+                type="primary"
                 icon="layout"
                 onClick={toggleUserData}
               >
