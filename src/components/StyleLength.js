@@ -29,7 +29,6 @@ class StyleLength extends Component {
             {isEditingBlock && "Average style length:"}
             <InputNumber
               style={{ width: "100%" }}
-              // id={isEditingBlock ? "edit" : null}
               onChange={setStyleLength}
               placeholder={
                 radioValue === "avg"
@@ -41,7 +40,6 @@ class StyleLength extends Component {
               step={0.01}
               precision={3}
               value={styleLength}
-              disabled={block.isEdit}
             />
           </Tooltip>
         </Col>

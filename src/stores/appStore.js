@@ -454,7 +454,7 @@ export default class appStore {
   updateBlock = () => {
     this.block["name"] = this.blockName;
     this.block["variety"] = this.subject;
-    // this.block["avgStyleLength"] = this.avgStyleLength;
+    this.block["avgStyleLength"] = this.styleLength;
     this.block["state"] = this.state;
     this.block["station"] = this.station;
     this.block["date"] = this.date;
