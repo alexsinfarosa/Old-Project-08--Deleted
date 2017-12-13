@@ -25,7 +25,7 @@ export default class StartDateEdit extends Component {
   };
 
   render() {
-    const { setDate, block, isEditingBlock, date } = this.props.store.app;
+    const { setDate, isEditingBlock, date } = this.props.store.app;
 
     return (
       <MBCol>
