@@ -24,7 +24,6 @@ class UserData extends Component {
       isStartDateModalOpen
     } = this.props.store.app;
     console.log(toJS(block));
-    console.log(isStartDateModalOpen);
 
     // to set the number on the STEP component
     const { firstSpray, secondSpray, thirdSpray } = block;
@@ -88,27 +87,32 @@ class UserData extends Component {
     return (
       <Block>
         <Row>
-          <MBRow type="flex" justify="space-between">
+          <MBRow
+            type="flex"
+            justify="space-between"
+            align="middle"
+            style={{ height: 34 }}
+          >
             <Col>
-              <h3>
-                {block.station.name}, {block.state.postalCode}
-              </h3>
+              <div style={{ fontSize: "1.1rem" }}>
+                <b>
+                  {block.station.name}, {block.state.postalCode}
+                </b>
+              </div>
             </Col>
             <Col>
               {!block.avgStyleLength && (
-                <Button
-                  icon="calculator"
-                  style={{ marginRight: 5 }}
-                  onClick={showStyleLengthModal}
-                >
+                <Button icon="calculator" onClick={showStyleLengthModal}>
                   Set Style Length
                 </Button>
               )}
+            </Col>
+            <Col>
               {block.date ? (
-                <p>
+                <div>
                   <b>Model Start Date:</b>{" "}
                   {format(block.date, "MMM Do YYYY, HH:00")}
-                </p>
+                </div>
               ) : (
                 <Button icon="calendar" onClick={showStartDateModal}>
                   Set Start Date

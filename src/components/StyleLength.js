@@ -11,7 +11,6 @@ class StyleLength extends Component {
       setStyleLength,
       addOneStyleLength,
       isEditingBlock,
-      block,
       isStyleLengthEdited,
       updateOneStyleLength,
       radioValue
