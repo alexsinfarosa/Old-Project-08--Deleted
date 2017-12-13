@@ -16,6 +16,7 @@ import ToggleIcons from "components/ToggleIcons";
 import USMap from "components/USMap";
 import BlocksDropdown from "components/userData/BlocksDropdown";
 import UserData from "components/userData/UserData";
+import BlockList from "components/BlockList";
 // import GrowthTable from "components/GrowthTable";
 
 // Modal
@@ -104,8 +105,8 @@ class App extends Component {
 
             <div style={{ minHeight: 360 }}>
               {isMap && <USMap />}
-              {isUserData && <div>{isBlockSelected && <UserData />}</div>}
-
+              {!isUserData && <div>{isBlockSelected && <UserData />}</div>}
+              {isUserData && <BlockList />}
               <BlockModal />
               <StyleLengthModal />
               <StartDateModal />

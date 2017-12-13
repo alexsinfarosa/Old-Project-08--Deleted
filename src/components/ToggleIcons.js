@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 
 // antd
-import { Row, Col, Button, Tooltip } from "antd";
+import { Row, Col, Button, Tooltip, Badge } from "antd";
 
 //  styled components
 // import { MBCol } from "styles";
@@ -15,7 +15,8 @@ export default class ToggleIcons extends Component {
       isMap,
       isUserData,
       toggleMap,
-      toggleUserData
+      toggleUserData,
+      blocks
     } = this.props.store.app;
 
     return (
@@ -46,10 +47,25 @@ export default class ToggleIcons extends Component {
               <Button
                 ghost={isUserData ? false : true}
                 type="primary"
-                icon="layout"
-                onClick={toggleUserData}
+                // icon="layout"
+                onClick={() => {
+                  this.props.store.app.block = {};
+                  toggleUserData();
+                }}
               >
-                BlOCK
+                <Row type="flex" justify="center" align="middle">
+                  Blocks
+                  <Badge
+                    overflowCount={999}
+                    count={blocks.length}
+                    style={{
+                      marginLeft: 6,
+                      background: "#fff",
+                      color: "#616161",
+                      boxShadow: "0 0 0 1px #d9d9d9 inset"
+                    }}
+                  />
+                </Row>
               </Button>
             </Tooltip>
           </Col>
