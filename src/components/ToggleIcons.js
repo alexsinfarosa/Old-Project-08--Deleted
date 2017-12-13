@@ -47,19 +47,18 @@ export default class ToggleIcons extends Component {
               <Button
                 ghost={isUserData ? false : true}
                 type="primary"
-                // icon="layout"
                 onClick={() => {
                   this.props.store.app.block = {};
                   toggleUserData();
                 }}
               >
                 <Row type="flex" justify="center" align="middle">
-                  Blocks
+                  BLOCKS
                   <Badge
                     overflowCount={999}
                     count={blocks.length}
                     style={{
-                      marginLeft: 6,
+                      marginLeft: 5,
                       background: "#fff",
                       color: "#616161",
                       boxShadow: "0 0 0 1px #d9d9d9 inset"

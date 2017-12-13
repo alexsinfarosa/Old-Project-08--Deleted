@@ -8,7 +8,7 @@ import { Row, Col, List, Card } from "antd";
 @observer
 class BlockLists extends Component {
   render() {
-    const { blocks, setBlock, toggleUserData } = this.props.store.app;
+    const { blocks, setBlock, setIsUserData } = this.props.store.app;
     return (
       <Row>
         <Col>
@@ -22,18 +22,13 @@ class BlockLists extends Component {
                   title={block.name}
                   style={{ height: 200 }}
                   onClick={() => {
-                    toggleUserData();
+                    setIsUserData(false);
                     setBlock(block.id);
                   }}
                 >
-                  <li>{block.variety.name}</li>
                   <li>
-                    Start Date:{" "}
-                    {block.date ? format(block.date, "MMM Do YYYY HH:0") : null}
-                  </li>
-                  <li>
-                    Average Style Length:{" "}
-                    {block.avgStyleLength ? block.avgStyleLength : null}
+                    Start:{" "}
+                    {block.date ? format(block.date, "MM/DD/YY HH:00") : null}
                   </li>
                 </Card>
               </List.Item>

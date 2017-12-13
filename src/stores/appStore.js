@@ -362,6 +362,7 @@ export default class appStore {
 
   // User Data (Table of blocks) ------------------------------------------------
   @observable isUserData = true;
+  @action setIsUserData = d => (this.isUserData = d);
   @action toggleUserData = d => (this.isUserData = !this.isUserData);
 
   @observable
