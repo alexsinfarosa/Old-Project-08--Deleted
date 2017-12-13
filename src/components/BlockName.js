@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Input } from "antd";
-
-// styled components
-import { MBCol } from "styles";
+import { Col, Input } from "antd";
 
 @inject("store")
 @observer
@@ -12,7 +9,7 @@ export default class BlockName extends Component {
     const { blockName, setBlockName, isEditingBlock } = this.props.store.app;
 
     return (
-      <MBCol>
+      <Col style={{ marginBottom: isEditingBlock ? 16 : 32 }}>
         {isEditingBlock && "Name:"}
         <Input
           style={{ width: "100%" }}
@@ -26,7 +23,7 @@ export default class BlockName extends Component {
           }
           value={blockName}
         />
-      </MBCol>
+      </Col>
     );
   }
 }

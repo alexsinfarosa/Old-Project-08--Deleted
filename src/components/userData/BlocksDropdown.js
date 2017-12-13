@@ -3,9 +3,6 @@ import { inject, observer } from "mobx-react";
 import getYear from "date-fns/get_year";
 // import { toJS } from "mobx";
 
-// styled components
-// import { MBCol } from "styles";
-
 import { Row, Col, Select, Badge } from "antd";
 const { Option, OptGroup } = Select;
 
@@ -38,32 +35,35 @@ class BlocksDropdown extends Component {
       );
     });
 
-    // <Row type="flex" align="middle">
-    //   <h2>Blocks</h2>
-    //   <Badge
-    //     count={blocks.length}
-    //     style={{
-    //       marginLeft: 6,
-    //       marginBottom: 9,
-    //       background: "#fff",
-    //       color: "#616161",
-    //       boxShadow: "0 0 0 1px #d9d9d9 inset"
-    //     }}
-    //   />
-    // </Row>
-
     return (
       <Col span={8}>
-        <Select
-          size="large"
-          autoFocus
-          value={block ? block.name : undefined}
-          placeholder="Select Block"
-          style={{ width: "100%" }}
-          onChange={id => setBlock(id)}
-        >
-          {optionList}
-        </Select>
+        <Row type="flex" align="middle">
+          <Col span={22}>
+            <Select
+              size="large"
+              autoFocus
+              value={block ? block.name : undefined}
+              placeholder={`Select Block`}
+              style={{ width: "100%" }}
+              onChange={id => setBlock(id)}
+            >
+              {optionList}
+            </Select>
+          </Col>
+          <Col span={2}>
+            <Badge
+              overflowCount={999}
+              count={blocks.length}
+              style={{
+                marginLeft: 6,
+                fontSize: "0.9rem",
+                background: "#fff",
+                color: "#616161",
+                boxShadow: "0 0 0 1px #d9d9d9 inset"
+              }}
+            />
+          </Col>
+        </Row>
       </Col>
     );
   }

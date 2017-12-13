@@ -49,7 +49,7 @@ export default class ToggleIcons extends Component {
                 icon="layout"
                 onClick={toggleUserData}
               >
-                BlOCKS
+                BlOCK
               </Button>
             </Tooltip>
           </Col>

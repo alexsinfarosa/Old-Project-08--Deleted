@@ -9,7 +9,7 @@ import { Block, MBRow } from "styles";
 // import StartDate from "components/StartDate";
 
 // antd
-import { Row, Col, Table, Steps, Button } from "antd";
+import { Row, Col, Table, Steps, Button, Badge } from "antd";
 const Step = Steps.Step;
 
 @inject("store")
@@ -101,9 +101,11 @@ class UserData extends Component {
             </Col>
             <Col>
               {!block.avgStyleLength && (
-                <Button icon="calculator" onClick={showStyleLengthModal}>
-                  Set Style Length
-                </Button>
+                <Badge dot>
+                  <Button icon="calculator" onClick={showStyleLengthModal}>
+                    Set Style Length
+                  </Button>
+                </Badge>
               )}
             </Col>
             <Col>
@@ -113,9 +115,11 @@ class UserData extends Component {
                   {format(block.date, "MMM Do YYYY, HH:00")}
                 </div>
               ) : (
-                <Button icon="calendar" onClick={showStartDateModal}>
-                  Set Start Date
-                </Button>
+                <Badge dot>
+                  <Button icon="calendar" onClick={showStartDateModal}>
+                    Set Start Date
+                  </Button>
+                </Badge>
               )}
             </Col>
           </MBRow>

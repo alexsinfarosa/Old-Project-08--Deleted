@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Select } from "antd";
-
-// styled components
-import { MBCol } from "styles";
+import { Col, Select } from "antd";
 
 @inject("store")
 @observer
@@ -24,7 +21,7 @@ export default class Station extends Component {
       );
     });
     return (
-      <MBCol>
+      <Col style={{ marginBottom: isEditingBlock ? 16 : 32 }}>
         {isEditingBlock && "Station:"}
 
         <Select
@@ -35,7 +32,7 @@ export default class Station extends Component {
         >
           {optionList}
         </Select>
-      </MBCol>
+      </Col>
     );
   }
 }
