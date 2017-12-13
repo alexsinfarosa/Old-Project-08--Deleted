@@ -19,8 +19,13 @@ export default class ToggleIcons extends Component {
     } = this.props.store.app;
 
     return (
-      <Col>
-        <Row type="flex" justify="center">
+      <Col span={8}>
+        <Row
+          type="flex"
+          justify="end"
+          align="middle"
+          style={{ height: "100%" }}
+        >
           <Col>
             <Tooltip title="Toggle Map">
               <Button

@@ -4,9 +4,9 @@ import getYear from "date-fns/get_year";
 // import { toJS } from "mobx";
 
 // styled components
-import { MBCol } from "styles";
+// import { MBCol } from "styles";
 
-import { Row, Select, Badge } from "antd";
+import { Row, Col, Select, Badge } from "antd";
 const { Option, OptGroup } = Select;
 
 @inject("store")
@@ -38,22 +38,22 @@ class BlocksDropdown extends Component {
       );
     });
 
-    return (
-      <MBCol>
-        <Row type="flex" align="middle">
-          <h2>Blocks</h2>
-          <Badge
-            count={blocks.length}
-            style={{
-              marginLeft: 6,
-              marginBottom: 9,
-              background: "#fff",
-              color: "#616161",
-              boxShadow: "0 0 0 1px #d9d9d9 inset"
-            }}
-          />
-        </Row>
+    // <Row type="flex" align="middle">
+    //   <h2>Blocks</h2>
+    //   <Badge
+    //     count={blocks.length}
+    //     style={{
+    //       marginLeft: 6,
+    //       marginBottom: 9,
+    //       background: "#fff",
+    //       color: "#616161",
+    //       boxShadow: "0 0 0 1px #d9d9d9 inset"
+    //     }}
+    //   />
+    // </Row>
 
+    return (
+      <Col span={8}>
         <Select
           size="large"
           autoFocus
@@ -64,7 +64,7 @@ class BlocksDropdown extends Component {
         >
           {optionList}
         </Select>
-      </MBCol>
+      </Col>
     );
   }
 }

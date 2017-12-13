@@ -20,8 +20,7 @@ class UserData extends Component {
       isLoading,
       block,
       showStyleLengthModal,
-      showStartDateModal,
-      isStartDateModalOpen
+      showStartDateModal
     } = this.props.store.app;
     console.log(toJS(block));
 

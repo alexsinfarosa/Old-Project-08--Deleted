@@ -18,9 +18,28 @@ class Navigation extends Component {
     };
 
     return (
-      <Col>
-        <Row type="flex" justify="center" align="middle">
+      <Col span={8}>
+        <Row
+          type="flex"
+          justify="start"
+          align="middle"
+          style={{ height: "100%" }}
+        >
           <Col>
+            <Tooltip title="Add block">
+              <Button
+                type="primary"
+                ghost
+                style={{
+                  marginRight: 16
+                }}
+                icon="plus"
+                onClick={() => showNewBlockModal()}
+              >
+                {isBlock() ? "ADD" : "Block"}
+              </Button>
+            </Tooltip>
+
             {isBlock() && (
               <Tooltip title="Edit block">
                 <Button
@@ -36,19 +55,6 @@ class Navigation extends Component {
                 </Button>
               </Tooltip>
             )}
-            <Tooltip title="Add block">
-              <Button
-                type="primary"
-                ghost
-                style={{
-                  marginRight: 16
-                }}
-                icon="plus"
-                onClick={() => showNewBlockModal()}
-              >
-                {isBlock() ? "ADD" : "Block"}
-              </Button>
-            </Tooltip>
 
             {isBlock() && (
               <Popconfirm

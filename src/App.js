@@ -94,21 +94,17 @@ class App extends Component {
           <Content style={{ margin: "24px auto", width: "90%" }}>
             <Row
               type="flex"
-              justify="space-around"
-              style={{ marginBottom: 32, marginTop: 16 }}
+              justify="space-between"
+              style={{ height: 40, marginTop: 16, marginBottom: 48 }}
             >
               <Navigation />
+              <BlocksDropdown />
               <ToggleIcons />
             </Row>
 
             <div style={{ minHeight: 360 }}>
               {isMap && <USMap />}
-              {isUserData && (
-                <div>
-                  <BlocksDropdown />
-                  {isBlockSelected && <UserData />}
-                </div>
-              )}
+              {isUserData && <div>{isBlockSelected && <UserData />}</div>}
 
               <BlockModal />
               <StyleLengthModal />
