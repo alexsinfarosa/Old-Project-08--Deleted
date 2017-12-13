@@ -9,7 +9,8 @@ import State from "components/State";
 import Station from "components/Station";
 import SprayDate from "components/SprayDate";
 import StyleLength from "components/StyleLength";
-import StartDate from "components/StartDate";
+import StartDateEdit from "components/StartDateEdit";
+import EndDate from "components/EndDate";
 
 @inject("store")
 @observer
@@ -49,22 +50,23 @@ class BlockModal extends Component {
             {block.isEdit && (
               <div>
                 <StyleLength />
-                <StartDate />
+                <StartDateEdit />
                 <SprayDate
-                  type="first spray"
+                  type="First spray"
                   date={firstSprayDate}
                   setDate={setFirstSprayDate}
                 />
                 <SprayDate
-                  type="second spray"
+                  type="Second spray"
                   date={secondSprayDate}
                   setDate={setSecondSprayDate}
                 />
                 <SprayDate
-                  type="third spray"
+                  type="Third spray"
                   date={thirdSprayDate}
                   setDate={setThirdSprayDate}
                 />
+                <EndDate />
               </div>
             )}
           </Col>

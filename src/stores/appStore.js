@@ -70,9 +70,9 @@ export default class appStore {
   @action showStyleLengthModal = () => (this.isStyleLengthModal = true);
   @action hideStyleLengthModal = () => (this.isStyleLengthModal = false);
 
-  @observable isStartDateModal = false;
-  @action showStartDateModal = () => (this.isStartDateModal = true);
-  @action hideStartDateModal = () => (this.isStartDateModal = false);
+  @observable isStartDateModalOpen = false;
+  @action showStartDateModal = () => (this.isStartDateModalOpen = true);
+  @action hideStartDateModal = () => (this.isStartDateModalOpen = false);
 
   // Radio button values
   @observable radioValue = null;
@@ -309,7 +309,7 @@ export default class appStore {
   @action setDate = d => (this.date = d);
 
   @action
-  addDateToBlock = d => {
+  addDateToBlock = () => {
     this.block["date"] = this.date;
     const idx = this.blocks.findIndex(b => b.id === this.block.id);
     this.blocks.splice(idx, 1, this.block);
@@ -349,12 +349,16 @@ export default class appStore {
       );
     }
   }
+
   @observable firstSprayDate;
   @action setFirstSprayDate = d => (this.firstSprayDate = d);
   @observable secondSprayDate;
   @action setSecondSprayDate = d => (this.secondSprayDate = d);
   @observable thirdSprayDate;
   @action setThirdSprayDate = d => (this.thirdSprayDate = d);
+
+  @observable endDate = `${this.currentYear}-07-01`;
+  @action setEndDate = d => (this.endDate = d);
 
   // User Data (Table of blocks) ------------------------------------------------
   @observable isUserData = true;
@@ -399,10 +403,11 @@ export default class appStore {
       isEdit: false,
       styleLengths: [],
       avgStyleLength: null,
-      date: undefined,
-      firstSpray: undefined,
-      secondSpray: undefined,
-      thirdSpray: undefined
+      date: this.date,
+      firstSpray: this.firstSpray,
+      secondSpray: this.secondSpray,
+      thirdSpray: this.thirdSpray,
+      endDate: this.endDate
     };
 
     this.blocks.push(this.block);
@@ -441,6 +446,7 @@ export default class appStore {
     this.setFirstSprayDate(this.block.firstSpray);
     this.setSecondSprayDate(this.block.secondSpray);
     this.setThirdSprayDate(this.block.thirdSpray);
+    this.setEndDate(this.block.endDate);
     this.block["isEdit"] = true;
   };
 
@@ -455,6 +461,7 @@ export default class appStore {
     this.block["firstSpray"] = this.firstSprayDate;
     this.block["secondSpray"] = this.secondSprayDate;
     this.block["thirdSpray"] = this.thirdSprayDate;
+    this.block["endDate"] = this.endDate;
     this.block["isEdit"] = false;
 
     const idx = this.blocks.findIndex(b => b.id === this.block.id);

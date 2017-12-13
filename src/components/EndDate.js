@@ -13,7 +13,7 @@ import { MBCol } from "styles";
 
 @inject("store")
 @observer
-export default class StartDate extends Component {
+export default class EndDate extends Component {
   disabledStartDate = current => {
     // const { date } = this.props;
     // Try Date.now(date)
@@ -24,38 +24,25 @@ export default class StartDate extends Component {
     return moment(Math[method](+date / +duration) * +duration);
   };
 
-  onOk = () => {
-    const {
-      isStartDateModalOpen,
-      addDateToBlock,
-      hideStartDateModal
-    } = this.props.store.app;
-
-    if (isStartDateModalOpen) {
-      addDateToBlock();
-      hideStartDateModal();
-    }
-  };
-
   render() {
-    const { setDate, isStartDateModalOpen, date } = this.props.store.app;
+    const { setEndDate, isEditingBlock, endDate } = this.props.store.app;
 
     return (
       <MBCol>
+        {isEditingBlock && "Model end date:"}
         <DatePicker
-          open={isStartDateModalOpen}
           showTime={{ format: "HH:00" }}
           style={{ width: "100%" }}
-          value={moment(date)}
+          value={moment(endDate)}
           allowClear={false}
           format="MMM Do YYYY, HH:00"
           placeholder={`Select date and time`}
           disabledDate={this.disabledStartDate}
-          showToday={true}
           onChange={(date, dateString) => {
-            setDate(roundDate(date, moment.duration(60, "minutes"), "floor"));
+            setEndDate(
+              roundDate(date, moment.duration(60, "minutes"), "floor")
+            );
           }}
-          onOk={this.onOk}
         />
       </MBCol>
     );

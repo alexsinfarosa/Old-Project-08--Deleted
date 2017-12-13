@@ -30,13 +30,13 @@ export default class DatePicker extends Component {
 
     return (
       <MBCol>
-        {isEditingBlock && type.charAt(0).toUpperCase() + type.slice(1)}
+        {isEditingBlock && type}
         <AntdDatePicker
-          showTime
+          showTime={{ format: "HH:00" }}
           style={{ width: "100%" }}
           value={date ? moment(date) : undefined}
           allowClear={false}
-          format="MMM D YYYY, HH:mm"
+          format="MMM Do YYYY, HH:00"
           placeholder={`Select date and time`}
           disabledDate={this.disabledStartDate}
           showToday={true}

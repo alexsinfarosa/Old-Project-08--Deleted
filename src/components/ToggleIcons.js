@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 
 // antd
-import { Row, Col, Icon, Button, Tooltip } from "antd";
+import { Row, Col, Button, Tooltip } from "antd";
 
 //  styled components
-import { MBCol } from "styles";
+// import { MBCol } from "styles";
 
 @inject("store")
 @observer

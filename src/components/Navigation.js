@@ -52,6 +52,7 @@ class Navigation extends Component {
 
             {isBlock() && (
               <Popconfirm
+                placement="right"
                 onConfirm={deleteBlock}
                 title="Are you sure？"
                 okText="Yes"

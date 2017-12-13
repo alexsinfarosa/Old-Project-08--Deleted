@@ -13,7 +13,7 @@ export default class BlockName extends Component {
 
     return (
       <MBCol>
-        {isEditingBlock && "Block name:"}
+        {isEditingBlock && "Name:"}
         <Input
           style={{ width: "100%" }}
           // id={isEditingBlock ? "edit" : null}

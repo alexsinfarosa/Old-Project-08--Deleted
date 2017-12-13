@@ -8,7 +8,7 @@ import StartDate from "components/StartDate";
 @observer
 class StartDateModal extends Component {
   render() {
-    const { isStartDateModal, hideStartDateModal } = this.props.store.app;
+    const { isStartDateModalOpen, hideStartDateModal } = this.props.store.app;
 
     return (
       <Row type="flex" align="middle">
@@ -16,7 +16,7 @@ class StartDateModal extends Component {
           width={280}
           closable={false}
           footer={null}
-          visible={isStartDateModal}
+          visible={isStartDateModalOpen}
           onCancel={hideStartDateModal}
           bodyStyle={{
             margin: 0,

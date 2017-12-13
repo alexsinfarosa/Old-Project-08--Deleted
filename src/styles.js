@@ -43,5 +43,5 @@ export const MBRow = styled(Row)`
 `;
 
 export const MBCol = styled(Col)`
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 `;

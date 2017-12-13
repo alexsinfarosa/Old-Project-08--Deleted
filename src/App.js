@@ -6,7 +6,7 @@ import "./index.css";
 import { MatchMediaProvider } from "mobx-react-matchmedia";
 
 // styled components
-import { MBRow } from "styles";
+// import { MBRow } from "styles";
 
 // Navigation
 import Navigation from "components/Navigation";
@@ -23,7 +23,7 @@ import StyleLengthModal from "modals/StyleLengthModal";
 import BlockModal from "modals/BlockModal";
 import StartDateModal from "modals/StartDateModal";
 
-import Instructions from "components/Instructions";
+// import Instructions from "components/Instructions";
 
 // Logos
 // import NEWALogo from "assets/newa_logo.svg";
@@ -54,8 +54,7 @@ class App extends Component {
       breakpoints,
       isMap,
       isBlockSelected,
-      isUserData,
-      block
+      isUserData
     } = this.props.store.app;
 
     return (

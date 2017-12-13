@@ -20,9 +20,11 @@ class UserData extends Component {
       isLoading,
       block,
       showStyleLengthModal,
-      showStartDateModal
+      showStartDateModal,
+      isStartDateModalOpen
     } = this.props.store.app;
     console.log(toJS(block));
+    console.log(isStartDateModalOpen);
 
     // to set the number on the STEP component
     const { firstSpray, secondSpray, thirdSpray } = block;
@@ -44,7 +46,7 @@ class UserData extends Component {
         title: "Avg. Style Length",
         dataIndex: "avgStyleLength",
         key: "avgStyleLength",
-        render: text => <span>{text ? text.toPrecision(5) : text}</span>
+        render: text => <span>{text ? text.toPrecision(4) : text}</span>
       },
       {
         title: "Spray Dates",
@@ -105,14 +107,10 @@ class UserData extends Component {
               {block.date ? (
                 <p>
                   <b>Model Start Date:</b>{" "}
-                  {format(block.date, "MMM Do YYYY HH:00")}
+                  {format(block.date, "MMM Do YYYY, HH:00")}
                 </p>
               ) : (
-                <Button
-                  icon="calendar"
-                  onClick={showStartDateModal}
-                  disabled={!block.avgStyleLength}
-                >
+                <Button icon="calendar" onClick={showStartDateModal}>
                   Set Start Date
                 </Button>
               )}
