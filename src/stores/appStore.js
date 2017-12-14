@@ -457,7 +457,8 @@ export default class appStore {
   }
 
   @action
-  editBlock = () => {
+  editBlock = id => {
+    this.block = this.blocks.find(b => b.id === id);
     this.showNewBlockModal();
     this.setBlockName(`${this.block.name}`);
     this.setSubject(this.block.variety.name);
@@ -491,7 +492,6 @@ export default class appStore {
     this.blocks.splice(idx, 1, this.block);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
-    this.setBlock(this.block.id);
     message.success(`${this.block.name} block has been updated!`);
     this.resetFields();
   };

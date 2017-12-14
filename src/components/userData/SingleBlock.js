@@ -23,7 +23,7 @@ class SingleBlock extends Component {
       showStartDateModal
     } = this.props.store.app;
 
-    console.log(toJS(block));
+    // console.log(toJS(block));
 
     // columns ----------------------------------------------------------
     const columns = [

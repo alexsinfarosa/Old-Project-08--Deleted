@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { Row, Col } from "antd";
+import { Box } from "rebass";
 
-export const Header = styled.section`
+export const Header2 = styled.section`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -44,4 +45,18 @@ export const MBRow = styled(Row)`
 
 export const MBCol = styled(Col)`
   margin-bottom: 16px;
+`;
+
+export const Header = styled(Box)`
+  height: 60px;
+  color: white;
+  background: teal;
+`;
+
+export const Container = styled(Box)`
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #eee;
+  min-height: 100vh;
 `;

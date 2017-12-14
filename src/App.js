@@ -1,12 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-// import { toJS } from "mobx";
 import "./index.css";
-
-import { MatchMediaProvider } from "mobx-react-matchmedia";
-
-// styled components
-// import { MBRow } from "styles";
+// import { MatchMediaProvider } from "mobx-react-matchmedia";
 
 // Navigation
 import Navigation from "components/Navigation";
@@ -17,25 +12,17 @@ import USMap from "components/USMap";
 import BlocksDropdown from "components/userData/BlocksDropdown";
 import SingleBlock from "components/userData/SingleBlock";
 import BlockList from "components/BlockList";
-// import GrowthTable from "components/GrowthTable";
 
 // Modal
 import StyleLengthModal from "modals/StyleLengthModal";
 import BlockModal from "modals/BlockModal";
 import StartDateModal from "modals/StartDateModal";
 
-// import Instructions from "components/Instructions";
+// Rebass
+import { Provider, Flex, Box } from "rebass";
 
-// Logos
-// import NEWALogo from "assets/newa_logo.svg";
-
-// Messages
-// import StyleLengthMsg from "messages/StyleLengthMsg";
-
-import { Layout, Row, Col } from "antd";
-// import { MBRow } from "./styles";
-// import { Row } from "rebass";
-const { Content } = Layout;
+// styled components
+import { Header, Container } from "styles";
 
 @inject("store")
 @observer
@@ -59,61 +46,42 @@ class App extends Component {
     } = this.props.store.app;
 
     return (
-      <MatchMediaProvider breakpoints={breakpoints}>
-        <Layout style={{ minHeight: "100vh" }}>
-          <Row style={{ padding: "0 16px", background: "#1DA57A", height: 80 }}>
-            <Col
-              xs={20}
+      <Provider
+        theme={{
+          font: "'Open Sans', sans-serif"
+        }}
+      >
+        <Flex column>
+          <Header mx={[1, 2, 3]}>
+            <Box
+              flex="1 1 auto"
+              w={[1 / 2, 1]}
+              f={[1, 2, 3]}
+              style={{ letterSpacing: 1, background: "orange" }}
+            >
+              Pollen Tube Growth Model Developed By Virginia Tech
+            </Box>
+            <Box
+              flex="1 1 auto"
+              w={[1 / 2, 1]}
+              f={[1, 2, 3]}
               style={{
-                padding: breakpoints.xs ? "16px 0" : "24px 16px",
-                color: "white",
-                fontSize: breakpoints.xs ? "1rem" : "1.1rem",
-                textAlign: breakpoints.xs ? "center" : "left",
-                height: "100%"
+                letterSpacing: 1,
+                textAlign: "right",
+                background: "tomato"
               }}
             >
-              <div style={{ letterSpacing: 1, fontSize: "1.2rem" }}>
-                Pollen Tube Growth Model Developed By Virginia Tech
-              </div>
-            </Col>
-            <Col
-              xs={0}
-              style={{
-                padding: breakpoints.xs ? "16px 0" : "24px 16px",
-                color: "white",
-                fontSize: "1.1rem",
-                height: "100%",
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center"
-              }}
-            >
-              <div style={{ letterSpacing: 1 }}>NEWA</div>
-            </Col>
-          </Row>
-
-          <Content style={{ margin: "24px auto", width: "90%" }}>
-            <Row
-              type="flex"
-              justify="space-between"
-              style={{ height: 40, marginTop: 16, marginBottom: 48 }}
-            >
-              <Navigation />
-              <BlocksDropdown />
-              <ToggleIcons />
-            </Row>
-
-            <div style={{ minHeight: 360 }}>
-              {isMap && <USMap />}
-              {isBlockSelected && !areBlocksDisplayed && <SingleBlock />}
-              {!isBlockSelected && areBlocksDisplayed && <BlockList />}
-              <BlockModal />
-              <StyleLengthModal />
-              <StartDateModal />
-            </div>
-          </Content>
-        </Layout>
-      </MatchMediaProvider>
+              NEWA
+            </Box>
+          </Header>
+          <Container>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus
+            tempora fugit incidunt laudantium voluptatem velit maiores porro.
+            Accusantium voluptates quos officiis reprehenderit molestiae
+            deserunt aut voluptatum assumenda? Voluptatem, quis vitae.
+          </Container>
+        </Flex>
+      </Provider>
     );
   }
 }

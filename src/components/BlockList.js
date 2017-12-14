@@ -32,22 +32,22 @@ class BlockList extends Component {
     const CardTitle = block => (
       <Row type="flex" justify="space-between" align="middle">
         <Col span={6}>
-          <small>
-            {block.station.name}, {block.state.postalCode}
-          </small>
-        </Col>
-        <Col span={6} style={{ textAlign: "center" }}>
           <a
             onClick={() => {
               setAreBlocksDisplayed(false);
               setBlock(block.id);
             }}
           >
-            <small>{block.name} </small>
+            <small>{block.name}</small>
           </a>
         </Col>
         <Col span={6} style={{ textAlign: "center" }}>
           <small>{block.variety.name}</small>
+        </Col>
+        <Col span={6} style={{ textAlign: "center" }}>
+          <small>
+            {block.station.name}, {block.state.postalCode}
+          </small>
         </Col>
         <Col span={6} style={{ textAlign: "right" }}>
           <Tooltip title="Edit block">
