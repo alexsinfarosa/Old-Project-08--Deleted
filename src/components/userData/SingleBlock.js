@@ -14,7 +14,7 @@ const Step = Steps.Step;
 
 @inject("store")
 @observer
-class UserData extends Component {
+class SingleBlock extends Component {
   render() {
     const {
       isLoading,
@@ -140,4 +140,4 @@ class UserData extends Component {
   }
 }
 
-export default UserData;
+export default SingleBlock;

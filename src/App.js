@@ -15,7 +15,7 @@ import ToggleIcons from "components/ToggleIcons";
 // Main content
 import USMap from "components/USMap";
 import BlocksDropdown from "components/userData/BlocksDropdown";
-import UserData from "components/userData/UserData";
+import SingleBlock from "components/userData/SingleBlock";
 import BlockList from "components/BlockList";
 // import GrowthTable from "components/GrowthTable";
 
@@ -55,7 +55,7 @@ class App extends Component {
       breakpoints,
       isMap,
       isBlockSelected,
-      isUserData
+      areBlocksDisplayed
     } = this.props.store.app;
 
     return (
@@ -105,8 +105,8 @@ class App extends Component {
 
             <div style={{ minHeight: 360 }}>
               {isMap && <USMap />}
-              {!isUserData && <div>{isBlockSelected && <UserData />}</div>}
-              {isUserData && <BlockList />}
+              {isBlockSelected && !areBlocksDisplayed && <SingleBlock />}
+              {!isBlockSelected && areBlocksDisplayed && <BlockList />}
               <BlockModal />
               <StyleLengthModal />
               <StartDateModal />

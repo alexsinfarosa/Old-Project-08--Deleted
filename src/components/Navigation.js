@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Row, Col, Button, Popconfirm, Tooltip } from "antd";
+import { Row, Col, Button, Tooltip, Badge } from "antd";
 
 @inject("store")
 @observer
@@ -8,14 +8,10 @@ class Navigation extends Component {
   render() {
     const {
       showNewBlockModal,
-      editBlock,
-      deleteBlock,
-      block
+      blocks,
+      areBlocksDisplayed,
+      toggleAreBlocksDisplayed
     } = this.props.store.app;
-
-    const isBlock = d => {
-      return Object.keys(block).length !== 0;
-    };
 
     return (
       <Col span={8}>
@@ -26,7 +22,7 @@ class Navigation extends Component {
           style={{ height: "100%" }}
         >
           <Col>
-            <Tooltip title="Add block">
+            <Tooltip title="New block">
               <Button
                 type="primary"
                 ghost
@@ -36,44 +32,71 @@ class Navigation extends Component {
                 icon="plus"
                 onClick={() => showNewBlockModal()}
               >
-                {isBlock() ? "ADD" : "Block"}
+                Block
               </Button>
             </Tooltip>
+          </Col>
 
-            {isBlock() && (
-              <Tooltip title="Edit block">
-                <Button
-                  type="primary"
-                  ghost
-                  style={{
-                    marginRight: 16
-                  }}
-                  icon="edit"
-                  onClick={editBlock}
-                >
-                  EDIT
-                </Button>
-              </Tooltip>
-            )}
-
-            {isBlock() && (
-              <Popconfirm
-                placement="right"
-                onConfirm={deleteBlock}
-                title="Are you sure？"
-                okText="Yes"
-                cancelText="No"
+          <Col>
+            <Tooltip title="Display all blocks">
+              <Button
+                ghost={!areBlocksDisplayed ? true : false}
+                type="primary"
+                onClick={() => {
+                  this.props.store.app.block = {};
+                  toggleAreBlocksDisplayed();
+                }}
               >
-                <Tooltip title="Delete block">
-                  <Button type="primary" ghost icon="delete">
-                    DELETE
-                  </Button>
-                </Tooltip>
-              </Popconfirm>
-            )}
+                <Row type="flex" justify="center" align="middle">
+                  All Blocks
+                  <Badge
+                    overflowCount={999}
+                    count={blocks.length}
+                    style={{
+                      marginLeft: 5,
+                      background: "#fff",
+                      color: "#616161",
+                      boxShadow: "0 0 0 1px #d9d9d9 inset"
+                    }}
+                  />
+                </Row>
+              </Button>
+            </Tooltip>
           </Col>
         </Row>
       </Col>
+
+      // {isBlock() && (
+      //   <Tooltip title="Edit block">
+      //     <Button
+      //       type="primary"
+      //       ghost
+      //       style={{
+      //         marginRight: 16
+      //       }}
+      //       icon="edit"
+      //       onClick={editBlock}
+      //     >
+      //       EDIT
+      //     </Button>
+      //   </Tooltip>
+      // )}
+
+      // {isBlock() && (
+      //   <Popconfirm
+      //     placement="right"
+      //     onConfirm={deleteBlock}
+      //     title="Are you sure？"
+      //     okText="Yes"
+      //     cancelText="No"
+      //   >
+      //     <Tooltip title="Delete block">
+      //       <Button type="primary" ghost icon="delete">
+      //         DELETE
+      //       </Button>
+      //     </Tooltip>
+      //   </Popconfirm>
+      // )}
     );
   }
 }

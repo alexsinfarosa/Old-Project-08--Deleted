@@ -33,9 +33,9 @@ class BlockModal extends Component {
     return (
       <Row type="flex" align="middle">
         <Modal
-          width={450}
+          width={"30%"}
           closable={false}
-          // maskClosable={false}
+          maskClosable={false}
           title={block.isEdit ? `Edit selected block` : `New Block`}
           visible={isBlockModal}
           okText={block.isEdit ? "UPDATE BLOCK" : "CREATE BLOCK"}

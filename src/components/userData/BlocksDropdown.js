@@ -10,7 +10,12 @@ const { Option, OptGroup } = Select;
 @observer
 class BlocksDropdown extends Component {
   render() {
-    const { blocks, block, setBlock, setIsUserData } = this.props.store.app;
+    const {
+      blocks,
+      block,
+      setBlock,
+      setAreBlocksDisplayed
+    } = this.props.store.app;
 
     // Categorize blocks based on the year
     const setYears = new Set(blocks.map(block => getYear(block.date)));
@@ -44,8 +49,8 @@ class BlocksDropdown extends Component {
           placeholder={`Select Block`}
           style={{ width: "100%" }}
           onChange={id => {
-            setIsUserData(false);
             setBlock(id);
+            setAreBlocksDisplayed(false);
           }}
         >
           {optionList}

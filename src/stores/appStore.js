@@ -56,14 +56,7 @@ export default class appStore {
   @action hideModal = () => (this.isModal = false);
 
   @observable isBlockModal = false;
-  @action
-  showNewBlockModal = () => {
-    this.setRadioValue(null);
-    this.setBlockName("");
-    this.subject = {};
-    this.block.isEdit = false;
-    this.isBlockModal = true;
-  };
+  @action showNewBlockModal = () => (this.isBlockModal = true);
   @action hideNewBlockModal = () => (this.isBlockModal = false);
 
   @observable isStyleLengthModal = false;
@@ -146,10 +139,10 @@ export default class appStore {
     this.blocks.splice(idx, 1, this.block);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
-    // message.success(`${this.block.name} block has been deleted!`);
     this.styleLength = null;
     this.styleLengths = [];
     this.hideStyleLengthModal();
+    message.success(`${this.block.name} block has been deleted!`);
   };
 
   @action
@@ -179,10 +172,10 @@ export default class appStore {
     this.blocks.splice(idx, 1, this.block);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
-    // message.success(`${this.block.name} block has been deleted!`);
     this.styleLength = null;
     this.styleLengths = [];
     this.hideStyleLengthModal();
+    message.success(`Average Style Length has been set!`);
   };
 
   @action
@@ -376,9 +369,18 @@ export default class appStore {
   }
 
   // User Data (Table of blocks) ------------------------------------------------
-  @observable isUserData = true;
-  @action setIsUserData = d => (this.isUserData = d);
-  @action toggleUserData = d => (this.isUserData = !this.isUserData);
+  @observable areBlocksDisplayed = false;
+  @action setAreBlocksDisplayed = d => (this.areBlocksDisplayed = d);
+  @action
+  toggleAreBlocksDisplayed = () => {
+    if (this.areBlocksDisplayed) {
+      this.block = {};
+      this.areBlocksDisplayed = false;
+    } else {
+      this.block = { ...this.block };
+      this.areBlocksDisplayed = true;
+    }
+  };
 
   @observable
   blocks = JSON.parse(localStorage.getItem("pollenTubeBlocks")) || [];
@@ -431,19 +433,20 @@ export default class appStore {
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
     message.success(`${this.block.name} block has been created!`);
     this.setBlock(this.block.id);
-    this.setIsUserData(false);
     this.resetFields();
   };
 
   @action
-  deleteBlock = () => {
-    const idx = this.blocks.findIndex(b => b.id === this.block.id);
+  deleteBlock = id => {
+    const idx = this.blocks.findIndex(b => b.id === id);
+    const block = this.blocks[idx];
+
     this.blocks.splice(idx, 1);
-    this.setBlocks(this.blocks);
+    this.blocks = [...this.blocks];
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
-    message.success(`${this.block.name} block has been deleted!`);
-    this.resetFields();
-    this.block = {};
+    message.success(`${block.name} block has been deleted!`);
+    // this.block = {};
+    // this.resetFields();
   };
 
   @computed
@@ -488,9 +491,9 @@ export default class appStore {
     this.blocks.splice(idx, 1, this.block);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
-    this.resetFields();
     this.setBlock(this.block.id);
     message.success(`${this.block.name} block has been updated!`);
+    this.resetFields();
   };
 
   @action
