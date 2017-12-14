@@ -9,25 +9,20 @@ const Step = Steps.Step;
 @observer
 class BlockLists extends Component {
   render() {
-    const {
-      blocks,
-      setBlock,
-      setIsUserData,
-      breakpoints
-    } = this.props.store.app;
+    const { blocks, setBlock, setIsUserData } = this.props.store.app;
 
     const StepTitle = props => <small>{props.children}</small>;
     const CardTitle = block => (
       <Row type="flex" justify="space-between" align="middle">
-        <Col>
+        <Col span={8}>
           <small>
             {block.station.name}, {block.state.postalCode}
           </small>
         </Col>
-        <Col>
+        <Col span={8} style={{ textAlign: "center" }}>
           <small>{block.name} </small>
         </Col>
-        <Col>
+        <Col span={8} style={{ textAlign: "right" }}>
           <small>{block.variety.name}</small>
         </Col>
       </Row>
@@ -40,7 +35,10 @@ class BlockLists extends Component {
             grid={{ gutter: 16, column: 1 }}
             dataSource={blocks}
             renderItem={block => (
-              <List.Item key={block.id}>
+              <List.Item
+                key={block.id}
+                style={{ background: "#4EA27D", borderRadius: 4 }}
+              >
                 <Card
                   hoverable={true}
                   title={<CardTitle {...block} />}
@@ -48,9 +46,12 @@ class BlockLists extends Component {
                     setIsUserData(false);
                     setBlock(block.id);
                   }}
-                  //   style={{ height: 200 }}
+                  bodyStyle={{ marginTop: 16 }}
                 >
-                  <Steps progressDot current={1} size="small">
+                  <Steps
+                    progressDot
+                    current={block.date ? block.currentIndex : null}
+                  >
                     <Step
                       title={<StepTitle>Start</StepTitle>}
                       description={

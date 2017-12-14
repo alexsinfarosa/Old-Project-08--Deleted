@@ -314,7 +314,7 @@ export default class appStore {
     const idx = this.blocks.findIndex(b => b.id === this.block.id);
     this.blocks.splice(idx, 1, this.block);
     this.setBlocks(this.blocks);
-    this.setBlock(this.block.id);
+    this.setBlock(this.blocks[idx].id);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
   };
 
@@ -360,6 +360,21 @@ export default class appStore {
   @observable endDate = `${this.currentYear}-07-01`;
   @action setEndDate = d => (this.endDate = d);
 
+  // calculate the index for the Step component
+  @computed
+  get currentIndex() {
+    if (Object.keys(this.block).length !== 0) {
+      const { date, firstSpray, secondSpray, thirdSpray } = this.block;
+      const dates = [date, firstSpray, secondSpray, thirdSpray]
+        .map(date => (date === undefined ? 0 : date))
+        .map(date => format(date, "x"));
+      const max = Math.max(...dates);
+      let current;
+      current = dates.findIndex(date => date === max.toString());
+      return current;
+    }
+  }
+
   // User Data (Table of blocks) ------------------------------------------------
   @observable isUserData = true;
   @action setIsUserData = d => (this.isUserData = d);
@@ -394,7 +409,7 @@ export default class appStore {
   };
 
   @action
-  addBlock = d => {
+  addBlock = () => {
     this.block = {
       id: Math.random().toString(),
       name: `${this.blockName}`,
@@ -408,12 +423,15 @@ export default class appStore {
       firstSpray: this.firstSpray,
       secondSpray: this.secondSpray,
       thirdSpray: this.thirdSpray,
-      endDate: this.endDate
+      endDate: this.endDate,
+      currentIndex: this.currentIndex
     };
 
     this.blocks.push(this.block);
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
     message.success(`${this.block.name} block has been created!`);
+    this.setBlock(this.block.id);
+    this.setIsUserData(false);
     this.resetFields();
   };
 
@@ -464,6 +482,7 @@ export default class appStore {
     this.block["thirdSpray"] = this.thirdSprayDate;
     this.block["endDate"] = this.endDate;
     this.block["isEdit"] = false;
+    this.block["currentIndex"] = this.currentIndex;
 
     const idx = this.blocks.findIndex(b => b.id === this.block.id);
     this.blocks.splice(idx, 1, this.block);

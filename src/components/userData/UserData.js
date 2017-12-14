@@ -22,16 +22,8 @@ class UserData extends Component {
       showStyleLengthModal,
       showStartDateModal
     } = this.props.store.app;
-    console.log(toJS(block));
 
-    // to set the number on the STEP component
-    const { firstSpray, secondSpray, thirdSpray } = block;
-    const dates = [firstSpray, secondSpray, thirdSpray]
-      .map(date => (date === undefined ? 0 : date))
-      .map(date => format(date, "x"));
-    const max = Math.max(...dates);
-    let current = 0;
-    current = dates.findIndex(date => date === max.toString());
+    console.log(toJS(block));
 
     // columns ----------------------------------------------------------
     const columns = [
@@ -52,7 +44,11 @@ class UserData extends Component {
         key: "firstSpray",
         render: (text, record) =>
           text ? (
-            <Steps direction="vertical" size="small" current={current}>
+            <Steps
+              direction="vertical"
+              size="small"
+              current={record.currentIndex - 1}
+            >
               <Step
                 title="1st"
                 description={
