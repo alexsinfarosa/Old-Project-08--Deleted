@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Row, Col } from "antd";
-import { Box } from "rebass";
+import { Flex, Box } from "rebass";
 
 export const Header2 = styled.section`
   display: flex;
@@ -47,10 +47,18 @@ export const MBCol = styled(Col)`
   margin-bottom: 16px;
 `;
 
-export const Header = styled(Box)`
-  height: 60px;
+export const Header = styled(Flex)`
+  min-height: 60px;
   color: white;
+  letter-spacing: 2px;
   background: teal;
+`;
+
+export const SubHeader = styled(Box)`
+  display: flex;
+  justify-content: ${prop => (prop.right ? "flex-end" : "flex-start")};
+  align-items: center;
+  letter-spacing: 2px;
 `;
 
 export const Container = styled(Box)`
@@ -58,5 +66,4 @@ export const Container = styled(Box)`
   margin-left: auto;
   margin-right: auto;
   background: #eee;
-  min-height: 100vh;
 `;

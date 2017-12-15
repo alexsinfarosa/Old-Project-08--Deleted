@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import "./index.css";
-// import { MatchMediaProvider } from "mobx-react-matchmedia";
+import { MatchMediaProvider } from "mobx-react-matchmedia";
 
 // Navigation
 import Navigation from "components/Navigation";
@@ -18,11 +18,12 @@ import StyleLengthModal from "modals/StyleLengthModal";
 import BlockModal from "modals/BlockModal";
 import StartDateModal from "modals/StartDateModal";
 
-// Rebass
-import { Provider, Flex, Box } from "rebass";
+import { Flex, Box } from "grid-styled";
+import Hide from "hidden-styled";
 
 // styled components
-import { Header, Container } from "styles";
+import { Header, SubHeader, Container } from "styles";
+import { networkHumidityAdjustment } from "./utils";
 
 @inject("store")
 @observer
@@ -46,33 +47,18 @@ class App extends Component {
     } = this.props.store.app;
 
     return (
-      <Provider
-        theme={{
-          font: "'Open Sans', sans-serif"
-        }}
-      >
+      <MatchMediaProvider breakpoints={breakpoints}>
         <Flex column>
-          <Header mx={[1, 2, 3]}>
-            <Box
-              flex="1 1 auto"
-              w={[1 / 2, 1]}
-              f={[1, 2, 3]}
-              style={{ letterSpacing: 1, background: "orange" }}
-            >
+          <Header wrap px={(1, 1, 2, 2)}>
+            <SubHeader w={[1, "90%"]} f={[1, 2, 2, 3]}>
               Pollen Tube Growth Model Developed By Virginia Tech
-            </Box>
-            <Box
-              flex="1 1 auto"
-              w={[1 / 2, 1]}
-              f={[1, 2, 3]}
-              style={{
-                letterSpacing: 1,
-                textAlign: "right",
-                background: "tomato"
-              }}
-            >
-              NEWA
-            </Box>
+            </SubHeader>
+
+            {!breakpoints.xs && (
+              <SubHeader right w={[1, "10%"]} f={[1, 2, 2, 3]}>
+                NEWA
+              </SubHeader>
+            )}
           </Header>
           <Container>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus
@@ -81,7 +67,7 @@ class App extends Component {
             deserunt aut voluptatum assumenda? Voluptatem, quis vitae.
           </Container>
         </Flex>
-      </Provider>
+      </MatchMediaProvider>
     );
   }
 }
