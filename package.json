@@ -10,7 +10,6 @@
     "axios": "^0.17.1",
     "date-fns": "^1.29.0",
     "gh-pages": "^1.1.0",
-    "grid-styled": "^2.0.0-11",
     "hidden-styled": "^1.0.0-0",
     "leaflet": "^1.2.0",
     "mobx": "^3.4.1",

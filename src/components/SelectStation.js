@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Col, Select } from "antd";
+import { Select } from "antd";
+
+import { Box } from "rebass";
 
 @inject("store")
 @observer
-export default class Station extends Component {
+export default class SelectStation extends Component {
   render() {
     const {
       currentStateStations,
       station,
       setStation,
-      isEditingBlock
+      isBlockBeingEdited
     } = this.props.store.app;
 
     const optionList = currentStateStations.map(el => {
@@ -21,8 +23,8 @@ export default class Station extends Component {
       );
     });
     return (
-      <Col style={{ marginBottom: isEditingBlock ? 16 : 32 }}>
-        {isEditingBlock && "Station:"}
+      <Box mb={[1, 2]}>
+        {isBlockBeingEdited && "Station:"}
 
         <Select
           style={{ width: "100%" }}
@@ -32,7 +34,7 @@ export default class Station extends Component {
         >
           {optionList}
         </Select>
-      </Col>
+      </Box>
     );
   }
 }

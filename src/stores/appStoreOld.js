@@ -51,9 +51,13 @@ export default class appStore {
   @action toggleMap = () => (this.isMap = !this.isMap);
 
   //   Modals ---------------------------------------------------------------
+  @observable isModal = false;
+  @action showModal = () => (this.isModal = true);
+  @action hideModal = () => (this.isModal = false);
+
   @observable isBlockModal = false;
-  @action showBlockModal = () => (this.isBlockModal = true);
-  @action hideBlockModal = () => (this.isBlockModal = false);
+  @action showNewBlockModal = () => (this.isBlockModal = true);
+  @action hideNewBlockModal = () => (this.isBlockModal = false);
 
   @observable isStyleLengthModal = false;
   @action showStyleLengthModal = () => (this.isStyleLengthModal = true);
@@ -350,75 +354,67 @@ export default class appStore {
   @action setEndDate = d => (this.endDate = d);
 
   // calculate the index for the Step component
-  // @computed
-  // get currentIndex() {
-  //   const { date, firstSpray, secondSpray, thirdSpray } = this.block;
-  //   const dates = [date, firstSpray, secondSpray, thirdSpray]
-  //     .map(date => (date === undefined ? 0 : date))
-  //     .map(date => format(date, "x"));
-  //   const max = Math.max(...dates);
-  //   let current;
-  //   current = dates.findIndex(date => date === max.toString());
-  //   return current;
-  // }
+  @computed
+  get currentIndex() {
+    if (Object.keys(this.block).length !== 0) {
+      const { date, firstSpray, secondSpray, thirdSpray } = this.block;
+      const dates = [date, firstSpray, secondSpray, thirdSpray]
+        .map(date => (date === undefined ? 0 : date))
+        .map(date => format(date, "x"));
+      const max = Math.max(...dates);
+      let current;
+      current = dates.findIndex(date => date === max.toString());
+      return current;
+    }
+  }
 
   // User Data (Table of blocks) ------------------------------------------------
+
+  @action
+  selectBlock = id => {
+    return this.blocks.find(block => block.id === id);
+  };
+
+  @computed
+  get block() {
+    return this.selectBlock;
+  }
+
+  @observable areBlocksDisplayed = false;
+  @action setAreBlocksDisplayed = d => (this.areBlocksDisplayed = d);
+  @action
+  toggleAreBlocksDisplayed = () => {
+    if (this.areBlocksDisplayed) {
+      this.block = {};
+      this.areBlocksDisplayed = false;
+    } else {
+      this.block = { ...this.block };
+      this.areBlocksDisplayed = true;
+    }
+  };
+
   @observable
   blocks = JSON.parse(localStorage.getItem("pollenTubeBlocks")) || [];
   @action setBlocks = d => (this.blocks = d);
 
-  @computed
-  get filteredBlocks() {
-    return this.blocks.filter(block => block.isSelected);
-  }
-
+  // @observable block = {};
   @action
-  selectBlock = id => {
-    this.blocks.forEach(block => {
-      block.id === id ? (block.isSelected = true) : (block.isSelected = false);
-    });
+  setBlock = id => {
+    this.block = this.blocks.find(block => block.id === id);
   };
 
-  @action
-  displayAllBlocks = () => {
-    const areAllBlocksDisplayed = this.blocks.every(
-      block => block.isSelected === true
-    );
-    areAllBlocksDisplayed
-      ? this.blocks.forEach(block => (block.isSelected = false))
-      : this.blocks.forEach(block => (block.isSelected = true));
-  };
-
-  @observable isBlockBeingEdited = false;
-
   @computed
-  get block() {
-    return {
-      id: "",
-      name: this.blockName,
-      variety: this.subject,
-      state: this.state,
-      station: this.station,
-      isSelected: false,
-      isBeingEdited: this.isBlockBeingEdited,
-      styleLengths: this.styleLengths,
-      avgStyleLength: this.avgStyleLength,
-      date: this.date,
-      firstSpray: this.firstSpray,
-      secondSpray: this.secondSpray,
-      thirdSpray: this.thirdSpray,
-      endDate: this.endDate,
-      currentIndex: this.currentIndex
-    };
+  get isBlockSelected() {
+    return Object.keys(this.block).length !== 0;
   }
 
   @action
   resetFields = () => {
+    this.hideNewBlockModal();
     this.setBlockName("");
     this.subject = {};
-    this.isBlockBeingEdited = false;
-    this.setStyleLengths([]);
     this.setStyleLength(null);
+    this.setStyleLengths([]);
     this.setDate(undefined);
     this.setFirstSprayDate(undefined);
     this.setSecondSprayDate(undefined);
@@ -427,56 +423,110 @@ export default class appStore {
 
   @action
   addBlock = () => {
-    this.isBlockBeingEdited = false;
-    this.hideBlockModal();
-    const block = { ...this.block };
-    block["id"] = Math.random().toString();
-    this.blocks.push(block);
-    this.resetFields();
-    message.success(`${block.name} block has been created!`);
+    this.block = {
+      id: Math.random().toString(),
+      name: `${this.blockName}`,
+      variety: this.subject,
+      state: this.state,
+      station: this.station,
+      isEdit: false,
+      styleLengths: [],
+      avgStyleLength: null,
+      date: this.date,
+      firstSpray: this.firstSpray,
+      secondSpray: this.secondSpray,
+      thirdSpray: this.thirdSpray,
+      endDate: this.endDate,
+      currentIndex: this.currentIndex
+    };
+
+    this.blocks.push(this.block);
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
+    message.success(`${this.block.name} block has been created!`);
+    this.setBlock(this.block.id);
+    this.resetFields();
   };
 
   @action
   deleteBlock = id => {
     const idx = this.blocks.findIndex(b => b.id === id);
     const block = this.blocks[idx];
+
     this.blocks.splice(idx, 1);
+    this.blocks = [...this.blocks];
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
     message.success(`${block.name} block has been deleted!`);
+    // this.block = {};
+    // this.resetFields();
   };
+
+  @computed
+  get isEditingBlock() {
+    if (Object.keys(this.block).length !== 0) {
+      return this.block.isEdit;
+    }
+  }
 
   @action
   editBlock = id => {
-    const block = this.blocks.find(b => b.id === id);
-    console.log(block);
-    this.isBlockBeingEdited = true;
-    this.showBlockModal();
-    this.setBlockName(block.name);
-    this.setSubject(block.variety.name);
-    this.setStyleLength(block.avgStyleLength);
-    this.setState(block.state.name);
-    this.setStation(block.station.id);
-    this.setDate(block.date);
-    this.setFirstSprayDate(block.firstSpray);
-    this.setSecondSprayDate(block.secondSpray);
-    this.setThirdSprayDate(block.thirdSpray);
-    this.setEndDate(block.endDate);
+    this.block = this.blocks.find(b => b.id === id);
+    this.showNewBlockModal();
+    this.setBlockName(`${this.block.name}`);
+    this.setSubject(this.block.variety.name);
+    this.setStyleLength(this.block.avgStyleLength);
+    this.setState(this.block.state.name);
+    this.setStation(this.block.station.id);
+    this.setDate(this.block.date);
+    this.setFirstSprayDate(this.block.firstSpray);
+    this.setSecondSprayDate(this.block.secondSpray);
+    this.setThirdSprayDate(this.block.thirdSpray);
+    this.setEndDate(this.block.endDate);
+    this.block["isEdit"] = true;
   };
 
   @action
   updateBlock = () => {
-    const block = { ...this.block };
-    this.isBlockBeingEdited = false;
-    const idx = this.blocks.findIndex(b => b.id === block.id);
-    this.blocks.splice(idx, 1, block);
+    this.block["name"] = this.blockName;
+    this.block["variety"] = this.subject;
+    this.block["avgStyleLength"] = this.styleLength;
+    this.block["state"] = this.state;
+    this.block["station"] = this.station;
+    this.block["date"] = this.date;
+    this.block["firstSpray"] = this.firstSprayDate;
+    this.block["secondSpray"] = this.secondSprayDate;
+    this.block["thirdSpray"] = this.thirdSprayDate;
+    this.block["endDate"] = this.endDate;
+    this.block["isEdit"] = false;
+    this.block["currentIndex"] = this.currentIndex;
+
+    const idx = this.blocks.findIndex(b => b.id === this.block.id);
+    this.blocks.splice(idx, 1, this.block);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
-    message.success(`${block.name} block has been updated!`);
+    message.success(`${this.block.name} block has been updated!`);
+    this.resetFields();
   };
 
   @action
   cancelBlock = () => {
+    this.block.isEdit = false;
     this.resetFields();
   };
+
+  // Hourly station data ------------------------------------------------------
+  // @action
+  // degreeDay = (day, base = 48.2) => {
+  //   return day[1] - base > 0 ? Math.round(day[1] - base) : 0;
+  // };
+
+  // @computed
+  // get acisData() {
+  //   return this.block.date;
+  //   console.log("ciccio")
+  //     ? fetchACISData(this.block.station, this.block.date).then(res => {
+  //         console.log(res);
+  //         return res;
+  //       })
+  //     : [];
+  // }
 }

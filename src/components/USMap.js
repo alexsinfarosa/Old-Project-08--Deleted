@@ -78,7 +78,7 @@ export default class USMap extends Component {
     ));
 
     return (
-      <Flex bg="white" p={1} mb={[1, 2, 3]} style={{ borderRadius: "5px" }}>
+      <Flex mb={[2, 3, 4]}>
         <Box style={{ width: "100%", height: "35vh" }}>
           <LMap
             style={{ width: "100%", height: "35vh" }}

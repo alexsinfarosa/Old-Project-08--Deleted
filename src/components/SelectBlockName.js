@@ -1,19 +1,24 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Col, Input } from "antd";
+import { Input } from "antd";
+
+import { Box } from "rebass";
 
 @inject("store")
 @observer
-export default class BlockName extends Component {
+export default class SelectBlockName extends Component {
   render() {
-    const { blockName, setBlockName, isEditingBlock } = this.props.store.app;
+    const {
+      blockName,
+      setBlockName,
+      isBlockBeingEdited
+    } = this.props.store.app;
 
     return (
-      <Col style={{ marginBottom: isEditingBlock ? 16 : 32 }}>
-        {isEditingBlock && "Name:"}
+      <Box mb={[1, 2]}>
+        {isBlockBeingEdited && "Name:"}
         <Input
           style={{ width: "100%" }}
-          // id={isEditingBlock ? "edit" : null}
           placeholder="Insert block name"
           onChange={e => setBlockName(e.target.value)}
           onBlur={() =>
@@ -23,7 +28,7 @@ export default class BlockName extends Component {
           }
           value={blockName}
         />
-      </Col>
+      </Box>
     );
   }
 }

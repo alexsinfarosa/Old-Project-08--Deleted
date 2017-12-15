@@ -3,14 +3,14 @@ import { inject, observer } from "mobx-react";
 // import { toJS } from "mobx";
 import { Row, Col, Modal } from "antd";
 
-import BlockName from "components/BlockName";
-import Variety from "components/Variety";
-import State from "components/State";
-import Station from "components/Station";
-import SprayDate from "components/SprayDate";
-import StyleLength from "components/StyleLength";
-import StartDateEdit from "components/StartDateEdit";
-import EndDate from "components/EndDate";
+import SelectBlockName from "components/SelectBlockName";
+import SelectVariety from "components/SelectVariety";
+import SelectState from "components/SelectState";
+import SelectStation from "components/SelectStation";
+import SelectSprayDate from "components/SelectSprayDate";
+import SelectStyleLength from "components/SelectStyleLength";
+import SelectStartDateEdit from "components/SelectStartDateEdit";
+import SelectEndDate from "components/SelectEndDate";
 
 @inject("store")
 @observer
@@ -18,7 +18,7 @@ class BlockModal extends Component {
   render() {
     const {
       isBlockModal,
-      hideNewBlockModal,
+      hideBlockModal,
       addBlock,
       updateBlock,
       block,
@@ -36,37 +36,37 @@ class BlockModal extends Component {
           width={"30%"}
           closable={false}
           maskClosable={false}
-          title={block.isEdit ? `Edit selected block` : `New Block`}
+          title={block.isBeingEdited ? `Edit selected block` : `New Block`}
           visible={isBlockModal}
-          okText={block.isEdit ? "UPDATE BLOCK" : "CREATE BLOCK"}
-          onOk={block.isEdit ? updateBlock : addBlock}
-          onCancel={hideNewBlockModal}
+          okText={block.isBeingEdited ? "UPDATE BLOCK" : "ADD BLOCK"}
+          onOk={block.isBeingEdited ? updateBlock : addBlock}
+          onCancel={hideBlockModal}
         >
           <Col>
-            <BlockName />
-            <Variety />
-            <State />
-            <Station />
-            {block.isEdit && (
+            <SelectBlockName />
+            <SelectVariety />
+            <SelectState />
+            <SelectStation />
+            {block.isBeingEdited && (
               <div>
-                <StyleLength />
-                <StartDateEdit />
-                <SprayDate
+                <SelectStyleLength />
+                <SelectStartDateEdit />
+                <SelectSprayDate
                   type="First spray"
                   date={firstSprayDate}
                   setDate={setFirstSprayDate}
                 />
-                <SprayDate
+                <SelectSprayDate
                   type="Second spray"
                   date={secondSprayDate}
                   setDate={setSecondSprayDate}
                 />
-                <SprayDate
+                <SelectSprayDate
                   type="Third spray"
                   date={thirdSprayDate}
                   setDate={setThirdSprayDate}
                 />
-                <EndDate />
+                <SelectEndDate />
               </div>
             )}
           </Col>

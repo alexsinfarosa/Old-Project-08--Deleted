@@ -8,12 +8,11 @@ import moment from "moment";
 // utils
 import { roundDate } from "utils";
 
-// styled components
-import { MBCol } from "styles";
+import { Box } from "rebass";
 
 @inject("store")
 @observer
-export default class StartDate extends Component {
+export default class SelectStartDateEdit extends Component {
   disabledStartDate = current => {
     // const { date } = this.props;
     // Try Date.now(date)
@@ -24,29 +23,16 @@ export default class StartDate extends Component {
     return moment(Math[method](+date / +duration) * +duration);
   };
 
-  onOk = () => {
-    const {
-      isStartDateModalOpen,
-      addDateToBlock,
-      hideStartDateModal
-    } = this.props.store.app;
-
-    if (isStartDateModalOpen) {
-      addDateToBlock();
-      hideStartDateModal();
-    }
-  };
-
   render() {
-    const { setDate, isStartDateModalOpen, date } = this.props.store.app;
+    const { setDate, isBlockBeingEdited, date } = this.props.store.app;
 
     return (
-      <MBCol>
+      <Box mb={[1, 2]}>
+        {isBlockBeingEdited && "Model start date:"}
         <DatePicker
-          open={isStartDateModalOpen}
           showTime={{ format: "HH:00" }}
           style={{ width: "100%" }}
-          value={moment(date)}
+          value={date ? moment(date) : undefined}
           allowClear={false}
           format="MMM Do YYYY, HH:00"
           placeholder={`Select date and time`}
@@ -55,9 +41,8 @@ export default class StartDate extends Component {
           onChange={(date, dateString) => {
             setDate(roundDate(date, moment.duration(60, "minutes"), "floor"));
           }}
-          onOk={this.onOk}
         />
-      </MBCol>
+      </Box>
     );
   }
 }

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Row, Modal } from "antd";
+import { Modal } from "antd";
+import { Box } from "rebass";
 
-import StartDate from "components/StartDate";
+import SelectStartDate from "components/SelectStartDate";
 
 @inject("store")
 @observer
@@ -11,7 +12,7 @@ class StartDateModal extends Component {
     const { isStartDateModalOpen, hideStartDateModal } = this.props.store.app;
 
     return (
-      <Row type="flex" align="middle">
+      <Box>
         <Modal
           width={280}
           closable={false}
@@ -27,9 +28,9 @@ class StartDateModal extends Component {
             animation: "none"
           }}
         >
-          <StartDate />
+          <SelectStartDate />
         </Modal>
-      </Row>
+      </Box>
     );
   }
 }

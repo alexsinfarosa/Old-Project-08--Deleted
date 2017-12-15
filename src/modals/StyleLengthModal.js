@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-// import { toJS } from "mobx";
-import { Row, Col, Modal, Table, Divider, Radio, Button, Icon } from "antd";
-import StyleLength from "components/StyleLength";
 
+import SelectStyleLength from "components/SelectStyleLength";
+
+import { Flex, Box } from "rebass";
+
+import { Modal, Table, Divider, Radio, Button, Icon } from "antd";
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
@@ -63,8 +65,8 @@ class StyleLengthModal extends Component {
 
     const Footer = d => {
       return (
-        <Row>
-          <Col>
+        <Flex>
+          <Box>
             <Button onClick={() => hideStyleLengthModal()}>Cancel</Button>
             <Button
               disabled={
@@ -80,8 +82,8 @@ class StyleLengthModal extends Component {
             >
               OK
             </Button>
-          </Col>
-        </Row>
+          </Box>
+        </Flex>
       );
     };
 
@@ -90,65 +92,67 @@ class StyleLengthModal extends Component {
       : "";
 
     return (
-      <Row type="flex" align="middle">
-        <Modal
-          title={
-            radioValue
-              ? radioValue === "avg"
-                ? `Insert Average Style Length`
-                : `Calculated Average Style Length${average}`
-              : `Select one of the options:`
-          }
-          visible={isStyleLengthModal}
-          footer={radioValue ? <Footer /> : null}
-          onCancel={() => hideStyleLengthModal()}
-        >
-          {!(radioValue === "avg" || radioValue === "calculate") && (
-            <RadioGroup
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-              onChange={e => setRadioValue(e.target.value)}
-              defaultValue={null}
-            >
-              <RadioButton
-                checked={radioValue === "avg"}
-                disabled={styleLengths.length > 1}
-                value="avg"
+      <Flex>
+        <Box>
+          <Modal
+            title={
+              radioValue
+                ? radioValue === "avg"
+                  ? `Insert Average Style Length`
+                  : `Calculated Average Style Length${average}`
+                : `Select one of the options:`
+            }
+            visible={isStyleLengthModal}
+            footer={radioValue ? <Footer /> : null}
+            onCancel={() => hideStyleLengthModal()}
+          >
+            {!(radioValue === "avg" || radioValue === "calculate") && (
+              <RadioGroup
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+                onChange={e => setRadioValue(e.target.value)}
+                defaultValue={null}
               >
-                Insert average style length
-              </RadioButton>
+                <RadioButton
+                  checked={radioValue === "avg"}
+                  disabled={styleLengths.length > 1}
+                  value="avg"
+                >
+                  Insert average style length
+                </RadioButton>
 
-              <RadioButton
-                checked={radioValue === "calculate"}
-                value="calculate"
-              >
-                Calculate average style length
-              </RadioButton>
-            </RadioGroup>
-          )}
+                <RadioButton
+                  checked={radioValue === "calculate"}
+                  value="calculate"
+                >
+                  Calculate average style length
+                </RadioButton>
+              </RadioGroup>
+            )}
 
-          {radioValue === "avg" && <StyleLength />}
+            {radioValue === "avg" && <SelectStyleLength />}
 
-          {radioValue === "calculate" && (
-            <div>
-              <StyleLength />
-              <Table
-                rowClassName={record => (record.isEdit ? "selected" : null)}
-                rowKey={record => record.idx}
-                loading={isLoading}
-                dataSource={styleLengths.slice()}
-                columns={columns}
-                size="middle"
-                pagination={false}
-                scroll={{ y: "50vh", x: "100%" }}
-              />
-            </div>
-          )}
-        </Modal>
-      </Row>
+            {radioValue === "calculate" && (
+              <div>
+                <SelectStyleLength />
+                <Table
+                  rowClassName={record => (record.isEdit ? "selected" : null)}
+                  rowKey={record => record.idx}
+                  loading={isLoading}
+                  dataSource={styleLengths.slice()}
+                  columns={columns}
+                  size="middle"
+                  pagination={false}
+                  scroll={{ y: "50vh", x: "100%" }}
+                />
+              </div>
+            )}
+          </Modal>
+        </Box>
+      </Flex>
     );
   }
 }

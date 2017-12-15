@@ -2,18 +2,17 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 
 // antd
-import { DatePicker as AntdDatePicker } from "antd";
+import { DatePicker } from "antd";
 import moment from "moment";
 
 // utils
 import { roundDate } from "utils";
 
-// styled components
-import { MBCol } from "styles";
+import { Box } from "rebass";
 
 @inject("store")
 @observer
-export default class DatePicker extends Component {
+export default class SelectStartDate extends Component {
   disabledStartDate = current => {
     // const { date } = this.props;
     // Try Date.now(date)
@@ -24,17 +23,29 @@ export default class DatePicker extends Component {
     return moment(Math[method](+date / +duration) * +duration);
   };
 
+  onOk = () => {
+    const {
+      isStartDateModalOpen,
+      addDateToBlock,
+      hideStartDateModal
+    } = this.props.store.app;
+
+    if (isStartDateModalOpen) {
+      addDateToBlock();
+      hideStartDateModal();
+    }
+  };
+
   render() {
-    const { isEditingBlock } = this.props.store.app;
-    const { type, date, setDate } = this.props;
+    const { setDate, isStartDateModalOpen, date } = this.props.store.app;
 
     return (
-      <MBCol>
-        {isEditingBlock && type}
-        <AntdDatePicker
+      <Box mb={[1, 2, 3]}>
+        <DatePicker
+          open={isStartDateModalOpen}
           showTime={{ format: "HH:00" }}
           style={{ width: "100%" }}
-          value={date ? moment(date) : undefined}
+          value={moment(date)}
           allowClear={false}
           format="MMM Do YYYY, HH:00"
           placeholder={`Select date and time`}
@@ -43,8 +54,9 @@ export default class DatePicker extends Component {
           onChange={(date, dateString) => {
             setDate(roundDate(date, moment.duration(60, "minutes"), "floor"));
           }}
+          onOk={this.onOk}
         />
-      </MBCol>
+      </Box>
     );
   }
 }

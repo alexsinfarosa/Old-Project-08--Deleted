@@ -8,12 +8,11 @@ import moment from "moment";
 // utils
 import { roundDate } from "utils";
 
-// styled components
-import { MBCol } from "styles";
+import { Box } from "rebass";
 
 @inject("store")
 @observer
-export default class EndDate extends Component {
+export default class SelectEndDate extends Component {
   disabledStartDate = current => {
     // const { date } = this.props;
     // Try Date.now(date)
@@ -25,11 +24,11 @@ export default class EndDate extends Component {
   };
 
   render() {
-    const { setEndDate, isEditingBlock, endDate } = this.props.store.app;
+    const { setEndDate, isBlockBeingEdited, endDate } = this.props.store.app;
 
     return (
-      <MBCol>
-        {isEditingBlock && "Model end date:"}
+      <Box mb={[1, 2]}>
+        {isBlockBeingEdited && "Model end date:"}
         <DatePicker
           showTime={{ format: "HH:00" }}
           style={{ width: "100%" }}
@@ -44,7 +43,7 @@ export default class EndDate extends Component {
             );
           }}
         />
-      </MBCol>
+      </Box>
     );
   }
 }

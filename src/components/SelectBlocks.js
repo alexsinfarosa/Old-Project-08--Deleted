@@ -3,19 +3,14 @@ import { inject, observer } from "mobx-react";
 import getYear from "date-fns/get_year";
 // import { toJS } from "mobx";
 
-import { Col, Select } from "antd";
+import { Select } from "antd";
 const { Option, OptGroup } = Select;
 
 @inject("store")
 @observer
-class BlocksDropdown extends Component {
+export default class SelectBlocks extends Component {
   render() {
-    const {
-      blocks,
-      block,
-      setBlock,
-      setAreBlocksDisplayed
-    } = this.props.store.app;
+    const { blocks, selectBlock, filteredBlocks } = this.props.store.app;
 
     // Categorize blocks based on the year
     const setYears = new Set(blocks.map(block => getYear(block.date)));
@@ -41,23 +36,15 @@ class BlocksDropdown extends Component {
     });
 
     return (
-      <Col span={8}>
-        <Select
-          size="large"
-          autoFocus
-          value={block ? block.name : undefined}
-          placeholder={`Select Block`}
-          style={{ width: "100%" }}
-          onChange={id => {
-            setBlock(id);
-            setAreBlocksDisplayed(false);
-          }}
-        >
-          {optionList}
-        </Select>
-      </Col>
+      <Select
+        autoFocus
+        value={filteredBlocks.length === 1 ? filteredBlocks[0].name : undefined}
+        placeholder={`Select Block`}
+        style={{ width: "100%" }}
+        onChange={id => selectBlock(id)}
+      >
+        {optionList}
+      </Select>
     );
   }
 }
-
-export default BlocksDropdown;
