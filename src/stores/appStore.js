@@ -23,12 +23,12 @@ export default class appStore {
   // Logic -----------------------------------------------------------
   @observable
   breakpoints = {
-    xs: "(max-width: 767px)",
-    su: "(min-width: 768px)",
-    sm: "(min-width: 768px) and (max-width: 991px)",
-    md: "(min-width: 992px) and (max-width: 1199px)",
-    mu: "(min-width: 992px)",
-    lg: "(min-width: 1200px)"
+    xs: "(max-width: 575px)",
+    sm: "(min-width: 576px)",
+    md: "(min-width: 768px)",
+    lg: "(min-width: 992px)",
+    xl: "(min-width: 1200px)",
+    xxl: "(min-width: 1600px)"
   };
 
   @observable protocol = window.location.protocol;
@@ -60,7 +60,7 @@ export default class appStore {
   @action hideStyleLengthModal = () => (this.isStyleLengthModal = false);
 
   @observable isStartDateModalOpen = false;
-  @action showStartDateModal = () => (this.isStartDateModalOpen = true);
+  @action showStartDateModal = id => (this.isStartDateModalOpen = true);
   @action hideStartDateModal = () => (this.isStartDateModalOpen = false);
 
   // Radio button values
@@ -299,12 +299,13 @@ export default class appStore {
 
   @action
   addDateToBlock = () => {
-    this.block["date"] = this.date;
-    const idx = this.blocks.findIndex(b => b.id === this.block.id);
-    this.blocks.splice(idx, 1, this.block);
-    this.setBlocks(this.blocks);
-    this.setBlock(this.blocks[idx].id);
-    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
+    // this.editBlock(id);
+    // this.block["date"] = this.date;
+    // const idx = this.blocks.findIndex(b => b.id === this.block.id);
+    // this.blocks.splice(idx, 1, this.block);
+    // this.setBlocks(this.blocks);
+    // this.setBlock(this.blocks[idx].id);
+    // localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
   };
 
   @computed
@@ -350,17 +351,15 @@ export default class appStore {
   @action setEndDate = d => (this.endDate = d);
 
   // calculate the index for the Step component
-  // @computed
-  // get currentIndex() {
-  //   const { date, firstSpray, secondSpray, thirdSpray } = this.block;
-  //   const dates = [date, firstSpray, secondSpray, thirdSpray]
-  //     .map(date => (date === undefined ? 0 : date))
-  //     .map(date => format(date, "x"));
-  //   const max = Math.max(...dates);
-  //   let current;
-  //   current = dates.findIndex(date => date === max.toString());
-  //   return current;
-  // }
+  @computed
+  get currentIndex() {
+    const { date, firstSpray, secondSpray, thirdSpray } = this.block;
+    const dates = [date, firstSpray, secondSpray, thirdSpray]
+      .map(date => (date === undefined ? 0 : date))
+      .map(date => format(date, "x"));
+    const max = Math.max(...dates);
+    return dates.findIndex(date => date === max.toString());
+  }
 
   // User Data (Table of blocks) ------------------------------------------------
   @observable
@@ -390,11 +389,12 @@ export default class appStore {
   };
 
   @observable isBlockBeingEdited = false;
+  @observable blockId;
 
   @computed
   get block() {
     return {
-      id: "",
+      id: this.blockId,
       name: this.blockName,
       variety: this.subject,
       state: this.state,
@@ -404,16 +404,16 @@ export default class appStore {
       styleLengths: this.styleLengths,
       avgStyleLength: this.avgStyleLength,
       date: this.date,
-      firstSpray: this.firstSpray,
-      secondSpray: this.secondSpray,
-      thirdSpray: this.thirdSpray,
-      endDate: this.endDate,
-      currentIndex: this.currentIndex
+      firstSpray: this.firstSprayDate,
+      secondSpray: this.secondSprayDate,
+      thirdSpray: this.thirdSprayDate,
+      endDate: this.endDate
     };
   }
 
   @action
   resetFields = () => {
+    this.blockId = undefined;
     this.setBlockName("");
     this.subject = {};
     this.isBlockBeingEdited = false;
@@ -427,14 +427,16 @@ export default class appStore {
 
   @action
   addBlock = () => {
+    this.blockId = Math.random().toString();
     this.isBlockBeingEdited = false;
-    this.hideBlockModal();
     const block = { ...this.block };
-    block["id"] = Math.random().toString();
+    console.log(block);
+    // block["id"] = Math.random().toString();
     this.blocks.push(block);
     this.resetFields();
     message.success(`${block.name} block has been created!`);
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
+    this.hideBlockModal();
   };
 
   @action
@@ -449,9 +451,8 @@ export default class appStore {
   @action
   editBlock = id => {
     const block = this.blocks.find(b => b.id === id);
-    console.log(block);
+    this.blockId = block.id;
     this.isBlockBeingEdited = true;
-    this.showBlockModal();
     this.setBlockName(block.name);
     this.setSubject(block.variety.name);
     this.setStyleLength(block.avgStyleLength);
@@ -466,13 +467,18 @@ export default class appStore {
 
   @action
   updateBlock = () => {
-    const block = { ...this.block };
     this.isBlockBeingEdited = false;
+    const block = { ...this.block };
+    block["currentIndex"] = this.currentIndex;
+
+    console.log(block);
+    this.selectBlock(block.id);
     const idx = this.blocks.findIndex(b => b.id === block.id);
     this.blocks.splice(idx, 1, block);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
     message.success(`${block.name} block has been updated!`);
+    this.hideBlockModal();
   };
 
   @action

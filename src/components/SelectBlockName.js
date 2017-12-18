@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { Input } from "antd";
 
-import { Box } from "rebass";
+import { ColMb } from "styles";
 
 @inject("store")
 @observer
@@ -15,7 +15,7 @@ export default class SelectBlockName extends Component {
     } = this.props.store.app;
 
     return (
-      <Box mb={[1, 2]}>
+      <ColMb>
         {isBlockBeingEdited && "Name:"}
         <Input
           style={{ width: "100%" }}
@@ -28,7 +28,7 @@ export default class SelectBlockName extends Component {
           }
           value={blockName}
         />
-      </Box>
+      </ColMb>
     );
   }
 }

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { Select } from "antd";
 
-import { Box } from "rebass";
+import { ColMb } from "styles";
 
 @inject("store")
 @observer
@@ -23,7 +23,7 @@ export default class SelectStation extends Component {
       );
     });
     return (
-      <Box mb={[1, 2]}>
+      <ColMb>
         {isBlockBeingEdited && "Station:"}
 
         <Select
@@ -34,7 +34,7 @@ export default class SelectStation extends Component {
         >
           {optionList}
         </Select>
-      </Box>
+      </ColMb>
     );
   }
 }

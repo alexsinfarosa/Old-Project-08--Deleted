@@ -3134,7 +3134,7 @@ graceful-fs@4.1.11, graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6,
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
 
-grid-styled@^2.0.0-10, grid-styled@^2.0.0-11:
+grid-styled@^2.0.0-10:
   version "2.0.0-11"
   resolved "https://registry.yarnpkg.com/grid-styled/-/grid-styled-2.0.0-11.tgz#4cf40503bfe202e7764f08a5346adb99f6fdf260"
   dependencies:
@@ -6914,7 +6914,7 @@ styled-components@^2.1.0, styled-components@^2.1.2, styled-components@^2.2.0, st
     stylis "^3.4.0"
     supports-color "^3.2.3"
 
-styled-system@^1.0.0-12, styled-system@^1.0.2:
+styled-system@^1.0.0-12, styled-system@^1.0.2, styled-system@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/styled-system/-/styled-system-1.1.1.tgz#6611da9ce5e561b50f217996ea555ea7b1855d5d"
   dependencies:

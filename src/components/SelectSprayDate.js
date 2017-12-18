@@ -26,7 +26,6 @@ export default class SelectDatePicker extends Component {
   render() {
     const { isBlockBeingEdited } = this.props.store.app;
     const { type, date, setDate } = this.props;
-
     return (
       <Box mb={[1, 2]}>
         {isBlockBeingEdited && type}

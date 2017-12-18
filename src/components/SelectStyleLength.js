@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { Tooltip, InputNumber, Button } from "antd";
 
-import { Flex, Box } from "rebass";
+import { Box } from "rebass";
 
 @inject("store")
 @observer

@@ -23,21 +23,27 @@ export default class SelectStartDate extends Component {
     return moment(Math[method](+date / +duration) * +duration);
   };
 
-  onOk = () => {
-    const {
-      isStartDateModalOpen,
-      addDateToBlock,
-      hideStartDateModal
-    } = this.props.store.app;
+  // onOk = () => {
+  //   const {
+  //     isStartDateModalOpen,
+  //     addDateToBlock,
+  //     hideStartDateModal
+  //   } = this.props.store.app;
 
-    if (isStartDateModalOpen) {
-      addDateToBlock();
-      hideStartDateModal();
-    }
-  };
+  //   if (isStartDateModalOpen) {
+  //     addDateToBlock();
+  //     hideStartDateModal();
+  //   }
+  // };
 
   render() {
-    const { setDate, isStartDateModalOpen, date } = this.props.store.app;
+    const {
+      setDate,
+      isStartDateModalOpen,
+      date,
+      updateBlock,
+      hideStartDateModal
+    } = this.props.store.app;
 
     return (
       <Box mb={[1, 2, 3]}>
@@ -54,7 +60,10 @@ export default class SelectStartDate extends Component {
           onChange={(date, dateString) => {
             setDate(roundDate(date, moment.duration(60, "minutes"), "floor"));
           }}
-          onOk={this.onOk}
+          onOk={() => {
+            updateBlock();
+            hideStartDateModal();
+          }}
         />
       </Box>
     );
