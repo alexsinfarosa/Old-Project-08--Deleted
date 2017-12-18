@@ -3,10 +3,7 @@ import { inject, observer } from "mobx-react";
 
 import SelectStyleLength from "components/SelectStyleLength";
 
-import { Flex, Box } from "rebass";
-
-import { Modal, Table, Divider, Radio, Button, Icon } from "antd";
-const RadioButton = Radio.Button;
+import { Row, Col, Modal, Table, Divider, Radio, Button, Icon } from "antd";
 const RadioGroup = Radio.Group;
 
 @inject("store")
@@ -25,8 +22,14 @@ class StyleLengthModal extends Component {
       avgStyleLength,
       radioValue,
       setRadioValue,
-      isStyleLengthEdited
+      isStyleLengthEdited,
+      updateOneStyleLength,
+      addOneStyleLength,
+      styleLength,
+      resetFields
     } = this.props.store.app;
+
+    const { breakpoints } = this.props;
 
     const columns = [
       {
@@ -41,23 +44,21 @@ class StyleLengthModal extends Component {
         title: "Style Length",
         dataIndex: "styleLength",
         key: "styleLength",
-        width: "55%",
+        // width: "50%",
         render: (text, record) => <span>{text.toPrecision(4)} mm</span>
       },
       {
         title: "Actions",
         dataIndex: "actions",
-        width: "15%",
+        // width: "20%",
         render: (text, record, index) => (
           <div>
+            <Icon type="edit" onClick={() => editStyleLength(record, index)} />
+            <Divider type="vertical" />
             <Icon
               type="delete"
               onClick={() => removeStyleLength(record, index)}
             />
-
-            <Divider type="vertical" />
-
-            <Icon type="edit" onClick={() => editStyleLength(record, index)} />
           </div>
         )
       }
@@ -65,8 +66,8 @@ class StyleLengthModal extends Component {
 
     const Footer = d => {
       return (
-        <Flex>
-          <Box>
+        <Row>
+          <Col>
             <Button onClick={() => hideStyleLengthModal()}>Cancel</Button>
             <Button
               disabled={
@@ -82,8 +83,8 @@ class StyleLengthModal extends Component {
             >
               OK
             </Button>
-          </Box>
-        </Flex>
+          </Col>
+        </Row>
       );
     };
 
@@ -92,67 +93,92 @@ class StyleLengthModal extends Component {
       : "";
 
     return (
-      <Flex>
-        <Box>
-          <Modal
-            title={
-              radioValue
-                ? radioValue === "avg"
-                  ? `Insert Average Style Length`
-                  : `Calculated Average Style Length${average}`
-                : `Select one of the options:`
-            }
-            visible={isStyleLengthModal}
-            footer={radioValue ? <Footer /> : null}
-            onCancel={() => hideStyleLengthModal()}
+      <Modal
+        closable={false}
+        title={
+          radioValue
+            ? radioValue === "avg"
+              ? `Insert Average Style Length`
+              : `Calculated Average Style Length${average}`
+            : `Select one of the options:`
+        }
+        visible={isStyleLengthModal}
+        footer={radioValue ? <Footer /> : null}
+        onCancel={() => {
+          resetFields();
+          hideStyleLengthModal();
+        }}
+      >
+        {!(radioValue === "avg" || radioValue === "calculate") && (
+          <RadioGroup
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+            onChange={e => setRadioValue(e.target.value)}
+            defaultValue={null}
           >
-            {!(radioValue === "avg" || radioValue === "calculate") && (
-              <RadioGroup
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-                onChange={e => setRadioValue(e.target.value)}
-                defaultValue={null}
-              >
-                <RadioButton
+            <Row style={{ display: "flex", flexDirection: "column" }}>
+              <Col style={{ borderBottom: "1px solid #eee", padding: 16 }}>
+                <Radio
                   checked={radioValue === "avg"}
                   disabled={styleLengths.length > 1}
                   value="avg"
                 >
                   Insert average style length
-                </RadioButton>
-
-                <RadioButton
-                  checked={radioValue === "calculate"}
-                  value="calculate"
-                >
+                </Radio>
+              </Col>
+              <Col style={{ borderBottom: "1px solid #eee", padding: 16 }}>
+                <Radio checked={radioValue === "calculate"} value="calculate">
                   Calculate average style length
-                </RadioButton>
-              </RadioGroup>
-            )}
+                </Radio>
+              </Col>
+            </Row>
+          </RadioGroup>
+        )}
 
-            {radioValue === "avg" && <SelectStyleLength />}
+        {radioValue === "avg" && <SelectStyleLength />}
 
-            {radioValue === "calculate" && (
-              <div>
-                <SelectStyleLength />
-                <Table
-                  rowClassName={record => (record.isEdit ? "selected" : null)}
-                  rowKey={record => record.idx}
-                  loading={isLoading}
-                  dataSource={styleLengths.slice()}
-                  columns={columns}
-                  size="middle"
-                  pagination={false}
-                  scroll={{ y: "50vh", x: "100%" }}
-                />
-              </div>
-            )}
-          </Modal>
-        </Box>
-      </Flex>
+        {radioValue === "calculate" && (
+          <Row>
+            <Col>
+              <Row type="flex" align="middle">
+                <Col span={20}>
+                  <SelectStyleLength />
+                </Col>
+                <Col span={4}>
+                  {radioValue === "calculate" && (
+                    <Button
+                      style={{ width: "100%", marginBottom: 16 }}
+                      disabled={!styleLength}
+                      onClick={
+                        isStyleLengthEdited
+                          ? updateOneStyleLength
+                          : addOneStyleLength
+                      }
+                    >
+                      {isStyleLengthEdited ? "UPDATE" : "ADD"}
+                    </Button>
+                  )}
+                </Col>
+              </Row>
+            </Col>
+            <Col>
+              <Table
+                rowClassName={record => (record.isEdit ? "selected" : null)}
+                rowKey={record => record.idx}
+                loading={isLoading}
+                dataSource={styleLengths.slice()}
+                columns={columns}
+                size="middle"
+                pagination={false}
+                scroll={{ y: breakpoints.xs ? "30vh" : "50vh", x: "100%" }}
+              />
+            </Col>
+          </Row>
+        )}
+      </Modal>
     );
   }
 }

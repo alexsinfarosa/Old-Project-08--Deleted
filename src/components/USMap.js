@@ -6,7 +6,7 @@ import { matchIconsToStations } from "utils";
 
 import { Modal } from "antd";
 
-import { ColMb } from "styles";
+import { SectionMap } from "styles";
 
 const myIcon = e =>
   L.icon({
@@ -77,9 +77,9 @@ export default class USMap extends Component {
     ));
 
     return (
-      <ColMb style={{ width: "100%", height: "35vh" }}>
+      <SectionMap>
         <LMap
-          style={{ width: "100%", height: "35vh" }}
+          style={{ width: "100%", height: "100%" }}
           zoomControl={true}
           scrollWheelZoom={false}
           ref="map"
@@ -105,7 +105,7 @@ export default class USMap extends Component {
             this.state.selectedState
           } from the State menu to access this station.`}</p>
         </Modal>
-      </ColMb>
+      </SectionMap>
     );
   }
 }

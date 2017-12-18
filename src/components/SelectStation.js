@@ -23,7 +23,7 @@ export default class SelectStation extends Component {
       );
     });
     return (
-      <ColMb>
+      <ColMb style={{ marginBottom: isBlockBeingEdited ? 16 : 32 }}>
         {isBlockBeingEdited && "Station:"}
 
         <Select

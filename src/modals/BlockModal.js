@@ -22,17 +22,18 @@ class BlockModal extends Component {
       addBlock,
       updateBlock,
       block,
-      blocks,
+      // blocks,
       firstSprayDate,
       secondSprayDate,
       thirdSprayDate,
       setFirstSprayDate,
       setSecondSprayDate,
-      setThirdSprayDate
+      setThirdSprayDate,
+      resetFields
     } = this.props.store.app;
 
     // console.log(block);
-    blocks.map(b => console.log(b.id, b.name, b.isSelected));
+    // blocks.map(b => console.log(b.id, b.name, b.isSelected));
 
     return (
       <Modal
@@ -44,7 +45,10 @@ class BlockModal extends Component {
         visible={isBlockModal}
         okText={block.isBeingEdited ? "UPDATE BLOCK" : "ADD BLOCK"}
         onOk={block.isBeingEdited ? updateBlock : addBlock}
-        onCancel={hideBlockModal}
+        onCancel={() => {
+          resetFields();
+          hideBlockModal();
+        }}
       >
         <Row align="middle">
           <SelectBlockName />

@@ -390,6 +390,7 @@ export default class appStore {
 
   @observable isBlockBeingEdited = false;
   @observable blockId;
+  @observable isBlockSelected = false;
 
   @computed
   get block() {
@@ -399,7 +400,7 @@ export default class appStore {
       variety: this.subject,
       state: this.state,
       station: this.station,
-      isSelected: false,
+      isSelected: this.isBlockSelected,
       isBeingEdited: this.isBlockBeingEdited,
       styleLengths: this.styleLengths,
       avgStyleLength: this.avgStyleLength,
@@ -414,6 +415,7 @@ export default class appStore {
   @action
   resetFields = () => {
     this.blockId = undefined;
+    this.isBlockSelected = false;
     this.setBlockName("");
     this.subject = {};
     this.isBlockBeingEdited = false;
@@ -429,10 +431,10 @@ export default class appStore {
   addBlock = () => {
     this.blockId = Math.random().toString();
     this.isBlockBeingEdited = false;
+    this.isBlockSelected = true;
     const block = { ...this.block };
-    console.log(block);
-    // block["id"] = Math.random().toString();
     this.blocks.push(block);
+    this.selectBlock(block.id);
     this.resetFields();
     message.success(`${block.name} block has been created!`);
     localStorage.setItem("pollenTubeBlocks", JSON.stringify(this.blocks));
@@ -453,6 +455,7 @@ export default class appStore {
     const block = this.blocks.find(b => b.id === id);
     this.blockId = block.id;
     this.isBlockBeingEdited = true;
+    this.isBlockSelected = block.isSelected;
     this.setBlockName(block.name);
     this.setSubject(block.variety.name);
     this.setStyleLength(block.avgStyleLength);
@@ -468,21 +471,14 @@ export default class appStore {
   @action
   updateBlock = () => {
     this.isBlockBeingEdited = false;
+    this.isBlockSelected = true;
     const block = { ...this.block };
     block["currentIndex"] = this.currentIndex;
-
-    console.log(block);
-    this.selectBlock(block.id);
     const idx = this.blocks.findIndex(b => b.id === block.id);
     this.blocks.splice(idx, 1, block);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
     message.success(`${block.name} block has been updated!`);
     this.hideBlockModal();
-  };
-
-  @action
-  cancelBlock = () => {
-    this.resetFields();
   };
 }

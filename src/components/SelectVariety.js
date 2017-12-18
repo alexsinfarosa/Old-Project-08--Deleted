@@ -23,7 +23,7 @@ export default class SelectVariety extends Component {
       );
     });
     return (
-      <ColMb>
+      <ColMb style={{ marginBottom: isBlockBeingEdited ? 16 : 32 }}>
         {isBlockBeingEdited && "Apple variety:"}
         <Select
           style={{ width: "100%" }}

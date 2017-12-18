@@ -36,7 +36,7 @@ class App extends Component {
 
         <BlockModal />
         <StartDateModal />
-        <StyleLengthModal />
+        <StyleLengthModal breakpoints={breakpoints} />
 
         <Main>
           {isMap && <USMap />}

@@ -8,8 +8,6 @@ import moment from "moment";
 // utils
 import { roundDate } from "utils";
 
-import { Box } from "rebass";
-
 @inject("store")
 @observer
 export default class SelectDatePicker extends Component {
@@ -27,11 +25,11 @@ export default class SelectDatePicker extends Component {
     const { isBlockBeingEdited } = this.props.store.app;
     const { type, date, setDate } = this.props;
     return (
-      <Box mb={[1, 2]}>
+      <div>
         {isBlockBeingEdited && type}
         <AntdDatePicker
           showTime={{ format: "HH:00" }}
-          style={{ width: "100%" }}
+          style={{ width: "100%", marginBottom: 16 }}
           value={date ? moment(date) : undefined}
           allowClear={false}
           format="MMM Do YYYY, HH:00"
@@ -42,7 +40,7 @@ export default class SelectDatePicker extends Component {
             setDate(roundDate(date, moment.duration(60, "minutes"), "floor"));
           }}
         />
-      </Box>
+      </div>
     );
   }
 }

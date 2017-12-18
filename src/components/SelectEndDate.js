@@ -8,8 +8,6 @@ import moment from "moment";
 // utils
 import { roundDate } from "utils";
 
-import { Box } from "rebass";
-
 @inject("store")
 @observer
 export default class SelectEndDate extends Component {
@@ -27,11 +25,11 @@ export default class SelectEndDate extends Component {
     const { setEndDate, isBlockBeingEdited, endDate } = this.props.store.app;
 
     return (
-      <Box mb={[1, 2]}>
+      <div>
         {isBlockBeingEdited && "Model end date:"}
         <DatePicker
           showTime={{ format: "HH:00" }}
-          style={{ width: "100%" }}
+          style={{ width: "100%", marginBottom: 16 }}
           value={moment(endDate)}
           allowClear={false}
           format="MMM Do YYYY, HH:00"
@@ -43,7 +41,7 @@ export default class SelectEndDate extends Component {
             );
           }}
         />
-      </Box>
+      </div>
     );
   }
 }

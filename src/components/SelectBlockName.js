@@ -15,7 +15,7 @@ export default class SelectBlockName extends Component {
     } = this.props.store.app;
 
     return (
-      <ColMb>
+      <ColMb style={{ marginBottom: isBlockBeingEdited ? 16 : 32 }}>
         {isBlockBeingEdited && "Name:"}
         <Input
           style={{ width: "100%" }}

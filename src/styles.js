@@ -148,3 +148,20 @@ export const Section = styled.div`
     margin-bottom: ${marginMd};
   }
 `;
+
+export const SectionMap = Section.extend`
+  width: 100%;
+  height: 25vh;
+
+  @media (min-width: ${sm}) {
+    height: 30vh;
+  }
+
+  @media (min-width: ${md}) {
+    height: 35vh;
+  }
+
+  @media (min-width: ${lg}) {
+    height: 35vh;
+  }
+`;

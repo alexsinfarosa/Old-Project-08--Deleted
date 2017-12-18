@@ -27,7 +27,8 @@ export default class Block extends Component {
       editBlock,
       deleteBlock,
       showStartDateModal,
-      showStyleLengthModal
+      showStyleLengthModal,
+      setRadioValue
     } = this.props.store.app;
 
     const { breakpoints, block } = this.props;
@@ -40,7 +41,6 @@ export default class Block extends Component {
         style={{
           border: "1px solid #eee",
           borderRadius: 10
-          // marginBottom: 16
         }}
       >
         <Col style={{ background: "#4EA27D", color: "#fff", padding: 8 }}>
@@ -107,7 +107,10 @@ export default class Block extends Component {
               <Button
                 type="default"
                 style={{ width: "40%" }}
-                onClick={() => showStyleLengthModal(block.id)}
+                onClick={() => {
+                  setRadioValue(null);
+                  showStyleLengthModal();
+                }}
               >
                 Set Style Length
               </Button>

@@ -23,7 +23,7 @@ export default class SelectState extends Component {
       );
     });
     return (
-      <ColMb>
+      <ColMb style={{ marginBottom: isBlockBeingEdited ? 16 : 32 }}>
         {isBlockBeingEdited && "State:"}
         <Select
           style={{ width: "100%" }}
