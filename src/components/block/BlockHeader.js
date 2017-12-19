@@ -4,19 +4,31 @@ import { inject, observer } from "mobx-react";
 import { BHeader } from "styles";
 
 // antd
-import { Row, Col, Tooltip, Icon, Popconfirm, Divider } from "antd";
+import { Row, Col, Tooltip, Icon, Popconfirm, Divider, Button } from "antd";
 
 @inject("store")
 @observer
 export default class BlockHeader extends Component {
   render() {
-    const { showBlockModal, editBlock, deleteBlock } = this.props.store.app;
+    const {
+      showBlockModal,
+      editBlock,
+      deleteBlock,
+      selectBlock
+    } = this.props.store.app;
     const { breakpoints, block } = this.props;
 
     return (
       <BHeader>
         <Row type="flex" justify="space-between">
-          <Col>{block.name}</Col>
+          <Col>
+            <a
+              onClick={() => selectBlock(block.id)}
+              style={{ color: "white", borderBottom: "1px solid white" }}
+            >
+              {block.name}
+            </a>
+          </Col>
           <Col>{block.variety.name}</Col>
           {!breakpoints.xs && (
             <Col>
