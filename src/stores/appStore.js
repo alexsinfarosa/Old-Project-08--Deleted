@@ -149,14 +149,6 @@ export default class appStore {
     this.styleLength = null;
   };
 
-  // @action
-  // addAllStyleLengths = () => {
-  //   console.log(this.filteredBlocks[0]);
-  //   this.editBlock(this.filteredBlocks[0].id);
-  //   this.updateBlock();
-  //   this.hideStyleLengthModal();
-  // };
-
   @action
   removeStyleLength = (record, idx) => {
     const below = this.styleLengths.slice(0, idx);
@@ -279,17 +271,6 @@ export default class appStore {
   // Dates---------------------------------------------------------------------
   @observable date;
   @action setDate = d => (this.date = d);
-
-  @action
-  addDateToBlock = () => {
-    // this.editBlock(id);
-    // this.block["date"] = this.date;
-    // const idx = this.blocks.findIndex(b => b.id === this.block.id);
-    // this.blocks.splice(idx, 1, this.block);
-    // this.setBlocks(this.blocks);
-    // this.setBlock(this.blocks[idx].id);
-    // localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
-  };
 
   @computed
   get currentYear() {
@@ -436,7 +417,6 @@ export default class appStore {
   @action
   editBlock = id => {
     const block = this.blocks.find(b => b.id === id);
-    console.log(block);
     this.blockId = block.id;
     this.isBlockBeingEdited = true;
     this.isBlockSelected = block.isSelected;
@@ -457,13 +437,13 @@ export default class appStore {
     this.isBlockBeingEdited = false;
     this.isBlockSelected = true;
     const block = { ...this.block };
-    console.log(block);
     block["currentIndex"] = this.currentIndex;
     const idx = this.blocks.findIndex(b => b.id === block.id);
     this.blocks.splice(idx, 1, block);
     this.setBlocks(this.blocks);
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
     message.success(`${block.name} block has been updated!`);
+    this.resetFields();
     this.hideBlockModal();
     this.hideStyleLengthModal();
   };

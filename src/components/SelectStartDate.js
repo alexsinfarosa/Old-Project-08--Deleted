@@ -21,19 +21,6 @@ export default class SelectStartDate extends Component {
     return moment(Math[method](+date / +duration) * +duration);
   };
 
-  // onOk = () => {
-  //   const {
-  //     isStartDateModalOpen,
-  //     addDateToBlock,
-  //     hideStartDateModal
-  //   } = this.props.store.app;
-
-  //   if (isStartDateModalOpen) {
-  //     addDateToBlock();
-  //     hideStartDateModal();
-  //   }
-  // };
-
   render() {
     const {
       setDate,
