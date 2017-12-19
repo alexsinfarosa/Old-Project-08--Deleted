@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import {} from "antd";
 
-import Block from "components/Block";
+import Block from "components/block/Block";
 
 @inject("store")
 @observer

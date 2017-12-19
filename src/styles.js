@@ -165,3 +165,42 @@ export const SectionMap = Section.extend`
     height: 35vh;
   }
 `;
+
+export const BlockWrapper = Section.extend`
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 8px;
+`;
+
+export const BHeader = styled.div`
+  background: #4ea27d;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-bottom: ${margin};
+`;
+
+export const RowCentered = styled.div`
+  display: flex;
+  flex-direction: ${props => (props.column ? "column" : "row")};
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`;
+
+export const BlockBodyWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: ${sm}) {
+    flex-direction: row;
+  }
+
+  @media (min-width: ${md}) {
+    flex-direction: row;
+  }
+
+  @media (min-width: ${lg}) {
+    flex-direction: row;
+  }
+`;
