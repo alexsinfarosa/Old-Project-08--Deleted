@@ -18,7 +18,7 @@ class StyleLengthModal extends Component {
       removeStyleLength,
       editStyleLength,
       addAvgStyleLength,
-      addAllStyleLengths,
+      updateBlock,
       avgStyleLength,
       radioValue,
       setRadioValue,
@@ -75,9 +75,7 @@ class StyleLengthModal extends Component {
                 (radioValue === "calculate" && styleLengths.length <= 5)
               }
               onClick={() =>
-                radioValue === "avg"
-                  ? addAvgStyleLength()
-                  : addAllStyleLengths()
+                radioValue === "avg" ? addAvgStyleLength() : updateBlock()
               }
               type="primary"
             >

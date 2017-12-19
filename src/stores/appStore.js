@@ -128,17 +128,7 @@ export default class appStore {
     };
 
     this.styleLengths.push(styleLengthObj);
-    this.block.styleLengths = this.styleLengths;
-    this.block.avgStyleLength = this.avgStyleLength;
-
-    const idx = this.blocks.findIndex(b => b.id === this.block.id);
-    this.blocks.splice(idx, 1, this.block);
-    this.setBlocks(this.blocks);
-    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
-    this.styleLength = null;
-    this.styleLengths = [];
-    this.hideStyleLengthModal();
-    message.success(`${this.block.name} block has been deleted!`);
+    this.updateBlock();
   };
 
   @action
@@ -159,20 +149,13 @@ export default class appStore {
     this.styleLength = null;
   };
 
-  @action
-  addAllStyleLengths = () => {
-    this.block.styleLengths = this.styleLengths;
-    this.block.avgStyleLength = this.avgStyleLength;
-
-    const idx = this.blocks.findIndex(b => b.id === this.block.id);
-    this.blocks.splice(idx, 1, this.block);
-    this.setBlocks(this.blocks);
-    localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
-    this.styleLength = null;
-    this.styleLengths = [];
-    this.hideStyleLengthModal();
-    message.success(`Average Style Length has been set!`);
-  };
+  // @action
+  // addAllStyleLengths = () => {
+  //   console.log(this.filteredBlocks[0]);
+  //   this.editBlock(this.filteredBlocks[0].id);
+  //   this.updateBlock();
+  //   this.hideStyleLengthModal();
+  // };
 
   @action
   removeStyleLength = (record, idx) => {
@@ -453,12 +436,13 @@ export default class appStore {
   @action
   editBlock = id => {
     const block = this.blocks.find(b => b.id === id);
+    console.log(block);
     this.blockId = block.id;
     this.isBlockBeingEdited = true;
     this.isBlockSelected = block.isSelected;
     this.setBlockName(block.name);
     this.setSubject(block.variety.name);
-    this.setStyleLength(block.avgStyleLength);
+    this.setStyleLengths(block.styleLengths);
     this.setState(block.state.name);
     this.setStation(block.station.id);
     this.setDate(block.date);
@@ -473,6 +457,7 @@ export default class appStore {
     this.isBlockBeingEdited = false;
     this.isBlockSelected = true;
     const block = { ...this.block };
+    console.log(block);
     block["currentIndex"] = this.currentIndex;
     const idx = this.blocks.findIndex(b => b.id === block.id);
     this.blocks.splice(idx, 1, block);
@@ -480,5 +465,6 @@ export default class appStore {
     localStorage.setItem(`pollenTubeBlocks`, JSON.stringify(this.blocks));
     message.success(`${block.name} block has been updated!`);
     this.hideBlockModal();
+    this.hideStyleLengthModal();
   };
 }

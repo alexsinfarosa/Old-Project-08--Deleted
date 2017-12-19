@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 // import { toJS } from "mobx";
-
+import format from "date-fns/format";
 import { BlockWrapper, RowCentered } from "styles";
 
 import BlockHeader from "components/block/BlockHeader";
@@ -22,35 +22,13 @@ export default class Block extends Component {
     } = this.props.store.app;
 
     const { breakpoints, block } = this.props;
+    console.log(block);
 
     return (
       <BlockWrapper>
         <BlockHeader block={block} breakpoints={breakpoints} />
         <Col>
-          {!block.date && !block.avgStyleLength ? (
-            <Row type="flex" justify="space-between" align="center">
-              <Button
-                type="default"
-                style={{ width: "40%" }}
-                onClick={() => {
-                  editBlock(block.id);
-                  showStartDateModal();
-                }}
-              >
-                Set Start Date
-              </Button>
-              <Button
-                type="default"
-                style={{ width: "40%" }}
-                onClick={() => {
-                  setRadioValue(null);
-                  showStyleLengthModal();
-                }}
-              >
-                Set Style Length
-              </Button>
-            </Row>
-          ) : (
+          {block.date && block.avgStyleLength ? (
             <Row>
               <BlockBody breakpoints={breakpoints} block={block} />
               <BlockSteps breakpoints={breakpoints} block={block} />
@@ -67,6 +45,48 @@ export default class Block extends Component {
                     </Col>
                   </RowCentered>
                 </Col>
+              )}
+            </Row>
+          ) : (
+            <Row type="flex" justify="space-between" align="center">
+              {block.date ? (
+                <RowCentered>
+                  <Col>
+                    Model Start Date: {format(block.date, "MM/DD/YY HH:00")}
+                  </Col>
+                </RowCentered>
+              ) : (
+                <Button
+                  type="default"
+                  style={{ width: "40%" }}
+                  onClick={() => {
+                    editBlock(block.id);
+                    showStartDateModal();
+                  }}
+                >
+                  Set Start Date
+                </Button>
+              )}
+
+              {block.avgStyleLength ? (
+                <RowCentered>
+                  <Col>
+                    Average Style Length: {block.avgStyleLength.toPrecision(4)}{" "}
+                    (mm)
+                  </Col>
+                </RowCentered>
+              ) : (
+                <Button
+                  type="default"
+                  style={{ width: "40%" }}
+                  onClick={() => {
+                    setRadioValue(null);
+                    editBlock(block.id);
+                    showStyleLengthModal();
+                  }}
+                >
+                  Set Style Length
+                </Button>
               )}
             </Row>
           )}

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 
 // antd
-import { Row, Col, Progress } from "antd";
+import { Col, Progress } from "antd";
 
 import { BlockBodyWrapper, RowCentered } from "styles";
 
@@ -78,10 +78,15 @@ class BlockBody extends Component {
                     alignItems: "center"
                   }}
                 >
-                  <small>Avg. Style Length: {block.avgStyleLength}</small>
+                  <small>
+                    Avg. Style Length: {block.avgStyleLength.toPrecision(4)}{" "}
+                    (mm)
+                  </small>
                 </Col>
               ) : (
-                <Col span={24}>Avg. Style Length: {block.avgStyleLength}</Col>
+                <Col span={24}>
+                  Avg. Style Length: {block.avgStyleLength.toPrecision(4)} (mm)
+                </Col>
               )}
             </RowCentered>
           </Col>

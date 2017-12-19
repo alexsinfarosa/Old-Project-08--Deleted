@@ -54,7 +54,8 @@ class ToolBar extends Component {
                     overflowCount={99}
                     count={blocks.length}
                     style={{
-                      marginLeft: 4,
+                      marginLeft: 8,
+                      marginBottom: 2,
                       background: "#fff",
                       color: "#616161",
                       boxShadow: "0 0 0 1px #d9d9d9 inset"

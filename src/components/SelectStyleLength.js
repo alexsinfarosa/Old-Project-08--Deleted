@@ -10,7 +10,8 @@ export default class SelectStyleLength extends Component {
       isBlockBeingEdited,
       styleLength,
       setStyleLength,
-      radioValue
+      radioValue,
+      isStyleLengthModal
     } = this.props.store.app;
 
     return (
@@ -20,7 +21,7 @@ export default class SelectStyleLength extends Component {
         placement="topLeft"
         style={{ fontSize: "14px" }}
       >
-        {isBlockBeingEdited && "Average style length:"}
+        {isBlockBeingEdited && !isStyleLengthModal && "Average style length:"}
         <InputNumber
           style={{ width: "100%", marginBottom: 16 }}
           onChange={setStyleLength}

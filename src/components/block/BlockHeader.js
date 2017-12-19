@@ -4,7 +4,7 @@ import { inject, observer } from "mobx-react";
 import { BHeader } from "styles";
 
 // antd
-import { Row, Col, Tooltip, Icon, Popconfirm, Divider, Button } from "antd";
+import { Row, Col, Tooltip, Icon, Popconfirm, Divider } from "antd";
 
 @inject("store")
 @observer
