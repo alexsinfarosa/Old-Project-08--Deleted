@@ -1,4 +1,5 @@
 import { observable, action, when, computed } from "mobx";
+
 import axios from "axios";
 // import { toJS } from "mobx";
 import format from "date-fns/format";
@@ -17,7 +18,6 @@ export default class appStore {
     when(() => this.subjects.length === 0, () => this.loadSubjects());
     when(() => this.states.length === 0, () => this.loadStates());
     when(() => this.stations.length === 0, () => this.loadStations());
-    // when(() => this.acisData.length === 0, () => this.acisData);
   }
 
   // Logic -----------------------------------------------------------
@@ -372,7 +372,9 @@ export default class appStore {
       firstSpray: this.firstSprayDate,
       secondSpray: this.secondSprayDate,
       thirdSpray: this.thirdSprayDate,
-      endDate: this.endDate
+      endDate: this.endDate,
+      isOkToGetGridData: false,
+      gridData: []
     };
   }
 
@@ -447,4 +449,30 @@ export default class appStore {
     this.hideBlockModal();
     this.hideStyleLengthModal();
   };
+
+  @computed
+  get isOkToGetGridData() {
+    if (Object.keys(this.filteredBlocks).length === 1) {
+      const { station, date, avgStyleLength } = this.filteredBlocks[0];
+      if (station.name && date && avgStyleLength) return true;
+    }
+  }
+
+  // @computed
+  // get ciccio() {
+  //   if (this.isOkToGetGridData) {
+  //     fetchACISData();
+  //   }
+  // }
+
+  // reaction(
+  //     () => this.isOkToGetGridData,
+  //     () =>
+  //       fetchACISData(
+  //         this.filteredBlocks[0].station,
+  //         this.filteredBlocks[0].date
+  //       ).then(
+  //         res => (this.filteredBlocks[0].gridData = this.transformGridData(res))
+  //       )
+  //   )
 }

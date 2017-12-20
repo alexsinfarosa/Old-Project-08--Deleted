@@ -13,6 +13,7 @@ import StyleLengthModal from "modals/StyleLengthModal";
 // Main content
 import USMap from "components/USMap";
 import BlockList from "components/block/BlockList";
+// import Testing from "components/Testing";
 
 // styled components
 import { Header, SubHeader, SubHeaderRight, Main } from "styles";

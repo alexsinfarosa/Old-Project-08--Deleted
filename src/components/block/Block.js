@@ -7,6 +7,9 @@ import { BlockWrapper, RowCentered } from "styles";
 import BlockHeader from "components/block/BlockHeader";
 import BlockSteps from "components/block/BlockSteps";
 import BlockBody from "components/block/BlockBody";
+
+// import { fetchACISData } from "fetchACISData";
+
 // antd
 import { Row, Col, Button } from "antd";
 
@@ -20,9 +23,7 @@ export default class Block extends Component {
       showStyleLengthModal,
       setRadioValue
     } = this.props.store.app;
-
     const { breakpoints, block } = this.props;
-    console.log(block);
 
     return (
       <BlockWrapper>

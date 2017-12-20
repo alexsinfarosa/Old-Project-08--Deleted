@@ -55,7 +55,9 @@ const fetchHourlyStationData = (station, date) => {
 const getSisterStationIdAndNetwork = station => {
   // console.log("getSisterStationIdAndNetwork");
   return axios(
-    `${protocol}//newa2.nrcc.cornell.edu/newaUtil/stationSisterInfo/${station.id}/${station.network}`
+    `${protocol}//newa2.nrcc.cornell.edu/newaUtil/stationSisterInfo/${
+      station.id
+    }/${station.network}`
   )
     .then(res => {
       // console.log(res.data);
@@ -73,9 +75,9 @@ const fetchHourlyForcestData = (station, date) => {
 
   return axios
     .get(
-      `${protocol}//newa2.nrcc.cornell.edu/newaUtil/getFcstData/${station.id}/${station.network}/temp/${sdate(
-        date
-      )}/${plusFiveDays}`
+      `${protocol}//newa2.nrcc.cornell.edu/newaUtil/getFcstData/${station.id}/${
+        station.network
+      }/temp/${sdate(date)}/${plusFiveDays}`
     )
     .then(res => {
       // console.log(res.data.data);
