@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-// import { toJS } from "mobx";
+import { toJS } from "mobx";
 import format from "date-fns/format";
 import { BlockWrapper, RowCentered } from "styles";
 
@@ -21,10 +21,12 @@ export default class Block extends Component {
       editBlock,
       showStartDateModal,
       showStyleLengthModal,
-      setRadioValue
+      setRadioValue,
+      gridData
     } = this.props.store.app;
     const { breakpoints, block } = this.props;
-
+    console.log(block);
+    // gridData.map(day => console.log(toJS(day)));
     return (
       <BlockWrapper>
         <BlockHeader block={block} breakpoints={breakpoints} />

@@ -9,8 +9,7 @@ import { Table } from "antd";
 @observer
 export default class GrowthTable extends Component {
   render() {
-    // const { areRequiredFieldsSet } = this.props.store.app;
-    const { record } = this.props;
+    const { block } = this.props;
 
     //columns for the model
     const columns = [
@@ -18,6 +17,22 @@ export default class GrowthTable extends Component {
         title: "Date",
         dataIndex: "date",
         key: "date"
+      },
+      {
+        title: "Air Temp (˚F)",
+        dataIndex: "temp",
+        key: "temp"
+      },
+      {
+        title: "Hourly Growth (mm)",
+        dataIndex: "hrGrowth",
+        key: "hrGrowth"
+      },
+      {
+        title: "Accumulated Growth (mm)",
+        dataIndex: "cumulativeHrGrowth",
+        key: "cumulativeHrGrowth",
+        render: date => Number(date).toFixed(4)
       }
     ];
 
@@ -27,10 +42,10 @@ export default class GrowthTable extends Component {
 
     return (
       <Table
-        dataSource={record.data.slice()}
+        dataSource={block.gridData.slice()}
         columns={columns}
         pagination={false}
-        rowKey={record => record[0]}
+        rowKey={block => block.date}
       />
     );
   }

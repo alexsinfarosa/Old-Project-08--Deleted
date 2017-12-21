@@ -10,7 +10,7 @@ import getYear from "date-fns/get_year";
 import { message } from "antd";
 
 // utils
-// import { fetchACISData } from "fetchACISData";
+import { fetchACISData } from "fetchACISData";
 
 export default class appStore {
   constructor(fetch) {
@@ -78,7 +78,7 @@ export default class appStore {
   @action
   loadSubjects() {
     this.isLoading = true;
-    this.fetch("species.json")
+    this.fetch("growthRates.json")
       .then(json => {
         this.updateSubjects(json);
         this.isLoading = false;
@@ -450,29 +450,40 @@ export default class appStore {
     this.hideStyleLengthModal();
   };
 
-  @computed
-  get isOkToGetGridData() {
+  // Model ------------------------------------------------------------------
+  @action
+  setGridData = id => {
     if (Object.keys(this.filteredBlocks).length === 1) {
       const { station, date, avgStyleLength } = this.filteredBlocks[0];
-      if (station.name && date && avgStyleLength) return true;
+      if (station.name && date && avgStyleLength) {
+        console.log("ciccio");
+        fetchACISData(station, date).then(
+          res => (this.filteredBlocks[0].gridData = this.transformGridData(res))
+        );
+      }
     }
-  }
+  };
 
-  // @computed
-  // get ciccio() {
-  //   if (this.isOkToGetGridData) {
-  //     fetchACISData();
-  //   }
-  // }
+  transformGridData = res => {
+    const dates = res.map(day => day[0]);
+    const values = res.map(day => day[1]);
+    const { hrGrowth, temps } = this.filteredBlocks[0].variety;
 
-  // reaction(
-  //     () => this.isOkToGetGridData,
-  //     () =>
-  //       fetchACISData(
-  //         this.filteredBlocks[0].station,
-  //         this.filteredBlocks[0].date
-  //       ).then(
-  //         res => (this.filteredBlocks[0].gridData = this.transformGridData(res))
-  //       )
-  //   )
+    let results = [];
+    let cumulativeHrGrowth = 0;
+    dates.forEach((date, i) => {
+      values[i].forEach((temp, h) => {
+        const idx = temps.findIndex(t => t.toString() === temp);
+        cumulativeHrGrowth += hrGrowth[idx];
+        results.push({
+          date: `${date} ${h}:00`,
+          temp: temp,
+          hrGrowth: hrGrowth[idx],
+          cumulativeHrGrowth: cumulativeHrGrowth
+        });
+      });
+    });
+
+    return results;
+  };
 }
