@@ -14,23 +14,40 @@ export default class GrowthTable extends Component {
         title: "Date",
         dataIndex: "date",
         key: "date",
-        width: "25%"
+        width: "20%"
       },
       {
         title: "Air Temp (˚F)",
         dataIndex: "temp",
-        key: "temp"
+        key: "temp",
+        width: "20%"
       },
       {
-        title: "Hourly Growth (mm)",
-        dataIndex: "hrGrowth",
-        key: "hrGrowth"
+        title: "Growth (mm)",
+        width: "40%",
+        children: [
+          {
+            title: "Hourly",
+            dataIndex: "hrGrowth",
+            key: "hrGrowth",
+            width: "20%",
+            render: d => Number(d).toFixed(2)
+          },
+          {
+            title: "Accumulated",
+            dataIndex: "cumulativeHrGrowth",
+            key: "cumulativeHrGrowth",
+            width: "20%",
+            render: d => Number(d).toFixed(2)
+          }
+        ]
       },
       {
-        title: "Accumulated Growth (mm)",
-        dataIndex: "cumulativeHrGrowth",
-        key: "cumulativeHrGrowth",
-        render: date => Number(date).toFixed(4)
+        title: "% of Target",
+        dataIndex: "percentage",
+        key: "percentage",
+        width: "20%",
+        render: perc => Number(perc).toFixed(2)
       }
     ];
 
@@ -43,7 +60,7 @@ export default class GrowthTable extends Component {
         rowKey={block => block.date}
         loading={block.gridData.slice().length === 0}
         scroll={{ y: "35vh" }}
-        bordered={false}
+        bordered={true}
       />
     );
   }

@@ -11,6 +11,15 @@ import { BlockBodyWrapper, RowCentered } from "styles";
 class BlockBody extends Component {
   render() {
     const { breakpoints, block } = this.props;
+    console.log(block);
+    let currentPercentage = 0;
+    if (block.gridData.length !== 0) {
+      console.log("ciccio");
+      console.log(block.gridData.slice());
+      currentPercentage = block.gridData[block.gridData.length - 1].percentage;
+      console.log(currentPercentage);
+    }
+    console.log(Math.round(currentPercentage, 1));
 
     return (
       <Col
@@ -39,7 +48,11 @@ class BlockBody extends Component {
                 <small>Emergence</small>
               </Col>
               <Col>
-                <Progress type="circle" percent={30} width={80} />
+                <Progress
+                  type="circle"
+                  percent={Math.round(currentPercentage, 1)}
+                  width={80}
+                />
               </Col>
             </RowCentered>
           </Col>

@@ -472,7 +472,7 @@ export default class appStore {
   };
 
   transformGridData = res => {
-    const { date, variety } = this.filteredBlocks[0];
+    const { date, variety, avgStyleLength } = this.filteredBlocks[0];
     const { hrGrowth, temps } = variety;
 
     const hour = getHours(date);
@@ -480,6 +480,7 @@ export default class appStore {
 
     let results = [];
     let cumulativeHrGrowth = 0;
+    let percentage = 0;
 
     const filteredFirstDayTemps = res[0][1].slice(hourIdx);
     // first day. The starting hour is selected by the user
@@ -488,13 +489,15 @@ export default class appStore {
       let hourlyGrowth = hrGrowth[idx];
       if (temp < 35 || temp > 106) hourlyGrowth = 0;
       cumulativeHrGrowth += hourlyGrowth;
+      percentage = cumulativeHrGrowth / avgStyleLength * 100;
       results.push({
         date: `${format(date, "YYYY-MM-DD")} ${this.addZeroToHoursLessThen10(
           h + hourIdx
         )}:00`,
         temp: temp,
         hrGrowth: hourlyGrowth,
-        cumulativeHrGrowth: cumulativeHrGrowth
+        cumulativeHrGrowth: cumulativeHrGrowth,
+        percentage: percentage
       });
     });
 
@@ -507,11 +510,14 @@ export default class appStore {
         let hourlyGrowth = hrGrowth[idx];
         if (temp < 35 || temp > 106) hourlyGrowth = 0;
         cumulativeHrGrowth += hourlyGrowth;
+        percentage = cumulativeHrGrowth / avgStyleLength * 100;
+
         results.push({
           date: `${date} ${this.addZeroToHoursLessThen10(h)}:00`,
           temp: temp,
           hrGrowth: hourlyGrowth,
-          cumulativeHrGrowth: cumulativeHrGrowth
+          cumulativeHrGrowth: cumulativeHrGrowth,
+          percentage: percentage
         });
       });
     });
@@ -524,13 +530,16 @@ export default class appStore {
       let hourlyGrowth = hrGrowth[idx];
       if (temp < 35 || temp > 106) hourlyGrowth = 0;
       cumulativeHrGrowth += hourlyGrowth;
+      percentage = cumulativeHrGrowth / avgStyleLength * 100;
+
       results.push({
         date: `${res[res.length - 1][0]} ${this.addZeroToHoursLessThen10(
           h
         )}:00`,
         temp: temp,
         hrGrowth: hourlyGrowth,
-        cumulativeHrGrowth: cumulativeHrGrowth
+        cumulativeHrGrowth: cumulativeHrGrowth,
+        percentage: percentage
       });
     });
 
