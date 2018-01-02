@@ -7,7 +7,6 @@ import { Table } from "antd";
 export default class GrowthTable extends Component {
   render() {
     const { block } = this.props;
-    const { isLoading } = this.props.store.app;
 
     //columns for the model
     const columns = [

@@ -10,12 +10,7 @@ const { Option, OptGroup } = Select;
 @observer
 export default class SelectBlocks extends Component {
   render() {
-    const {
-      blocks,
-      selectBlock,
-      filteredBlocks,
-      setGridData
-    } = this.props.store.app;
+    const { blocks, selectBlock, filteredBlocks } = this.props.store.app;
 
     // Categorize blocks based on the year
     const setYears = new Set(blocks.map(block => getYear(block.date)));

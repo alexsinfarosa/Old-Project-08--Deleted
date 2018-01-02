@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { toJS } from "mobx";
+// import { toJS } from "mobx";
 import format from "date-fns/format";
 import { BlockWrapper, RowCentered } from "styles";
 
@@ -22,9 +22,13 @@ export default class Block extends Component {
       editBlock,
       showStartDateModal,
       showStyleLengthModal,
-      setRadioValue
+      setRadioValue,
+      filteredBlocks
     } = this.props.store.app;
     const { breakpoints, block } = this.props;
+
+    let isFooterDisplayed = false;
+    if (Object.keys(filteredBlocks).length === 1) isFooterDisplayed = true;
     // console.log(block);
     // gridData.map(day => console.log(toJS(day)));
     return (
@@ -94,7 +98,9 @@ export default class Block extends Component {
             </Row>
           )}
         </Col>
-        <BlockFooter block={block} breakpoints={breakpoints} />
+        {isFooterDisplayed && (
+          <BlockFooter block={block} breakpoints={breakpoints} />
+        )}
       </BlockWrapper>
     );
   }
