@@ -6,6 +6,7 @@ import format from "date-fns/format";
 import isAfter from "date-fns/is_after";
 import isBefore from "date-fns/is_before";
 import getYear from "date-fns/get_year";
+import getHours from "date-fns/get_hours";
 
 import { message } from "antd";
 
@@ -290,7 +291,7 @@ export default class appStore {
   @computed
   get seasonEndDate() {
     if (this.date) {
-      return `${this.currentYear}-07-30`;
+      return `${this.currentYear}-07-01`;
     }
   }
 
@@ -454,33 +455,82 @@ export default class appStore {
   @action
   setGridData = id => {
     if (Object.keys(this.filteredBlocks).length === 1) {
+      this.isLoading = true;
       const { station, date, avgStyleLength } = this.filteredBlocks[0];
       if (station.name && date && avgStyleLength) {
-        console.log("ciccio");
-        fetchACISData(station, date).then(
-          res => (this.filteredBlocks[0].gridData = this.transformGridData(res))
-        );
+        fetchACISData(station, date).then(res => {
+          this.filteredBlocks[0].gridData = this.transformGridData(res);
+          this.isLoading = false;
+        });
       }
     }
   };
 
+  addZeroToHoursLessThen10 = d => {
+    if (d >= 0 && d <= 8) return `0${d + 1}`;
+    return d + 1;
+  };
+
   transformGridData = res => {
-    const dates = res.map(day => day[0]);
-    const values = res.map(day => day[1]);
-    const { hrGrowth, temps } = this.filteredBlocks[0].variety;
+    const { date, variety } = this.filteredBlocks[0];
+    const { hrGrowth, temps } = variety;
+
+    const hour = getHours(date);
+    const hourIdx = hour - 1;
 
     let results = [];
     let cumulativeHrGrowth = 0;
+
+    const filteredFirstDayTemps = res[0][1].slice(hourIdx);
+    // first day. The starting hour is selected by the user
+    filteredFirstDayTemps.forEach((temp, h) => {
+      const idx = temps.findIndex(t => t.toString() === temp);
+      let hourlyGrowth = hrGrowth[idx];
+      if (temp < 35 || temp > 106) hourlyGrowth = 0;
+      cumulativeHrGrowth += hourlyGrowth;
+      results.push({
+        date: `${format(date, "YYYY-MM-DD")} ${this.addZeroToHoursLessThen10(
+          h + hourIdx
+        )}:00`,
+        temp: temp,
+        hrGrowth: hourlyGrowth,
+        cumulativeHrGrowth: cumulativeHrGrowth
+      });
+    });
+
+    // body. Does not include first and last day
+    const dates = res.slice(1, -1).map(day => day[0]);
+    const values = res.slice(1, -1).map(day => day[1]);
     dates.forEach((date, i) => {
       values[i].forEach((temp, h) => {
         const idx = temps.findIndex(t => t.toString() === temp);
-        cumulativeHrGrowth += hrGrowth[idx];
+        let hourlyGrowth = hrGrowth[idx];
+        if (temp < 35 || temp > 106) hourlyGrowth = 0;
+        cumulativeHrGrowth += hourlyGrowth;
         results.push({
-          date: `${date} ${h}:00`,
+          date: `${date} ${this.addZeroToHoursLessThen10(h)}:00`,
           temp: temp,
-          hrGrowth: hrGrowth[idx],
+          hrGrowth: hourlyGrowth,
           cumulativeHrGrowth: cumulativeHrGrowth
         });
+      });
+    });
+
+    const filteredLastDayTemps = res[res.length - 1][1].slice(0, hour);
+
+    // last day.
+    filteredLastDayTemps.forEach((temp, h) => {
+      const idx = temps.findIndex(t => t.toString() === temp);
+      let hourlyGrowth = hrGrowth[idx];
+      if (temp < 35 || temp > 106) hourlyGrowth = 0;
+      cumulativeHrGrowth += hourlyGrowth;
+      results.push({
+        date: `${res[res.length - 1][0]} ${this.addZeroToHoursLessThen10(
+          h
+        )}:00`,
+        temp: temp,
+        hrGrowth: hourlyGrowth,
+        cumulativeHrGrowth: cumulativeHrGrowth
       });
     });
 

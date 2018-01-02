@@ -180,6 +180,13 @@ export const BHeader = styled.div`
   margin-bottom: ${margin};
 `;
 
+export const BFooter = styled.div`
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-top: ${margin};
+`;
+
 export const RowCentered = styled.div`
   display: flex;
   flex-direction: ${props => (props.column ? "column" : "row")};

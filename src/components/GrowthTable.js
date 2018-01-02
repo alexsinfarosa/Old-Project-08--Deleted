@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-// import format from "date-fns/format";
-// import subDays from "date-fns/sub_days";
-// import addDays from "date-fns/add_days";
 import { Table } from "antd";
 
 @inject("store")
@@ -10,13 +7,15 @@ import { Table } from "antd";
 export default class GrowthTable extends Component {
   render() {
     const { block } = this.props;
+    const { isLoading } = this.props.store.app;
 
     //columns for the model
     const columns = [
       {
         title: "Date",
         dataIndex: "date",
-        key: "date"
+        key: "date",
+        width: "25%"
       },
       {
         title: "Air Temp (˚F)",
@@ -36,16 +35,16 @@ export default class GrowthTable extends Component {
       }
     ];
 
-    // const stripeTable = i => {
-    //   if (i % 2 === 1) return "stripe";
-    // };
-
     return (
       <Table
+        size="middle"
         dataSource={block.gridData.slice()}
         columns={columns}
         pagination={false}
         rowKey={block => block.date}
+        loading={block.gridData.slice().length === 0}
+        scroll={{ y: "35vh" }}
+        bordered={false}
       />
     );
   }

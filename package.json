@@ -6,7 +6,7 @@
   "author": "alexsinfarosa <as898@cornell.edu>",
   "private": true,
   "dependencies": {
-    "antd": "^3.0.2",
+    "antd": "^3.1.0",
     "axios": "^0.17.1",
     "date-fns": "^1.29.0",
     "gh-pages": "^1.1.0",
@@ -22,8 +22,8 @@
     "react-dom": "^16.2.0",
     "react-leaflet": "^1.7.8",
     "react-scripts": "1.0.17",
-    "recharts": "^1.0.0-beta.6",
-    "styled-components": "^2.3.2"
+    "recharts": "^1.0.0-beta.7",
+    "styled-components": "^2.4.0"
   },
   "scripts": {
     "start": "react-app-rewired start",

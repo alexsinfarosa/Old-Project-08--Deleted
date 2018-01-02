@@ -7,6 +7,7 @@ import { BlockWrapper, RowCentered } from "styles";
 import BlockHeader from "components/block/BlockHeader";
 import BlockSteps from "components/block/BlockSteps";
 import BlockBody from "components/block/BlockBody";
+import BlockFooter from "components/block/BlockFooter";
 
 // import { fetchACISData } from "fetchACISData";
 
@@ -21,11 +22,10 @@ export default class Block extends Component {
       editBlock,
       showStartDateModal,
       showStyleLengthModal,
-      setRadioValue,
-      gridData
+      setRadioValue
     } = this.props.store.app;
     const { breakpoints, block } = this.props;
-    console.log(block);
+    // console.log(block);
     // gridData.map(day => console.log(toJS(day)));
     return (
       <BlockWrapper>
@@ -94,6 +94,7 @@ export default class Block extends Component {
             </Row>
           )}
         </Col>
+        <BlockFooter block={block} breakpoints={breakpoints} />
       </BlockWrapper>
     );
   }

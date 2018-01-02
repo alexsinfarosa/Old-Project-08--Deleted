@@ -46,10 +46,7 @@ export default class SelectBlocks extends Component {
         value={filteredBlocks.length === 1 ? filteredBlocks[0].name : undefined}
         placeholder={`Select Block`}
         style={{ width: "100%" }}
-        onChange={id => {
-          selectBlock(id);
-          setGridData(id);
-        }}
+        onChange={id => selectBlock(id)}
       >
         {optionList}
       </Select>

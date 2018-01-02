@@ -4,6 +4,8 @@ import getYear from "date-fns/get_year";
 import format from "date-fns/format";
 import addDays from "date-fns/add_days";
 import isThisYear from "date-fns/is_this_year";
+import isAfter from "date-fns/is_after";
+
 // utils
 import {
   replaceNonConsecutiveMissingValues,
@@ -11,11 +13,15 @@ import {
 } from "utils";
 
 const protocol = window.location.protocol;
-const sdate = date => `${getYear(date)}-01-01`;
+const endSeasonDate = date => `${getYear(date)}-07-01`;
 
 // Fetch acis data -------------------------------------------------------------
 const fetchHourlyStationData = (station, date) => {
-  // console.log("fetchHourlyStationData");
+  let edate = format(new Date(), "YYYY-MM-DD");
+  if (isAfter(edate, endSeasonDate(date))) {
+    edate = endSeasonDate(date);
+  }
+
   let sid, network;
   if (station !== null && typeof station === "object") {
     network = station.network;
@@ -30,8 +36,8 @@ const fetchHourlyStationData = (station, date) => {
 
   const params = {
     sid: sid,
-    sdate: sdate(date),
-    edate: format(date, "YYYY-MM-DD"),
+    sdate: format(date, "YYYY-MM-DD"),
+    edate: edate,
     elems: [
       // temperature
       networkTemperatureAdjustment(network)
@@ -70,14 +76,14 @@ const getSisterStationIdAndNetwork = station => {
 
 // Fetch forecast temperature --------------------------------------------------
 const fetchHourlyForcestData = (station, date) => {
-  // console.log("fetchHourlyForcestData");
+  console.log(date);
   const plusFiveDays = format(addDays(date, 5), "YYYY-MM-DD");
 
   return axios
     .get(
       `${protocol}//newa2.nrcc.cornell.edu/newaUtil/getFcstData/${station.id}/${
         station.network
-      }/temp/${sdate(date)}/${plusFiveDays}`
+      }/temp/${date}/${plusFiveDays}`
     )
     .then(res => {
       // console.log(res.data.data);
