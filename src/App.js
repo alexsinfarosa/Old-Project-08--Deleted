@@ -23,7 +23,6 @@ import { Header, SubHeader, SubHeaderRight, Main } from "styles";
 class App extends Component {
   render() {
     const { breakpoints, isMap } = this.props.store.app;
-
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
         <Header>

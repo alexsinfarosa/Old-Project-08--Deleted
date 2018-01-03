@@ -13,7 +13,7 @@ import {
 } from "utils";
 
 const protocol = window.location.protocol;
-const endSeasonDate = date => `${getYear(date)}-07-01`;
+const endSeasonDate = date => `${getYear(date)}-05-01`;
 
 // Fetch acis data -------------------------------------------------------------
 const fetchHourlyStationData = (station, date) => {
@@ -76,17 +76,17 @@ const getSisterStationIdAndNetwork = station => {
 
 // Fetch forecast temperature --------------------------------------------------
 const fetchHourlyForcestData = (station, date) => {
-  console.log(date);
-  const plusFiveDays = format(addDays(date, 5), "YYYY-MM-DD");
+  console.log("fetchHourlyData");
+  const plusFiveDays = format(addDays("2017-06-26", 5), "YYYY-MM-DD");
 
   return axios
     .get(
       `${protocol}//newa2.nrcc.cornell.edu/newaUtil/getFcstData/${station.id}/${
         station.network
-      }/temp/${date}/${plusFiveDays}`
+      }/temp/2017-03-01/${plusFiveDays}`
     )
     .then(res => {
-      // console.log(res.data.data);
+      console.log(res.data.data);
       return res.data.data;
     })
     .catch(err => {
@@ -120,12 +120,14 @@ export const fetchACISData = async (station, date) => {
 
   // If this year, replace missing value with forecast data
   if (isThisYear(date)) {
+    console.log("this year");
     const forecastData = await fetchHourlyForcestData(station, date);
 
     const replacedMissingValuesWithForecast = await replaceMissingValues(
       replacedMissingValuesWithSisterStation,
       forecastData
     );
+
     return replacedMissingValuesWithForecast;
   }
 

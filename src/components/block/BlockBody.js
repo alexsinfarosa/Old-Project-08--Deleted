@@ -9,17 +9,16 @@ import { BlockBodyWrapper, RowCentered } from "styles";
 @inject("store")
 @observer
 class BlockBody extends Component {
+  formatEmergence = d => {
+    if (d === 100) return "Spray!";
+    return `${d}%`;
+  };
   render() {
     const { breakpoints, block } = this.props;
-    console.log(block);
     let currentPercentage = 0;
     if (block.gridData.length !== 0) {
-      console.log("ciccio");
-      console.log(block.gridData.slice());
       currentPercentage = block.gridData[block.gridData.length - 1].percentage;
-      console.log(currentPercentage);
     }
-    console.log(Math.round(currentPercentage, 1));
 
     return (
       <Col
@@ -51,6 +50,8 @@ class BlockBody extends Component {
                 <Progress
                   type="circle"
                   percent={Math.round(currentPercentage, 1)}
+                  // percent={100}
+                  format={d => this.formatEmergence(d)}
                   width={80}
                 />
               </Col>

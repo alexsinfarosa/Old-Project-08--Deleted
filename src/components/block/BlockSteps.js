@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import format from "date-fns/format";
 
+// import { StepIcon } from "styles";
+
 // antd
 import { Col, Steps } from "antd";
 const Step = Steps.Step;
@@ -10,58 +12,47 @@ const Step = Steps.Step;
 @observer
 class BlockSteps extends Component {
   render() {
+    const { dateRange } = this.props.store.app;
     const { breakpoints, block } = this.props;
 
     const StepTitle = props => <small>{props.children}</small>;
+    const StepIcon = date => (
+      <svg
+        className="button"
+        expanded="true"
+        height="24px"
+        width="24px"
+        key={date}
+      >
+        <circle cx="50%" cy="50%" r="7px" fill="#4EA27D" />
+        <circle cx="50%" cy="50%" r="8px" fill="#E8E8E8" />
+      </svg>
+    );
+
+    const StepDate = dateRange.map(date => (
+      <Step
+        key={date.val}
+        status={date.status}
+        icon={<StepIcon />}
+        title={<StepTitle date={date}>{date.name}</StepTitle>}
+        description={
+          block.date ? (
+            <small>{format(date.date, "MM/DD/YY HH:00")}</small>
+          ) : null
+        }
+      />
+    ));
 
     return (
       <Col xs={8} sm={24} md={24} lg={24}>
         <Steps
           size="small"
           direction={breakpoints.xs ? "vertical" : "horizontal"}
-          progressDot={true}
-          current={block.date ? block.currentIndex : null}
+          // progressDot={true}
+          // current={block.date ? block.currentIndex : null}
+          // status={dateRange[block.currentIndex]}
         >
-          <Step
-            title={<StepTitle>Start</StepTitle>}
-            description={
-              block.date ? (
-                <small>{format(block.date, "MM/DD/YY HH:00")}</small>
-              ) : null
-            }
-          />
-          <Step
-            title={<StepTitle>1st Spray</StepTitle>}
-            description={
-              block.firstSpray ? (
-                <small>{format(block.firstSpray, "MM/DD/YY HH:00")}</small>
-              ) : null
-            }
-          />
-          <Step
-            title={<StepTitle>2nd Spray</StepTitle>}
-            description={
-              block.secondSpray ? (
-                <small>{format(block.secondSpray, "MM/DD/YY HH:00")}</small>
-              ) : null
-            }
-          />
-          <Step
-            title={<StepTitle>3rd Spray</StepTitle>}
-            description={
-              block.thirdSpray ? (
-                <small>{format(block.thirdSpray, "MM/DD/YY HH:00")}</small>
-              ) : null
-            }
-          />
-          <Step
-            title={<StepTitle>End</StepTitle>}
-            description={
-              block.endDate ? (
-                <small>{format(block.endDate, "MM/DD/YY HH:00")}</small>
-              ) : null
-            }
-          />
+          {StepDate}
         </Steps>
       </Col>
     );

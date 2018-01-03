@@ -23,14 +23,16 @@ export default class Block extends Component {
       showStartDateModal,
       showStyleLengthModal,
       setRadioValue,
-      filteredBlocks
+      filteredBlocks,
+      dateRange
     } = this.props.store.app;
     const { breakpoints, block } = this.props;
 
+    console.log(dateRange);
+
     let isFooterDisplayed = false;
     if (Object.keys(filteredBlocks).length === 1) isFooterDisplayed = true;
-    // console.log(block);
-    // gridData.map(day => console.log(toJS(day)));
+
     return (
       <BlockWrapper>
         <BlockHeader block={block} breakpoints={breakpoints} />

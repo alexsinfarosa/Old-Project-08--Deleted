@@ -356,6 +356,37 @@ export default class appStore {
   @observable isBlockBeingEdited = false;
   @observable blockId;
   @observable isBlockSelected = false;
+  @computed
+  get dateRange() {
+    const {
+      date,
+      firstSpray,
+      secondSpray,
+      thirdSpray
+    } = this.filteredBlocks[0];
+    const dates = [date, firstSpray, secondSpray, thirdSpray].filter(
+      date => date
+    );
+    console.log(dates.length - 1);
+    let results = [];
+    dates.forEach((date, i) => {
+      let status = "waiting";
+      if (i === dates.length - 1) status = "process";
+      let name = "";
+      if (i === 0) name = "Start Date";
+      if (i === 1) name = "First Spray";
+      if (i === 2) name = "Second Spray";
+      if (i === 3) name = "Third Spray";
+      results.push({
+        name,
+        date,
+        status
+      });
+    });
+    const today = { name: "Today", date: new Date(), status: "finish" };
+    console.log([...results, today]);
+    return [...results, today];
+  }
 
   @computed
   get block() {
@@ -487,7 +518,7 @@ export default class appStore {
     filteredFirstDayTemps.forEach((temp, h) => {
       const idx = temps.findIndex(t => t.toString() === temp);
       let hourlyGrowth = hrGrowth[idx];
-      if (temp < 35 || temp > 106) hourlyGrowth = 0;
+      if (temp < 35 || temp > 106 || temp === "M") hourlyGrowth = 0;
       cumulativeHrGrowth += hourlyGrowth;
       percentage = cumulativeHrGrowth / avgStyleLength * 100;
       results.push({
@@ -508,7 +539,7 @@ export default class appStore {
       values[i].forEach((temp, h) => {
         const idx = temps.findIndex(t => t.toString() === temp);
         let hourlyGrowth = hrGrowth[idx];
-        if (temp < 35 || temp > 106) hourlyGrowth = 0;
+        if (temp < 35 || temp > 106 || temp === "M") hourlyGrowth = 0;
         cumulativeHrGrowth += hourlyGrowth;
         percentage = cumulativeHrGrowth / avgStyleLength * 100;
 
@@ -528,7 +559,7 @@ export default class appStore {
     filteredLastDayTemps.forEach((temp, h) => {
       const idx = temps.findIndex(t => t.toString() === temp);
       let hourlyGrowth = hrGrowth[idx];
-      if (temp < 35 || temp > 106) hourlyGrowth = 0;
+      if (temp < 35 || temp > 106 || temp === "M") hourlyGrowth = 0;
       cumulativeHrGrowth += hourlyGrowth;
       percentage = cumulativeHrGrowth / avgStyleLength * 100;
 
