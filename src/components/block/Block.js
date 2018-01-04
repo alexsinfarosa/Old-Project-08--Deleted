@@ -29,9 +29,15 @@ export default class Block extends Component {
     const { breakpoints, block } = this.props;
 
     console.log(dateRange);
+    // console.log(block);
 
     let isFooterDisplayed = false;
-    if (Object.keys(filteredBlocks).length === 1) isFooterDisplayed = true;
+    if (
+      Object.keys(filteredBlocks).length === 1 &&
+      block.date &&
+      block.avgStyleLength
+    )
+      isFooterDisplayed = true;
 
     return (
       <BlockWrapper>

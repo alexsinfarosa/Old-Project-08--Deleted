@@ -1,8 +1,8 @@
-import styled, { keyframes } from "styled-components";
-import { Icon } from "antd";
+import styled from "styled-components";
+// import { Icon } from "antd";
 
-import { pulse } from "react-animations";
-const bounceAnimation = keyframes`${pulse}`;
+// import { pulse } from "react-animations";
+// const bounceAnimation = keyframes`${pulse}`;
 
 // screen sizes
 const sm = "576px";
@@ -216,6 +216,6 @@ export const BlockBodyWrapper = styled.div`
   }
 `;
 
-export const StepIcon = styled(Icon)`
-  animation: 2s infinite ${bounceAnimation};
-`;
+// export const StepIcon = styled(Icon)`
+//   animation: 2s infinite ${bounceAnimation};
+// `;

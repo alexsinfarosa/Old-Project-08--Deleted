@@ -79,45 +79,17 @@ export const avgTwoStringNumbers = (a, b) => {
   return Math.round((aNum + bNum) / 2).toString();
 };
 
-export const replaceNonConsecutiveMissingValues = data => {
-  return data.map(day => {
-    return day.map(param => {
-      if (Array.isArray(param)) {
-        return param.map((e, i) => {
-          if (i === 0 && e === "M") {
-            return param[i + 1];
-          } else if (i === param.length - 1 && e === "M") {
-            return param[i - 1];
-          } else if (
-            e === "M" &&
-            param[i - 1] !== "M" &&
-            param[i + 1] !== "M"
-          ) {
-            return avgTwoStringNumbers(param[i - 1], param[i + 1]);
-          } else {
-            return e;
-          }
-        });
-      }
-      return param;
-    });
-  });
-};
-
-// Replaces current station (cStation) missing values with compared station (sStation)
-export const replaceMissingValues = (cStation, sStation) => {
-  return cStation.map((day, i) => {
-    return day.map(param => {
-      if (Array.isArray(param)) {
-        return param.map((temp, j) => {
-          if (temp === "M") {
-            return sStation[i][1][j].toString();
-          }
-          return temp;
-        });
-      }
-      return param;
-    });
+export const replaceNonConsecutiveMissingValues = arr => {
+  return arr.map((t, i) => {
+    if (i === 0 && t === "M") {
+      return arr[i + 1];
+    } else if (i === arr.length - 1 && t === "M") {
+      return arr[i - 1];
+    } else if (t === "M" && arr[i - 1] !== "M" && arr[i + 1] !== "M") {
+      return avgTwoStringNumbers(arr[i - 1], arr[i + 1]);
+    } else {
+      return t;
+    }
   });
 };
 

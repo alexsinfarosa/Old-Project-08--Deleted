@@ -11,7 +11,7 @@ import getHours from "date-fns/get_hours";
 import { message } from "antd";
 
 // utils
-// import { fetchACISData } from "fetchACISData";
+import { fetchACISData } from "fetchACISData";
 
 export default class appStore {
   constructor(fetch) {
@@ -493,19 +493,19 @@ export default class appStore {
   };
 
   // Model ------------------------------------------------------------------
-  // @action
-  // setGridData = id => {
-  //   if (Object.keys(this.filteredBlocks).length === 1) {
-  //     this.isLoading = true;
-  //     const { station, resetDate, avgStyleLength } = this.filteredBlocks[0];
-  //     if (station.name && resetDate && avgStyleLength) {
-  //       fetchACISData(station, resetDate).then(res => {
-  //         this.filteredBlocks[0].gridData = this.transformGridData(res);
-  //         this.isLoading = false;
-  //       });
-  //     }
-  //   }
-  // };
+  @action
+  setGridData = id => {
+    if (Object.keys(this.filteredBlocks).length === 1) {
+      this.isLoading = true;
+      const { station, resetDate, avgStyleLength } = this.filteredBlocks[0];
+      if (station.name && resetDate && avgStyleLength) {
+        fetchACISData(station, resetDate).then(res => {
+          this.filteredBlocks[0].gridData = this.transformGridData(res);
+          this.isLoading = false;
+        });
+      }
+    }
+  };
 
   addZeroToHoursLessThen10 = d => {
     if (d >= 0 && d <= 8) return `0${d + 1}`;

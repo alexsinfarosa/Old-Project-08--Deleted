@@ -12,7 +12,6 @@ const Step = Steps.Step;
 @observer
 class BlockSteps extends Component {
   render() {
-    const { dateRange } = this.props.store.app;
     const { breakpoints, block } = this.props;
 
     const StepTitle = props => <small>{props.children}</small>;
@@ -32,7 +31,7 @@ class BlockSteps extends Component {
       );
     };
 
-    const StepDate = dateRange.map(date => (
+    const StepDate = block.dateRange.map(date => (
       <Step
         key={date.date}
         status={date.status}

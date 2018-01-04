@@ -1,4 +1,8 @@
 import AppStore from "./appStore";
+
+// Testing
+import cleanFetchedData from "utils/cleanFetchedData";
+
 const fetcher = url => window.fetch(url).then(response => response.json());
 
 const store = {
@@ -7,7 +11,4 @@ const store = {
 
 export default store;
 
-// store.app.loadSubjects();
-// store.app.loadStates();
-// store.app.loadStations();
-// store.app.loadGridData();
+cleanFetchedData;
