@@ -16,24 +16,27 @@ class BlockSteps extends Component {
     const { breakpoints, block } = this.props;
 
     const StepTitle = props => <small>{props.children}</small>;
-    const StepIcon = date => (
-      <svg
-        className="button"
-        expanded="true"
-        height="24px"
-        width="24px"
-        key={date}
-      >
-        <circle cx="50%" cy="50%" r="7px" fill="#4EA27D" />
-        <circle cx="50%" cy="50%" r="8px" fill="#E8E8E8" />
-      </svg>
-    );
+
+    const StepIcon = props => {
+      return (
+        <svg className="button" expanded="true" height="24px" width="24px">
+          <circle cx="50%" cy="50%" r="7px" fill="#4EA27D" />
+          <circle
+            className={props.status === "finish" ? "pulse" : ""}
+            cx="50%"
+            cy="50%"
+            r="8px"
+            fill="#E8E8E8"
+          />
+        </svg>
+      );
+    };
 
     const StepDate = dateRange.map(date => (
       <Step
-        key={date.val}
+        key={date.date}
         status={date.status}
-        icon={<StepIcon />}
+        icon={<StepIcon status={date.status} />}
         title={<StepTitle date={date}>{date.name}</StepTitle>}
         description={
           block.date ? (

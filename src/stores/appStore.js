@@ -367,11 +367,11 @@ export default class appStore {
     const dates = [date, firstSpray, secondSpray, thirdSpray].filter(
       date => date
     );
-    console.log(dates.length - 1);
+
     let results = [];
     dates.forEach((date, i) => {
-      let status = "waiting";
-      if (i === dates.length - 1) status = "process";
+      let status = "wait";
+      if (i === dates.length - 1) status = "finish";
       let name = "";
       if (i === 0) name = "Start Date";
       if (i === 1) name = "First Spray";
@@ -383,8 +383,11 @@ export default class appStore {
         status
       });
     });
-    const today = { name: "Today", date: new Date(), status: "finish" };
-    console.log([...results, today]);
+    const today = {
+      name: "Today",
+      date: new Date("2017/06/03"), // change this
+      status: "wait"
+    };
     return [...results, today];
   }
 
