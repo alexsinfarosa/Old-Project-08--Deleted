@@ -6,7 +6,7 @@ import { DatePicker as AntdDatePicker } from "antd";
 import moment from "moment";
 
 // utils
-import { roundDate } from "utils";
+import { roundDate } from "utils/utils";
 
 @inject("store")
 @observer

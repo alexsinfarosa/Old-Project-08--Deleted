@@ -41,21 +41,18 @@ class BlockModal extends Component {
         style={{ top: 32 }}
         closable={false}
         maskClosable={false}
-        title={block.isBeingEdited ? `Edit selected block` : `New Block`}
+        // title={block.isBeingEdited ? `Edit selected block` : `New Block`}
         visible={isBlockModal}
-        okText={block.isBeingEdited ? "UPDATE BLOCK" : "ADD BLOCK"}
-        onOk={block.isBeingEdited ? updateBlock : addBlock}
-        onCancel={() => {
-          resetFields();
-          hideBlockModal();
-        }}
+        // okText={block.isBeingEdited ? "UPDATE BLOCK" : "ADD BLOCK"}
+        // onOk={block.isBeingEdited ? updateBlock : addBlock}
+        onCancel={() => hideBlockModal()}
       >
         <Row align="middle">
           <SelectBlockName />
           <SelectVariety />
           <SelectState />
           <SelectStation />
-          {block.isBeingEdited && (
+          {/*block.isBeingEdited && (
             <div>
               <SelectStyleLength />
               <SelectStartDateEdit />
@@ -76,7 +73,7 @@ class BlockModal extends Component {
               />
               <SelectEndDate />
             </div>
-          )}
+          )*/}
         </Row>
       </Modal>
     );

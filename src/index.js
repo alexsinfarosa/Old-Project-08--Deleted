@@ -5,15 +5,14 @@ import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
 
 // Mobx
-import store from "stores";
+import stores from "stores";
 import { Provider } from "mobx-react";
-
 // antd
 import { LocaleProvider } from "antd";
 import enUS from "antd/lib/locale-provider/en_US";
 
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider {...stores}>
     <LocaleProvider locale={enUS}>
       <App />
     </LocaleProvider>
@@ -25,7 +24,7 @@ registerServiceWorker();
 if (module.hot) {
   module.hot.accept(() => {
     ReactDOM.render(
-      <Provider store={store}>
+      <Provider {...stores}>
         <LocaleProvider locale={enUS}>
           <App />
         </LocaleProvider>

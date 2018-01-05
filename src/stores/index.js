@@ -1,14 +1,16 @@
-import AppStore from "./appStore";
+import app from "./appStore";
+import acisStates from "./statesStore";
+import block from "./blockStore";
 
 // Testing
 import cleanFetchedData from "utils/cleanFetchedData";
 
-const fetcher = url => window.fetch(url).then(response => response.json());
-
-const store = {
-  app: new AppStore(fetcher)
+const stores = {
+  app,
+  acisStates,
+  block
 };
 
-export default store;
+export default stores;
 
 cleanFetchedData;

@@ -32,10 +32,7 @@ class ToolBar extends Component {
                 ghost
                 icon="plus"
                 style={{ marginRight: 16 }}
-                onClick={() => {
-                  resetFields();
-                  showBlockModal();
-                }}
+                onClick={() => showBlockModal()}
               >
                 {breakpoints.xs ? null : "Block"}
               </Button>
@@ -43,7 +40,7 @@ class ToolBar extends Component {
 
             <Tooltip title="Display all blocks">
               <Button
-                ghost={filteredBlocks.length > 1 ? false : true}
+                ghost={true ? false : true}
                 type="primary"
                 icon={breakpoints.xs ? "table" : null}
                 onClick={() => displayAllBlocks()}
@@ -52,7 +49,7 @@ class ToolBar extends Component {
                 {!breakpoints.xs && (
                   <Badge
                     overflowCount={99}
-                    count={blocks.length}
+                    count={3}
                     style={{
                       marginLeft: 8,
                       marginBottom: 2,
@@ -67,9 +64,9 @@ class ToolBar extends Component {
           </Row>
         </Col>
 
-        <Col style={{ flex: "2 2 200px" }}>
+        {/*<Col style={{ flex: "2 2 200px" }}>
           <SelectBlocks />
-        </Col>
+        </Col>*/}
 
         {!breakpoints.xs && (
           <Col right>

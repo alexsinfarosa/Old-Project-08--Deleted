@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { Map as LMap, TileLayer, Marker } from "react-leaflet";
 import L from "leaflet";
-import { matchIconsToStations } from "utils";
+import { matchIconsToStations } from "utils/utils";
 
 import { Modal } from "antd";
 
