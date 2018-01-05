@@ -1,17 +1,15 @@
-import React, { Component } from "react";
-import { observable, action, when, computed } from "mobx";
-import { toJS } from "mobx";
+import { observable, action, when } from "mobx";
+// import { toJS } from "mobx";
 const fetcher = url => window.fetch(url).then(response => response.json());
 
-class StatesStore {
+class StateStore {
   constructor(fetch) {
     this.fetch = fetch;
     when(() => this.states.size === 0, () => this.loadStates());
   }
 
-  @observable states = new Map();
-
   @observable isLoading = false;
+  @observable states = new Map();
 
   @action
   updateStates = json =>
@@ -31,20 +29,11 @@ class StatesStore {
   }
 
   @observable
-  state = JSON.parse(localStorage.getItem("state")) || {
-    postalCode: "ALL",
-    lat: 42.5,
-    lon: -75.7,
-    zoom: 6,
-    name: "All States"
-  };
+  state = JSON.parse(localStorage.getItem("state")) || this.states.get("ALL");
 
   @action
   setState = name => {
-    this.station = {};
-    const state = this.states.find(state => state.name === name);
-    this.state = state;
-    this.setIsMap(true);
+    this.state = this.states.find(state => state.name === name);
     localStorage.setItem("state", JSON.stringify(this.state));
   };
 
@@ -55,4 +44,4 @@ class StatesStore {
   };
 }
 
-export default new StatesStore(fetcher);
+export default new StateStore(fetcher);

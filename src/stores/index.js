@@ -1,16 +1,20 @@
 import app from "./appStore";
-import acisStates from "./statesStore";
+import subject from "./subjectStore";
+import state from "./stateStore";
+import station from "./stationStore";
 import block from "./blockStore";
 
 // Testing
-import cleanFetchedData from "utils/cleanFetchedData";
+// import cleanFetchedData from "utils/cleanFetchedData";
 
 const stores = {
   app,
-  acisStates,
+  subject,
+  state,
+  station,
   block
 };
 
 export default stores;
 
-cleanFetchedData;
+// cleanFetchedData;

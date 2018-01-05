@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { toJS } from "mobx";
+// import { toJS } from "mobx";
 import { MatchMediaProvider } from "mobx-react-matchmedia";
 
 // ToolBar
@@ -18,15 +18,16 @@ import { MatchMediaProvider } from "mobx-react-matchmedia";
 
 // styled components
 import { Header, SubHeader, SubHeaderRight, Main } from "styles";
-import { ToolBarWrapper } from "./styles";
-import { matchIconsToStations } from "./utils/utils";
+// import {matchIconsToStations} from './utils/utils';
+// import { ToolBarWrapper } from "./styles";
+// import { matchIconsToStations } from "./utils/utils";
 
-@inject("app", "acisStates")
+@inject("app", "subject", "state", "station")
 @observer
 class App extends Component {
   render() {
-    const { breakpoints, isMap } = this.props.app;
-    console.log(toJS(this.props.acisStates.states));
+    const { breakpoints } = this.props.app;
+    // console.log(toJS(this.props.station.stations.size));
     return (
       <MatchMediaProvider breakpoints={breakpoints}>
         <Header>
@@ -35,6 +36,9 @@ class App extends Component {
           </SubHeader>
           <SubHeaderRight>NEWA</SubHeaderRight>
         </Header>
+        <Main>
+          <div>testing...</div>
+        </Main>
       </MatchMediaProvider>
     );
   }

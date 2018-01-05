@@ -4,27 +4,23 @@ import { Select } from "antd";
 
 import { ColMb } from "styles";
 
-@inject("store")
+@inject("statesStore")
 @observer
 export default class SelectState extends Component {
   render() {
-    const {
-      states,
-      state,
-      setState,
-      isBlockBeingEdited
-    } = this.props.store.app;
+    const { states, state, setState } = this.props.statesStore;
 
-    const optionList = states.map(el => {
+    const optionList = states.map(state => {
+      console.log(state);
       return (
-        <Select.Option key={el.id} value={el.name}>
-          {el.name}
+        <Select.Option key={state.id} value={state.postalCode}>
+          {state.name}
         </Select.Option>
       );
     });
     return (
       <ColMb style={{ marginBottom: isBlockBeingEdited ? 16 : 32 }}>
-        {isBlockBeingEdited && "State:"}
+        {true && "State:"}
         <Select
           style={{ width: "100%" }}
           value={state.name}

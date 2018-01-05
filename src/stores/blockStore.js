@@ -1,4 +1,4 @@
-import { observable, action, when, computed } from "mobx";
+import { observable, computed } from "mobx";
 
 class Block {
   @observable id;
